@@ -764,8 +764,7 @@ export function SitePage({ content }: { content: SiteContent }) {
             <div className="grid gap-10 md:grid-cols-12 md:items-start">
               <div className="md:col-span-7">
                 <p className="max-w-2xl text-pretty text-lg leading-relaxed text-muted">
-                  Want to collaborate or chat? Reach out — I’m happy to share
-                  process, prototypes, or the story behind a project.
+                  Let’s collaborate and build something meaningful. I’m always open to exchanging ideas!
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-3">
@@ -820,7 +819,7 @@ export function SitePage({ content }: { content: SiteContent }) {
 
             <footer className="mt-16 pb-10 text-sm text-muted">
               <p>
-                © verneylmavt. Inspired by outer space.
+                ©verneylmavt. Inspired by brain and outer space.
               </p>
             </footer>
           </Section>
