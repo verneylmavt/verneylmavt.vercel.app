@@ -1,0 +1,1520 @@
+app\globals.css
+```
+@import "tailwindcss";
+
+:root {
+  /* Dark-only theme tokens */
+  --background: 10 10 12;
+  --foreground: 238 238 242;
+  --muted: 156 156 168;
+  --border: 255 255 255;
+  --surface: 14 14 18;
+  --accent: 120 180 255;
+  --noise-opacity: 0.055;
+  --vignette-opacity: 0.55;
+
+  /* Fluid shader palette */
+  --shader-a: 33 132 255;
+  --shader-b: 255 74 141;
+  --shader-c: 255 120 60;
+}
+
+@theme inline {
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-muted: rgb(var(--muted));
+  --color-border: rgb(var(--border));
+  --color-surface: rgb(var(--surface));
+  --color-accent: rgb(var(--accent));
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-newsreader);
+}
+
+body {
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, Arial, "Noto Sans", "Apple Color Emoji",
+    "Segoe UI Emoji";
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Grain overlay (subtle, theme-aware via opacity) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: var(--noise-opacity);
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+}
+
+/* Vignette for legibility */
+body::after {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    60% 50% at 50% 20%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.45) 70%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  opacity: var(--vignette-opacity);
+}
+
+/* Code-inspired typewriter (JS-driven, CSS caret) */
+.typewriter {
+  position: relative;
+  display: inline-block;
+  white-space: nowrap;
+  padding-right: 0.6ch;
+}
+
+.typewriter::after {
+  content: "";
+  position: absolute;
+  top: 0.15em;
+  right: 0.15ch;
+  width: 1px;
+  height: 1.1em;
+  background: rgb(var(--foreground) / 0.55);
+  animation: caret 1.05s step-end infinite;
+}
+
+@keyframes caret {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .typewriter::after {
+    display: none;
+  }
+}
+
+```
+
+app\layout.tsx
+```
+import type { Metadata } from "next";
+import { Geist, Newsreader } from "next/font/google";
+import "./globals.css";
+import { site } from "@/content/site";
+
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+});
+
+export const metadata: Metadata = {
+  title: `${site.name} - Portfolio`,
+  description: "Personal website showcasing work, projects, and experience.",
+};
+
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  return (
+    <html
+      lang="en"
+      className={`${geistSans.variable} ${newsreader.variable} h-full antialiased`}
+    >
+      <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
+        {children}
+      </body>
+    </html>
+  );
+}
+
+```
+
+app\page.tsx
+```
+import { SitePage } from "@/components/site/SitePage";
+import { site } from "@/content/site";
+
+export default function Home() {
+  return <SitePage content={site} />;
+}
+
+```
+
+components\icon.tsx
+```
+import type { LucideIcon } from "lucide-react";
+import {
+  ArrowUpRight,
+  Award,
+  Briefcase,
+  Code2,
+  Cpu,
+  Database,
+  ExternalLink,
+  FileText,
+  GitBranch,
+  GraduationCap,
+  Link,
+  Mail,
+  Palette,
+  Sparkles,
+  Wrench,
+  X,
+} from "lucide-react";
+
+import type { IconName } from "@/content/site";
+import { cn } from "@/lib/cn";
+
+const ICONS: Record<IconName, LucideIcon> = {
+  Mail,
+  Github: GitBranch,
+  Linkedin: Link,
+  X,
+  FileText,
+  ExternalLink,
+  ArrowUpRight,
+  Code2,
+  Cpu,
+  Database,
+  Palette,
+  Sparkles,
+  Wrench,
+  Award,
+  Briefcase,
+  GraduationCap,
+};
+
+export function Icon({
+  name,
+  className,
+  "aria-label": ariaLabel,
+}: {
+  name: IconName;
+  className?: string;
+  "aria-label"?: string;
+}) {
+  const Component = ICONS[name];
+
+  if (!Component) return null;
+
+  return (
+    <Component
+      aria-hidden={ariaLabel ? undefined : true}
+      aria-label={ariaLabel}
+      className={cn("h-4 w-4", className)}
+    />
+  );
+}
+
+```
+
+components\site\Header.tsx
+```
+"use client";
+
+import * as React from "react";
+import { Menu, X } from "lucide-react";
+
+import { cn } from "@/lib/cn";
+
+export type NavSection = { id: string; label: string };
+
+export function Header({
+  siteName,
+  sections,
+  activeId,
+}: {
+  siteName: string;
+  sections: NavSection[];
+  activeId?: string;
+}) {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [scrolled, setScrolled] = React.useState(false);
+
+  React.useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 12);
+    }
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-40 w-full",
+        scrolled
+          ? "bg-[rgb(var(--background)/0.6)] backdrop-blur-xl"
+          : "bg-[rgb(var(--background)/0.15)] backdrop-blur-md",
+      )}
+    >
+      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-6">
+        <a
+          href="#top"
+          className="group inline-flex items-baseline gap-2 justify-self-start text-sm font-medium tracking-tight"
+          aria-label="Scroll to top"
+        >
+          <span className="text-foreground">{siteName}</span>
+          <span className="hidden text-muted sm:inline">/ portfolio</span>
+        </a>
+
+        <nav
+          className="hidden items-center gap-1 justify-self-center md:flex"
+          aria-label="Sections"
+        >
+          {sections.map((section) => {
+            const isActive = activeId === section.id;
+            return (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                className={cn(
+                  "rounded-full px-3 py-2 text-sm transition",
+                  "text-muted hover:text-foreground",
+                  isActive &&
+                    "bg-[rgb(var(--foreground)/0.06)] text-foreground",
+                )}
+              >
+                {section.label}
+              </a>
+            );
+          })}
+        </nav>
+
+        <div className="flex items-center justify-self-end gap-2">
+          <button
+            type="button"
+            className={cn(
+              "inline-flex h-10 w-10 items-center justify-center rounded-full border border-[rgb(var(--border)/0.14)] bg-[rgb(var(--background)/0.4)] backdrop-blur-md transition md:hidden",
+              "hover:border-[rgb(var(--border)/0.22)] hover:bg-[rgb(var(--background)/0.55)]",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+            )}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav"
+            onClick={() => setIsOpen((v) => !v)}
+          >
+            {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        id="mobile-nav"
+        className={cn(
+          "md:hidden",
+          isOpen ? "block" : "hidden",
+          "border-t border-[rgb(var(--border)/0.10)]",
+        )}
+      >
+        <div className="mx-auto w-full max-w-6xl px-6 py-4">
+          <nav className="grid gap-1" aria-label="Sections">
+            {sections.map((section) => {
+              const isActive = activeId === section.id;
+              return (
+                <a
+                  key={section.id}
+                  href={`#${section.id}`}
+                  onClick={() => setIsOpen(false)}
+                  className={cn(
+                    "flex items-center justify-between rounded-xl px-3 py-3 text-sm",
+                    "text-muted hover:bg-[rgb(var(--foreground)/0.06)] hover:text-foreground",
+                    isActive && "bg-[rgb(var(--foreground)/0.06)] text-foreground",
+                  )}
+                >
+                  <span>{section.label}</span>
+                  <span className="text-muted/70">-&gt;</span>
+                </a>
+              );
+            })}
+          </nav>
+        </div>
+      </div>
+    </header>
+  );
+}
+
+```
+
+components\site\SitePage.tsx
+```
+"use client";
+
+import * as React from "react";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
+
+import type { SiteContent } from "@/content/site";
+import { Icon } from "@/components/icon";
+import { Header, type NavSection } from "@/components/site/Header";
+import { FluidBackground } from "@/components/visual/FluidBackground";
+import { cn } from "@/lib/cn";
+
+const TYPEWRITER_ITEMS = [
+  "const mbti = ENTP;",
+  "const interest = Cloud, Data, AI/ML;",
+  "const hobby = Fashion, Photography, Coffee;",
+] as const;
+
+function useActiveSection(sectionIds: string[]) {
+  const [activeId, setActiveId] = React.useState<string | undefined>(
+    sectionIds[0],
+  );
+
+  React.useEffect(() => {
+    const elements = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(Boolean) as HTMLElement[];
+
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0));
+
+        const top = visible[0]?.target as HTMLElement | undefined;
+        if (top?.id) setActiveId(top.id);
+      },
+      {
+        root: null,
+        rootMargin: "-35% 0px -55% 0px",
+        threshold: [0.1, 0.25, 0.4, 0.6],
+      },
+    );
+
+    elements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sectionIds.join("|")]);
+
+  return activeId;
+}
+
+function Section({
+  id,
+  title,
+  children,
+}: {
+  id: string;
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section
+      id={id}
+      aria-labelledby={`${id}-title`}
+      className="scroll-mt-24 py-16 sm:py-20"
+    >
+      <div className="mx-auto w-full max-w-6xl px-6">
+        <motion.div
+          initial={{ opacity: 0, y: 14 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-10% 0px" }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <h2
+            id={`${id}-title`}
+            className={cn(
+              "text-3xl font-medium tracking-tight sm:text-4xl",
+              "font-[family:var(--font-serif)]",
+            )}
+          >
+            {title}
+          </h2>
+          <div className="mt-8">{children}</div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+export function SitePage({ content }: { content: SiteContent }) {
+  const reducedMotion = useReducedMotion();
+  const sections = React.useMemo<NavSection[]>(
+    () => [
+      { id: "about", label: "About" },
+      { id: "education", label: "Education" },
+      { id: "experience", label: "Work" },
+      { id: "tools", label: "Tools" },
+      { id: "certifications", label: "Certifications" },
+      { id: "projects", label: "Projects" },
+      { id: "contact", label: "Contact" },
+    ],
+    [],
+  );
+
+  const sectionIds = React.useMemo(() => sections.map((s) => s.id), [sections]);
+  const activeId = useActiveSection(sectionIds);
+  const [mounted, setMounted] = React.useState(false);
+  const [itemIndex, setItemIndex] = React.useState(0);
+  const [charIndex, setCharIndex] = React.useState(0);
+  const [isDeleting, setIsDeleting] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  React.useEffect(() => {
+    if (!mounted) return;
+
+    if (reducedMotion) {
+      setItemIndex(0);
+      setCharIndex(TYPEWRITER_ITEMS[0].length);
+      setIsDeleting(false);
+      return;
+    }
+
+    const phrase = TYPEWRITER_ITEMS[itemIndex] ?? "";
+
+    const typeMs = 46;
+    const deleteMs = 24;
+    const pauseMs = 900;
+    const swapMs = 180;
+
+    const isTypingDone = !isDeleting && charIndex >= phrase.length;
+    const isDeleteDone = isDeleting && charIndex <= 0;
+
+    let timeoutId: ReturnType<typeof setTimeout> | undefined;
+
+    if (isTypingDone) {
+      timeoutId = setTimeout(() => setIsDeleting(true), pauseMs);
+    } else if (isDeleteDone) {
+      timeoutId = setTimeout(() => {
+        setIsDeleting(false);
+        setItemIndex((v) => (v + 1) % TYPEWRITER_ITEMS.length);
+      }, swapMs);
+    } else {
+      timeoutId = setTimeout(() => {
+        setCharIndex((v) => v + (isDeleting ? -1 : 1));
+      }, isDeleting ? deleteMs : typeMs);
+    }
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, [mounted, reducedMotion, itemIndex, charIndex, isDeleting]);
+
+  const activePhrase = TYPEWRITER_ITEMS[itemIndex] ?? "";
+  const typewriterText = mounted
+    ? activePhrase.slice(0, Math.max(0, Math.min(charIndex, activePhrase.length)))
+    : "";
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    const html = document.documentElement;
+    const previousScrollBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto";
+
+    window.scrollTo(0, 0);
+    if (window.location.hash) {
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
+    }
+
+    html.style.scrollBehavior = previousScrollBehavior;
+  }, []);
+
+  return (
+    <>
+      <FluidBackground />
+      <div className="relative z-10 flex min-h-[100svh] flex-col">
+        <Header siteName={content.name} sections={sections} activeId={activeId} />
+
+        <main className="flex-1">
+          {/* HERO */}
+          <section
+            id="top"
+            className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center py-16"
+            aria-label="Intro"
+          >
+            <div className="mx-auto w-full max-w-4xl px-6 text-center">
+              <motion.div
+                initial="hidden"
+                animate="show"
+                variants={{
+                  hidden: {},
+                  show: { transition: { staggerChildren: 0.08 } },
+                }}
+              >
+                {content.location ? (
+                  <motion.p
+                    variants={{
+                      hidden: { opacity: 0, y: 10 },
+                      show: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    className="text-sm text-muted"
+                  >
+                    {content.location}
+                  </motion.p>
+                ) : null}
+
+                <motion.h1
+                  variants={{
+                    hidden: { opacity: 0, y: 16 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+                  className={cn(
+                    "mx-auto mt-6 max-w-3xl text-balance text-5xl font-semibold tracking-tight sm:text-6xl lg:text-7xl",
+                    "font-[family:var(--font-serif)]",
+                  )}
+                >
+                  {content.name}
+                </motion.h1>
+
+                <motion.p
+                  variants={{
+                    hidden: { opacity: 0, y: 12 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="mx-auto mt-5 max-w-2xl text-pretty text-lg leading-relaxed text-muted sm:text-xl"
+                >
+                  {content.roleTitle}
+                </motion.p>
+
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex justify-center"
+                >
+                  <div className="w-full max-w-[44rem] overflow-hidden rounded-2xl border border-[rgb(var(--border)/0.14)] bg-[rgb(var(--background)/0.35)] px-4 py-3 font-mono text-xs text-muted backdrop-blur-md sm:text-sm">
+                    <div className="flex items-center gap-2 whitespace-nowrap text-left">
+                      <span className="text-foreground/80">$</span>
+                      <span className="typewriter">{typewriterText}</span>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-10 flex flex-wrap items-center justify-center gap-3"
+                >
+                  {content.contacts.map((c) => (
+                    <a
+                      key={c.label}
+                      href={c.href}
+                      target={c.href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        c.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      className={cn(
+                        "group inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border)/0.14)] px-4 py-2 text-sm",
+                        "bg-[rgb(var(--background)/0.4)] backdrop-blur-md transition",
+                        "hover:border-[rgb(var(--border)/0.22)] hover:bg-[rgb(var(--background)/0.55)]",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      )}
+                    >
+                      <Icon
+                        name={c.icon}
+                        className="h-4 w-4 text-foreground/85"
+                      />
+                      <span className="text-foreground/90">{c.label}</span>
+                    </a>
+                  ))}
+                </motion.div>
+
+                <motion.a
+                  variants={{
+                    hidden: { opacity: 0 },
+                    show: { opacity: 1 },
+                  }}
+                  transition={{ duration: 0.9, ease: "easeOut", delay: 0.35 }}
+                  href="#about"
+                  className="group mt-16 inline-flex items-center justify-center gap-3 text-sm text-muted transition hover:text-foreground"
+                  aria-label="Scroll to About Me"
+                >
+                  <span className="underline underline-offset-4 decoration-[rgb(var(--foreground)/0.25)] group-hover:decoration-[rgb(var(--foreground)/0.45)]">
+                    Scroll
+                  </span>
+                  <span className="inline-flex h-px w-10 bg-[rgb(var(--foreground)/0.25)]" />
+                  <span className="text-foreground/75">↓</span>
+                </motion.a>
+              </motion.div>
+            </div>
+          </section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* ABOUT */}
+          <Section id="about" title="About Me">
+            <div className="grid gap-10 md:grid-cols-12">
+              <div className="md:col-span-8">
+                <p className="text-pretty text-lg leading-relaxed text-foreground/90">
+                  {content.about.paragraph}
+                </p>
+                {content.about.bullets?.length ? (
+                  <ul className="mt-6 grid gap-3 text-sm text-muted sm:grid-cols-2">
+                    {content.about.bullets.map((b) => (
+                      <li
+                        key={b}
+                        className="flex items-start gap-3 rounded-xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] px-4 py-3 backdrop-blur-md"
+                      >
+                        <span className="mt-0.5 text-foreground/70">✳</span>
+                        <span>{b}</span>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+
+              <div className="md:col-span-4">
+                <div className="rounded-2xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] p-5 backdrop-blur-md">
+                  <p className="text-xs uppercase tracking-wider text-muted">
+                    Focus
+                  </p>
+                  <div className="mt-4 grid gap-3 text-sm">
+                    <div className="flex items-center gap-2">
+                      <Icon name="Sparkles" className="text-foreground/75" />
+                      <span>Interface systems</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Icon name="Code2" className="text-foreground/75" />
+                      <span>Frontend engineering</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Icon name="Palette" className="text-foreground/75" />
+                      <span>Interaction & motion</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* EDUCATION */}
+          <Section id="education" title="Education">
+            <ol className="relative ml-2 border-l border-[rgb(var(--border)/0.14)]">
+              {content.education.map((edu) => (
+                <li key={`${edu.institution}-${edu.start}`} className="pb-10 pl-7">
+                  <span className="absolute -left-[5px] mt-2 h-2.5 w-2.5 rounded-full bg-[rgb(var(--foreground)/0.40)]" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="text-lg font-medium tracking-tight">
+                      {edu.title}
+                    </h3>
+                    <p className="text-sm text-muted">
+                      {edu.start} — {edu.end}
+                    </p>
+                  </div>
+                  <p className="mt-1 text-sm text-foreground/85">
+                    {edu.institution}
+                  </p>
+                  {edu.description ? (
+                    <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
+                      {edu.description}
+                    </p>
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* EXPERIENCE */}
+          <Section id="experience" title="Work Experience">
+            <ol className="relative ml-2 border-l border-[rgb(var(--border)/0.14)]">
+              {content.workExperience.map((work) => (
+                <li key={`${work.company}-${work.start}`} className="pb-10 pl-7">
+                  <span className="absolute -left-[5px] mt-2 h-2.5 w-2.5 rounded-full bg-[rgb(var(--foreground)/0.40)]" />
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                    <h3 className="text-lg font-medium tracking-tight">
+                      {work.title} ·{" "}
+                      <span className="text-foreground/85">{work.company}</span>
+                    </h3>
+                    <p className="text-sm text-muted">
+                      {work.start} — {work.end}
+                    </p>
+                  </div>
+                  <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted">
+                    {work.summary}
+                  </p>
+                  {work.highlights?.length ? (
+                    <ul className="mt-5 grid gap-2 text-sm text-foreground/85 sm:grid-cols-2">
+                      {work.highlights.map((h) => (
+                        <li key={h} className="flex items-start gap-3">
+                          <span className="mt-1 h-1.5 w-1.5 rounded-full bg-[rgb(var(--foreground)/0.55)]" />
+                          <span className="text-muted">{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {work.links?.length ? (
+                    <div className="mt-6 flex flex-wrap gap-3">
+                      {work.links.map((l) => (
+                        <a
+                          key={l.href}
+                          href={l.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 text-sm text-foreground/85 hover:text-foreground"
+                        >
+                          <Icon name="ArrowUpRight" className="h-4 w-4" />
+                          <span className="underline underline-offset-4">
+                            {l.label}
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  ) : null}
+                </li>
+              ))}
+            </ol>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* TOOLS */}
+          <Section id="tools" title="Tools">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {content.tools.map((tool) => (
+                <div
+                  key={tool.name}
+                  className="flex items-center justify-between gap-4 rounded-2xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] px-5 py-4 backdrop-blur-md"
+                >
+                  <div className="flex items-center gap-3">
+                    <Icon name={tool.icon} className="h-5 w-5 text-foreground/80" />
+                    <p className="text-sm font-medium tracking-tight">
+                      {tool.name}
+                    </p>
+                  </div>
+                  <span className="text-xs text-muted">tool</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* CERTIFICATIONS */}
+          <Section id="certifications" title="Certifications">
+            <div className="flex gap-4 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {content.certifications.map((c) => (
+                <div
+                  key={`${c.title}-${c.date}`}
+                  className="min-w-[260px] rounded-2xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] p-5 backdrop-blur-md"
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-sm font-medium tracking-tight">
+                        {c.title}
+                      </p>
+                      <p className="mt-1 text-xs text-muted">
+                        {c.issuer} · {c.date}
+                      </p>
+                    </div>
+                    <Icon name="Award" className="h-5 w-5 text-foreground/70" />
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-center rounded-xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--surface)/0.40)] p-4">
+                    <Image
+                      src={c.badgeImagePath}
+                      alt={`${c.title} badge`}
+                      width={140}
+                      height={140}
+                      className="h-auto w-[120px]"
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-sm text-muted">
+              Tip: swap badge images in <span className="text-foreground/80">/public/badges</span>.
+            </p>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* PROJECTS */}
+          <Section id="projects" title="Projects">
+            <div className="grid gap-6">
+              {content.projects.map((project) => (
+                <motion.article
+                  key={project.slug}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-10% 0px" }}
+                  transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+                  className={cn(
+                    "group rounded-3xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] backdrop-blur-md",
+                    "transition hover:border-[rgb(var(--border)/0.18)] hover:bg-[rgb(var(--background)/0.45)]",
+                  )}
+                >
+                  <div className="grid gap-6 p-6 md:grid-cols-12 md:items-center">
+                    <div className="md:col-span-5">
+                      <div className="overflow-hidden rounded-2xl border border-[rgb(var(--border)/0.10)]">
+                        <Image
+                          src={project.thumbnailPath}
+                          alt={`${project.title} thumbnail`}
+                          width={900}
+                          height={650}
+                          className="h-auto w-full scale-[1.01] transition duration-500 group-hover:scale-[1.03]"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="md:col-span-7">
+                      <h3 className="text-xl font-medium tracking-tight sm:text-2xl">
+                        {project.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-relaxed text-muted">
+                        {project.description}
+                      </p>
+
+                      {project.tags?.length ? (
+                        <div className="mt-5 flex flex-wrap gap-2">
+                          {project.tags.map((t) => (
+                            <span
+                              key={t}
+                              className="rounded-full border border-[rgb(var(--border)/0.12)] bg-[rgb(var(--surface)/0.40)] px-3 py-1 text-xs text-foreground/85"
+                            >
+                              {t}
+                            </span>
+                          ))}
+                        </div>
+                      ) : null}
+
+                      <div className="mt-6 flex flex-wrap items-center gap-4 text-sm">
+                        {project.demoUrl ? (
+                          <a
+                            href={project.demoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-foreground/90 hover:text-foreground"
+                          >
+                            <Icon name="ExternalLink" />
+                            <span className="underline underline-offset-4">
+                              Demo
+                            </span>
+                          </a>
+                        ) : null}
+                        {project.repoUrl ? (
+                          <a
+                            href={project.repoUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-2 text-foreground/90 hover:text-foreground"
+                          >
+                            <Icon name="Github" />
+                            <span className="underline underline-offset-4">
+                              Repo
+                            </span>
+                          </a>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                </motion.article>
+              ))}
+            </div>
+          </Section>
+
+          <div className="mx-auto w-full max-w-6xl px-6">
+            <div className="h-px w-full bg-[rgb(var(--border)/0.10)]" />
+          </div>
+
+          {/* CONTACT */}
+          <Section id="contact" title="Contacts">
+            <div className="grid gap-10 md:grid-cols-12 md:items-start">
+              <div className="md:col-span-7">
+                <p className="max-w-2xl text-pretty text-lg leading-relaxed text-muted">
+                  Want to collaborate or chat? Reach out — I’m happy to share
+                  process, prototypes, or the story behind a project.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  {content.contacts.map((c) => (
+                    <a
+                      key={`contact-${c.label}`}
+                      href={c.href}
+                      target={c.href.startsWith("http") ? "_blank" : undefined}
+                      rel={
+                        c.href.startsWith("http")
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
+                      className={cn(
+                        "group inline-flex items-center gap-2 rounded-full border border-[rgb(var(--border)/0.14)] px-5 py-2.5 text-sm",
+                        "bg-[rgb(var(--background)/0.4)] backdrop-blur-md transition",
+                        "hover:border-[rgb(var(--border)/0.22)] hover:bg-[rgb(var(--background)/0.55)]",
+                        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                      )}
+                    >
+                      <Icon
+                        name={c.icon}
+                        className="h-4 w-4 text-foreground/85"
+                      />
+                      <span className="text-foreground/90">{c.label}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <div className="md:col-span-5">
+                <div className="rounded-3xl border border-[rgb(var(--border)/0.10)] bg-[rgb(var(--background)/0.35)] p-6 backdrop-blur-md">
+                  <p className="text-xs uppercase tracking-wider text-muted">
+                    Theme
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted">
+                    Dark-only, tuned for contrast and glow. The background
+                    upgrades to WebGL after load and falls back to CSS if WebGL
+                    is not available.
+                  </p>
+                  <div className="mt-6 flex items-center gap-3">
+                    <span className="text-sm text-foreground/85">
+                      Mode:
+                    </span>
+                    <span className="rounded-full border border-[rgb(var(--border)/0.12)] bg-[rgb(var(--surface)/0.40)] px-3 py-1 text-xs text-muted">
+                      Dark
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer className="mt-16 pb-10 text-sm text-muted">
+              <p>
+                © {content.name}. Built with Next.js.
+              </p>
+            </footer>
+          </Section>
+        </main>
+      </div>
+    </>
+  );
+}
+
+```
+
+components\visual\FluidBackground.tsx
+```
+"use client";
+
+import * as React from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useDetectGPU } from "@react-three/drei";
+import { useReducedMotion } from "framer-motion";
+import * as THREE from "three";
+
+function parseRgbTriplet(input: string): [number, number, number] | null {
+  const cleaned = input.trim().replaceAll(",", " ");
+  const parts = cleaned.split(/\s+/).filter(Boolean);
+  if (parts.length < 3) return null;
+  const r = Number(parts[0]);
+  const g = Number(parts[1]);
+  const b = Number(parts[2]);
+  if ([r, g, b].some((n) => Number.isNaN(n))) return null;
+  return [r, g, b];
+}
+
+function readCssRgbVar(
+  varName: string,
+  fallback: [number, number, number],
+): [number, number, number] {
+  if (typeof window === "undefined") return fallback;
+  const raw = getComputedStyle(document.documentElement).getPropertyValue(varName);
+  return parseRgbTriplet(raw) ?? fallback;
+}
+
+function FluidPlane({
+  frozen,
+  palette,
+}: {
+  frozen: boolean;
+  palette: {
+    a: [number, number, number];
+    b: [number, number, number];
+    c: [number, number, number];
+  };
+}) {
+  const materialRef = React.useRef<THREE.ShaderMaterial | null>(null);
+  const pointer = React.useRef(new THREE.Vector2(0.5, 0.5));
+  const time = React.useRef(0);
+  const { size } = useThree();
+
+  const uniforms = React.useMemo(
+    () => ({
+      uTime: { value: 0 },
+      uResolution: { value: new THREE.Vector2(1, 1) },
+      uPointer: { value: new THREE.Vector2(0.5, 0.5) },
+      uColorA: { value: new THREE.Color(0x2184ff) },
+      uColorB: { value: new THREE.Color(0xff4a8d) },
+      uColorC: { value: new THREE.Color(0xffc43d) },
+    }),
+    [],
+  );
+
+  React.useEffect(() => {
+    const mat = materialRef.current;
+    if (!mat) return;
+    mat.uniforms.uColorA.value.setRGB(
+      palette.a[0] / 255,
+      palette.a[1] / 255,
+      palette.a[2] / 255,
+    );
+    mat.uniforms.uColorB.value.setRGB(
+      palette.b[0] / 255,
+      palette.b[1] / 255,
+      palette.b[2] / 255,
+    );
+    mat.uniforms.uColorC.value.setRGB(
+      palette.c[0] / 255,
+      palette.c[1] / 255,
+      palette.c[2] / 255,
+    );
+  }, [palette]);
+
+  React.useEffect(() => {
+    function handlePointerMove(e: PointerEvent) {
+      const x = e.clientX / Math.max(1, window.innerWidth);
+      const y = 1 - e.clientY / Math.max(1, window.innerHeight);
+      pointer.current.set(x, y);
+    }
+
+    window.addEventListener("pointermove", handlePointerMove, { passive: true });
+    return () => window.removeEventListener("pointermove", handlePointerMove);
+  }, []);
+
+  useFrame((_state, delta) => {
+    const mat = materialRef.current;
+    if (!mat) return;
+
+    mat.uniforms.uResolution.value.set(size.width, size.height);
+    mat.uniforms.uPointer.value.lerp(pointer.current, 0.12);
+
+    if (!frozen) {
+      time.current += delta;
+      mat.uniforms.uTime.value = time.current;
+    } else {
+      mat.uniforms.uTime.value = 0;
+    }
+  });
+
+  const vertexShader = React.useMemo(
+    () => `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = vec4(position, 1.0);
+    }
+  `,
+    [],
+  );
+
+  const fragmentShader = React.useMemo(
+    () => `
+    precision highp float;
+
+    varying vec2 vUv;
+    uniform float uTime;
+    uniform vec2 uResolution;
+    uniform vec2 uPointer;
+    uniform vec3 uColorA;
+    uniform vec3 uColorB;
+    uniform vec3 uColorC;
+
+    float hash(vec2 p) {
+      p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
+      return fract(sin(p.x + p.y) * 43758.5453123);
+    }
+
+    float noise(vec2 p) {
+      vec2 i = floor(p);
+      vec2 f = fract(p);
+      float a = hash(i);
+      float b = hash(i + vec2(1.0, 0.0));
+      float c = hash(i + vec2(0.0, 1.0));
+      float d = hash(i + vec2(1.0, 1.0));
+      vec2 u = f * f * (3.0 - 2.0 * f);
+      return mix(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+    }
+
+    float fbm(vec2 p) {
+      float v = 0.0;
+      float a = 0.5;
+      for (int i = 0; i < 5; i++) {
+        v += a * noise(p);
+        p *= 2.02;
+        a *= 0.5;
+      }
+      return v;
+    }
+
+    void main() {
+      vec2 st = vUv * 2.0 - 1.0;
+      float aspect = uResolution.x / max(1.0, uResolution.y);
+      st.x *= aspect;
+
+      float t = uTime * 0.10;
+
+      // Domain warp
+      vec2 q = vec2(fbm(st + vec2(0.0, t)), fbm(st + vec2(4.0, -t)));
+      vec2 r = vec2(fbm(st + 1.6 * q + vec2(1.7, 9.2) + t), fbm(st + 1.2 * q + vec2(8.3, 2.8) - t));
+      float f = fbm(st + r * 1.35);
+
+      float m1 = smoothstep(0.15, 0.85, f);
+      float m2 = smoothstep(0.10, 0.80, fbm(st * 1.3 - q + t));
+
+      vec3 col = mix(uColorA, uColorB, m1);
+      col = mix(col, uColorC, m2 * 0.75);
+
+      // Pointer bloom
+      vec2 p = uPointer * 2.0 - 1.0;
+      p.x *= aspect;
+      float d = length(st - p);
+      col += 0.22 * exp(-d * 3.2);
+
+      // Vignette
+      float v = smoothstep(1.25, 0.25, length(st));
+      col *= v;
+
+      // Mild filmic curve
+      col = pow(col, vec3(0.96));
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `,
+    [],
+  );
+
+  return (
+    <mesh>
+      <planeGeometry args={[2, 2]} />
+      <shaderMaterial
+        ref={materialRef}
+        uniforms={uniforms}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
+        transparent
+      />
+    </mesh>
+  );
+}
+
+export function FluidBackground() {
+  const reducedMotion = useReducedMotion();
+  const gpu = useDetectGPU();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const isLowEnd =
+    gpu.type === "WEBGL_UNSUPPORTED" ||
+    gpu.type === "BLOCKLISTED" ||
+    gpu.type === "FALLBACK" ||
+    gpu.tier <= 1;
+
+  const shouldRenderWebGL = mounted && !isLowEnd && !reducedMotion;
+
+  const [palette, setPalette] = React.useState(() => ({
+    a: [33, 132, 255] as [number, number, number],
+    b: [255, 74, 141] as [number, number, number],
+    c: [255, 196, 61] as [number, number, number],
+  }));
+
+  React.useEffect(() => {
+    const a = readCssRgbVar("--shader-a", palette.a);
+    const b = readCssRgbVar("--shader-b", palette.b);
+    const c = readCssRgbVar("--shader-c", palette.c);
+    setPalette({ a, b, c });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
+      {/* CSS fallback / base layer */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 opacity-90"
+        style={{
+          backgroundImage: [
+            "radial-gradient(70% 60% at 15% 10%, rgb(var(--shader-b) / 0.40) 0%, transparent 60%)",
+            "radial-gradient(65% 55% at 85% 18%, rgb(var(--shader-a) / 0.34) 0%, transparent 58%)",
+            "radial-gradient(75% 70% at 55% 92%, rgb(var(--shader-c) / 0.28) 0%, transparent 62%)",
+          ].join(", "),
+        }}
+      />
+
+      {shouldRenderWebGL && (
+        <Canvas
+          dpr={[1, 1.5]}
+          frameloop="always"
+          gl={{
+            antialias: false,
+            alpha: true,
+            powerPreference: "high-performance",
+            preserveDrawingBuffer: false,
+          }}
+          style={{
+            position: "absolute",
+            inset: 0,
+          }}
+        >
+          <FluidPlane frozen={false} palette={palette} />
+        </Canvas>
+      )}
+    </div>
+  );
+}
+
+```
+
+content\site.ts
+```
+export type IconName =
+  | "Mail"
+  | "Github"
+  | "Linkedin"
+  | "X"
+  | "FileText"
+  | "ExternalLink"
+  | "ArrowUpRight"
+  | "Code2"
+  | "Cpu"
+  | "Database"
+  | "Palette"
+  | "Sparkles"
+  | "Wrench"
+  | "Award"
+  | "Briefcase"
+  | "GraduationCap";
+
+export type ContactLink = {
+  label: string;
+  href: string;
+  icon: IconName;
+};
+
+export type EducationItem = {
+  institution: string;
+  title: string;
+  start: string;
+  end: string;
+  description?: string;
+};
+
+export type WorkExperienceItem = {
+  company: string;
+  title: string;
+  start: string;
+  end: string;
+  summary: string;
+  highlights?: string[];
+  links?: Array<{ label: string; href: string }>;
+};
+
+export type ToolItem = {
+  name: string;
+  icon: IconName;
+};
+
+export type CertificationItem = {
+  title: string;
+  issuer: string;
+  date: string;
+  badgeImagePath: string;
+};
+
+export type ProjectItem = {
+  slug: string;
+  title: string;
+  description: string;
+  thumbnailPath: string;
+  demoUrl?: string;
+  repoUrl?: string;
+  tags?: string[];
+};
+
+export type SiteContent = {
+  name: string;
+  roleTitle: string;
+  location?: string;
+  contacts: ContactLink[];
+  about: {
+    paragraph: string;
+    bullets?: string[];
+  };
+  education: EducationItem[];
+  workExperience: WorkExperienceItem[];
+  tools: ToolItem[];
+  certifications: CertificationItem[];
+  projects: ProjectItem[];
+};
+
+export const site: SiteContent = {
+  name: "Elvern Neylmav Tanny",
+  roleTitle: "Data Scientist / AI Engineer",
+  location: "Jakarta, Indonesia",
+  contacts: [
+    { label: "Email", href: "mailto:elvernneylmav@gmail.com", icon: "Mail" },
+    { label: "GitHub", href: "https://github.com/verneylmavt", icon: "Github" },
+    {
+      label: "LinkedIn",
+      href: "https://www.linkedin.com/in/elvern-neylmav-t/",
+      icon: "Linkedin",
+    },
+    { label: "X", href: "https://x.com/verneylmavt", icon: "X" },
+    // { label: "Resume", href: "https://example.com/resume.pdf", icon: "FileText" },
+  ],
+  about: {
+    paragraph:
+      "I build crisp, high-signal interfaces with a bias for systems thinking, clean typography, and delightful motion. I enjoy turning complex problems into calm, fast products.",
+    bullets: [
+      "Design + engineering hybrid (UI, interaction, implementation)",
+      "Strong in prototyping, component systems, and design tokens",
+      "Comfortable shipping end-to-end: idea → build → deploy",
+    ],
+  },
+  education: [
+    {
+      institution: "University Name",
+      title: "B.S. in Something",
+      start: "2021",
+      end: "2025",
+      description:
+        "Focus on human-centered design, systems, and building products.",
+    },
+  ],
+  workExperience: [
+    {
+      company: "Company Name",
+      title: "Role Title",
+      start: "2025",
+      end: "Present",
+      summary:
+        "Shipped new product surfaces and improved core UX flows across web and mobile.",
+      highlights: [
+        "Built a token-driven UI system to align design and engineering",
+        "Reduced time-to-ship by streamlining handoff and component reuse",
+        "Improved performance and accessibility across key journeys",
+      ],
+      links: [{ label: "Company", href: "https://example.com" }],
+    },
+  ],
+  tools: [
+    { name: "TypeScript", icon: "Code2" },
+    { name: "React / Next.js", icon: "Sparkles" },
+    { name: "Three.js (R3F)", icon: "Cpu" },
+    { name: "Figma", icon: "Palette" },
+    { name: "Postgres", icon: "Database" },
+    { name: "Tailwind CSS", icon: "Wrench" },
+  ],
+  certifications: [
+    {
+      title: "Certification Title",
+      issuer: "Issuer",
+      date: "2026",
+      badgeImagePath: "/badges/badge-placeholder.svg",
+    },
+    {
+      title: "Certification Title",
+      issuer: "Issuer",
+      date: "2025",
+      badgeImagePath: "/badges/badge-placeholder.svg",
+    },
+  ],
+  projects: [
+    {
+      slug: "aurora",
+      title: "Aurora Portfolio",
+      description:
+        "A sleek, motion-led site with fluid gradients, scroll-linked reveals, and a clean content system.",
+      thumbnailPath: "/projects/project-aurora.svg",
+      demoUrl: "https://example.com",
+      repoUrl: "https://github.com/your-handle/aurora",
+      tags: ["Next.js", "Framer Motion", "R3F"],
+    },
+    {
+      slug: "atlas",
+      title: "Atlas Dashboard",
+      description:
+        "A high-density dashboard UI with a calm layout hierarchy and tokenized theming.",
+      thumbnailPath: "/projects/project-atlas.svg",
+      demoUrl: "https://example.com",
+      repoUrl: "https://github.com/your-handle/atlas",
+      tags: ["Design Systems", "TypeScript", "Charts"],
+    },
+  ],
+};
+
+export default site;
+
+```
+
+lib\cn.ts
+```
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+
+```
+
