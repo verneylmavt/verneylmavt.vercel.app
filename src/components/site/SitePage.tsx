@@ -104,6 +104,7 @@ export function SitePage({ content }: { content: SiteContent }) {
   const reducedMotion = useReducedMotion();
   const sections = React.useMemo<NavSection[]>(
     () => [
+      { id: "top", label: "Home" },
       { id: "about", label: "About" },
       { id: "education", label: "Education" },
       { id: "experience", label: "Work" },
