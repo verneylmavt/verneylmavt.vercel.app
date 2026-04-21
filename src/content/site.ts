@@ -39,6 +39,7 @@ export type IconName =
   | "Smile"
   | "Link"
   | "Star"
+  | "ChartNetwork"
   | "Zap";
 
 export type ContactLink = {
@@ -208,6 +209,7 @@ export const site: SiteContent = {
     { name: "PyTorch", icon: "Flame" },
     { name: "Transformers", icon: "Smile" },
     { name: "LangChain", icon: "Link" },
+    { name: "n8n", icon: "ChartNetwork" },
     { name: "OpenAI SDK", icon: "Bot" },
     { name: "Claude Code", icon: "Bot" },
     { name: "Apache Spark", icon: "Star" },

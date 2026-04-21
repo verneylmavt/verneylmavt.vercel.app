@@ -39,6 +39,7 @@ import {
   Smile,
   Link,
   Star,
+  ChartNetwork,
   Zap,
 } from "lucide-react";
 
@@ -79,7 +80,6 @@ const ICONS: Record<IconName, LucideIcon> = {
   Package,
   Container,
   Network,
-  Zap,
   Briefcase,
   LineSquiggle,
   Box,
@@ -87,6 +87,8 @@ const ICONS: Record<IconName, LucideIcon> = {
   Link,
   Star,
   GraduationCap,
+  ChartNetwork,
+  Zap,
 };
 
 export function Icon({
