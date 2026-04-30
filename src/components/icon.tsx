@@ -40,6 +40,7 @@ import {
   Link,
   Star,
   ChartNetwork,
+  Aperture,
   Zap,
 } from "lucide-react";
 
@@ -88,6 +89,7 @@ const ICONS: Record<IconName, LucideIcon> = {
   Star,
   GraduationCap,
   ChartNetwork,
+  Aperture,
   Zap,
 };
 

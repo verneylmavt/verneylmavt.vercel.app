@@ -342,6 +342,49 @@ export function SitePage({ content }: { content: SiteContent }) {
                   ))}
                 </motion.div>
 
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                  className="mt-8 flex flex-col items-center justify-center"
+                >
+                  <a
+                    href="https://verneytography.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={cn(
+                      "group inline-flex w-full max-w-sm items-center justify-between gap-4 rounded-2xl border border-[rgb(var(--border)/0.14)] px-4 py-3 text-left",
+                      "bg-[rgb(var(--background)/0.34)] shadow-[0_16px_50px_rgb(0_0_0/0.16)] backdrop-blur-md transition",
+                      "hover:-translate-y-0.5 hover:border-[rgb(var(--border)/0.24)] hover:bg-[rgb(var(--background)/0.48)]",
+                      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
+                    )}
+                    aria-label="Open Photography Portfolio"
+                  >
+                    <span className="flex min-w-0 items-center gap-3">
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[rgb(var(--foreground)/0.07)] text-foreground/85 transition group-hover:bg-[rgb(var(--foreground)/0.10)]">
+                        <Icon name="Aperture" className="h-4 w-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block text-sm font-medium text-foreground/90">
+                          Photography Portfolio
+                        </span>
+                        <span className="mt-0.5 block text-xs font-normal leading-relaxed text-muted">
+                          See the other side of me through my lens
+                        </span>
+                      </span>
+                    </span>
+                    <Icon
+                      name="ArrowUpRight"
+                      className={cn(
+                        "h-4 w-4 shrink-0 text-foreground/55 transition",
+                        "group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground/80",
+                      )}
+                    />
+                  </a>
+                </motion.div>
+
                 <motion.a
                   variants={{
                     hidden: { opacity: 0 },
@@ -349,7 +392,7 @@ export function SitePage({ content }: { content: SiteContent }) {
                   }}
                   transition={{ duration: 0.9, ease: "easeOut", delay: 0.35 }}
                   href="#about"
-                  className="group mt-16 inline-flex items-center justify-center gap-3 text-sm text-muted transition hover:text-foreground"
+                  className="group mt-12 inline-flex items-center justify-center gap-3 text-sm text-muted transition hover:text-foreground"
                   aria-label="Scroll to About Me"
                 >
                   <span className="underline underline-offset-4 decoration-[rgb(var(--foreground)/0.25)] group-hover:decoration-[rgb(var(--foreground)/0.45)]">

@@ -40,6 +40,7 @@ export type IconName =
   | "Link"
   | "Star"
   | "ChartNetwork"
+  | "Aperture"
   | "Zap";
 
 export type ContactLink = {
