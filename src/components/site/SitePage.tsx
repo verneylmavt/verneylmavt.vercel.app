@@ -106,12 +106,12 @@ export function SitePage({ content }: { content: SiteContent }) {
     () => [
       { id: "top", label: "Home" },
       { id: "about", label: "About" },
-      { id: "education", label: "Education" },
-      { id: "experience", label: "Work" },
+      { id: "education", label: "Educations" },
+      { id: "experience", label: "Works" },
       { id: "tools", label: "Tools" },
       { id: "certifications", label: "Certifications" },
       { id: "projects", label: "Projects" },
-      { id: "contact", label: "Contact" },
+      { id: "contact", label: "Contacts" },
     ],
     [],
   );
@@ -443,7 +443,7 @@ export function SitePage({ content }: { content: SiteContent }) {
           </div>
 
           {/* EDUCATION */}
-          <Section id="education" title="Education">
+          <Section id="education" title="Educations">
             <ol className="relative ml-2 border-l border-[rgb(var(--border)/0.14)]">
               {content.education.map((edu) => (
                 <li key={`${edu.institution}-${edu.start}`} className="pb-10 pl-7">
@@ -474,7 +474,7 @@ export function SitePage({ content }: { content: SiteContent }) {
           </div>
 
           {/* EXPERIENCE */}
-          <Section id="experience" title="Work Experience">
+          <Section id="experience" title="Work Experiences">
             <ol className="relative ml-2 border-l border-[rgb(var(--border)/0.14)]">
               {content.workExperience.map((work) => (
                 <li key={`${work.company}-${work.start}`} className="pb-10 pl-7">
