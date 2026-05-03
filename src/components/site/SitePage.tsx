@@ -368,7 +368,7 @@ export function SitePage({ content }: { content: SiteContent }) {
                       </span>
                       <span className="min-w-0">
                         <span className="block text-sm font-medium text-foreground/90">
-                          Photography Portfolio
+                          Photography Portfolio Website
                         </span>
                         <span className="mt-0.5 block text-xs font-normal leading-relaxed text-muted">
                           See the other side of me through my lens
@@ -792,7 +792,7 @@ export function SitePage({ content }: { content: SiteContent }) {
                       "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
                     )}
                   >
-                    Load more
+                    ...
                   </button>
                 </div>
               ) : null}
