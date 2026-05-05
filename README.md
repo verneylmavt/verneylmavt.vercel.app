@@ -1,8 +1,12 @@
 # verneylmavt.vercel.app (v1)
 
-1st iteration of verneylmavt.vercel.app.
+1st iteration of verneylmavt.vercel.app. It is a static portfolio site with a sidebar profile and a single-page, app-like navigation across sections (About / Resume / Projects / Contact). It includes a theme toggle (persisted in `localStorage`), filterable projects, and a project-details modal with optional repo/demo links.
 
-Built with: HTML + CSS + JavaScript.
+## Tech Stack
+
+- HTML
+- CSS
+- JavaScript
 
 ## Galleries
 
