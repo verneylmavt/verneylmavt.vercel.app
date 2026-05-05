@@ -41,7 +41,7 @@ git checkout v2
 ### Install
 
 ```bash
-npm ci
+npm install
 ```
 
 ### Local Run
