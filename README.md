@@ -14,8 +14,17 @@ Built with: HTML + CSS + JavaScript.
 
 ### Requirements
 
+- Git
 - Browser
 - Optional: Node.js / Python
+
+### Clone
+
+```bash
+git clone https://github.com/verneylmavt/verneylmavt.vercel.app.git
+git cd verneylmavt.vercel.app
+git checkout v1
+```
 
 ### Local Run
 
@@ -36,11 +45,11 @@ Open: `http://localhost:8000`.
 - Interactions: `static/js/script.js`
 - Images + Icons: `assets/**`
 
-## Project structure
+## Project Structure
 
 ```text
 assets/        # Images/icons used by the site
-public/        # README screenshots
+public/        # Screenshots
 static/
   css/         # Stylesheets
   js/          # Browser scripts
