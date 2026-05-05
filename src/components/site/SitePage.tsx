@@ -864,6 +864,7 @@ export function SitePage({ content }: { content: SiteContent }) {
             <footer className="mt-16 pb-10 text-sm text-muted">
               <p>
                 ©verneylmavt. Inspired by brain and outer space.
+                https://github.com/verneylmavt/verneylmavt.vercel.app/tree/v2
               </p>
             </footer>
           </Section>
