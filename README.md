@@ -1,6 +1,10 @@
 # verneylmavt.vercel.app (v1)
 
-1st iteration of verneylmavt.vercel.app. It is a static portfolio site with a sidebar profile and a single-page, app-like navigation across sections (About / Resume / Projects / Contact). It includes a theme toggle (persisted in `localStorage`), filterable projects, and a project-details modal with optional repo/demo links.
+1st iteration of verneylmavt.vercel.app. 
+
+This project is the first iteration of my personal website, designed as a lightweight, frontend-only portfolio to showcase my background, projects, and technical skill set. Built entirely with vanilla HTML, CSS, and JavaScript, the site follows a single-page application structure, using data-driven components and DOM manipulation to handle navigation, filtering, and modal interactions without relying on external frameworks. It serves as a foundation for presenting both academic and personal work in a clean, structured, and interactive format.
+
+From an engineering perspective, this version emphasizes simplicity, maintainability, and performance. It implements a custom theming system with persistent light/dark mode support, a modular layout composed of reusable UI sections, and a flexible project gallery with category-based filtering and dynamic content rendering. While intentionally minimal in dependencies, the architecture reflects core frontend principles such as separation of concerns, scalable styling via CSS variables, and state-driven UI behavior—laying the groundwork for future iterations with more advanced features and backend integration.
 
 ## Tech Stack
 
