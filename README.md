@@ -1,21 +1,21 @@
 # verneylmavt.vercel.app (v2)
 
-Current iteration of my personal website.
+2nd iteration of verneylmavt.vercel.app.
 
-Built with **Next.js (App Router)**, **Tailwind CSS v4**, and **Framer Motion**, with an optional **WebGL fluid background** (Three.js / React Three Fiber + low-end GPU detection + respects `prefers-reduced-motion`).
+Built with: Next.js + Tailwind CSS + Framer Motion + React Three Fiber + Three.js + WebGL.
 
-## Screenshots
+## Galleries
 
 ![Hero](public/demo-hero.png)
 
 ![Projects](public/demo-project.png)
 
-## Getting started
+## Run
 
 ### Requirements
 
-- Node.js **>= 20.9.0** (required by `next`)
-- npm (this repo includes `package-lock.json`)
+- Node.js >= 20.9.0
+- npm
 
 ### Install
 
@@ -23,36 +23,22 @@ Built with **Next.js (App Router)**, **Tailwind CSS v4**, and **Framer Motion**,
 npm ci
 ```
 
-### Run locally
+### Local Run
 
 ```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-### Build / start
-
-```bash
-npm run build
-npm run start
-```
-
-### Lint
-
-```bash
-npm run lint
-```
+Open: `http://localhost:3000`.
 
 ## Customize
 
-- Content (data-driven): `src/content/site.ts`
-- Metadata + fonts: `src/app/layout.tsx`
-- Design tokens + palette: `src/app/globals.css`
-- Sections, animations, project filtering: `src/components/site/SitePage.tsx`
-- Icons mapping: `src/components/icon.tsx`
-- WebGL background: `src/components/visual/FluidBackground.tsx`
-  - Disable by removing `<FluidBackground />` from `src/components/site/SitePage.tsx`
+- Content: `src/content/site.ts`
+- Metadata + Fonts: `src/app/layout.tsx`
+- Design + Palette: `src/app/globals.css`
+- Sections + Animations + Filters: `src/components/site/SitePage.tsx`
+- Icons: `src/components/icon.tsx`
+- WebGL: `src/components/visual/FluidBackground.tsx`
 
 ## Project structure
 
@@ -66,9 +52,3 @@ public/
   projects/    # Project thumbnails
   badges/      # Certification badge images
 ```
-
-## Notes
-
-- No runtime env vars are required for the default build.
-- `VERCEL.md` contains the default Next.js (create-next-app) notes.
-- No `LICENSE` file is included in this branch.
