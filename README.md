@@ -129,4 +129,4 @@ PRs and issues are welcome - especially improvements that keep the template easy
 
 This project does not currently include a `LICENSE` file. If you plan to publish this as a public template, add a license (MIT is a common choice). -->
 
-![verneylmavt.vercel.app (Default Mode)](https://raw.githubusercontent.com/verneylmavt/verneylmavt.vercel.app/refs/heads/main/public/demo.png)
+![verneylmavt.vercel.app (Default Mode)](https://raw.githubusercontent.com/verneylmavt/verneylmavt.vercel.app/refs/heads/v2/public/demo.png)
