@@ -6,16 +6,26 @@ Built with: Next.js + Tailwind CSS + Framer Motion + React Three Fiber + Three.j
 
 ## Galleries
 
-![Hero](public/demo-hero.png)
+![Hero](public/demo_hero.png)
 
-![Projects](public/demo-project.png)
+![Projects](public/demo_project.png)
 
 ## Run
 
 ### Requirements
 
+- Git
+- Browser
 - Node.js >= 20.9.0
 - npm
+
+### Clone
+
+```bash
+git clone https://github.com/verneylmavt/verneylmavt.vercel.app.git
+git cd verneylmavt.vercel.app
+git checkout v2
+```
 
 ### Install
 
@@ -40,7 +50,7 @@ Open: `http://localhost:3000`.
 - Icons: `src/components/icon.tsx`
 - WebGL: `src/components/visual/FluidBackground.tsx`
 
-## Project structure
+## Project Structure
 
 ```text
 src/
