@@ -1,8 +1,15 @@
 # verneylmavt.vercel.app (v2)
 
-2nd iteration of verneylmavt.vercel.app.
+2nd iteration of verneylmavt.vercel.app. It is a modern single-page portfolio with a dark-first visual system, animated section reveals, and a data-driven content model (most updates happen in `src/content/site.ts`). It includes search + tag filtering for projects, plus an optional GPU-aware WebGL fluid background that respects `prefers-reduced-motion`.
 
-Built with: Next.js + Tailwind CSS + Framer Motion + React Three Fiber + Three.js + WebGL.
+## Tech Stack
+
+- Next.js
+- Tailwind CSS
+- Framer Motion
+- React Three Fiber
+- Three.js
+- WebGL
 
 ## Galleries
 
