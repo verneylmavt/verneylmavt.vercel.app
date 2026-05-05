@@ -111,7 +111,7 @@ export type SiteContent = {
 };
 
 export const site: SiteContent = {
-  name: "Elvern Neylmav Tanny",
+  name: "Elvern Neylmav Tannyt",
   handle: "verneylmavt",
   roleTitle: "Data Scientist / AI Engineer",
   location: "Jakarta, Indonesia",
