@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>verneylmavt</title>
+
+  <!--
+    - favicon
+  -->
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/profiles/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/profiles/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/profiles/favicon-16x16.png">
+  <link rel="manifest" href="./assets/profiles/site.webmanifest">
+
+  <!--
+    - custom css link
+  -->
+  <script>
+    (function () {
+      try {
+        var storageKey = 'preferred-theme';
+        var storedTheme = localStorage.getItem(storageKey);
+        if (storedTheme === 'light' || storedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', storedTheme);
+          return;
+        }
+        if (window.matchMedia) {
+          var prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (prefersLight) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            return;
+          }
+          if (prefersDark) {
+            document.documentElement.setAttribute('data-theme', 'dark');
+            return;
+          }
+        }
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (error) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="./static/css/style.css">
+
+  <!--
+    - google font link
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons@latest/font/simple-icons.min.css"> -->
+
+</head>
+
+<body>
+
+  <!--
+    - #MAIN
+  -->
+
+  <main>
+
+    <!--
+      - #SIDEBAR
+    -->
+
+    <aside class="sidebar" data-sidebar>
+
+      <div class="sidebar-info">
+
+        <!-- <figure class="avatar-box"> -->
+        <figure class="avatar-box">
+          <img src="./assets/profiles/my-avatar.png" alt="Elvern Neylmav T">
+        </figure>
+
+        <div class="info-content">
+          <h1 class="name" title="Elvern Neylmav T" data-typer="Elvern Neylmav T"></h1>
+
+          <p class="title" data-typer="Computer Scientist"></p>
+        </div>
+
+        <button class="info_more-btn" data-sidebar-btn>
+          <span>Contacts</span>
+
+          <ion-icon name="chevron-down"></ion-icon>
+        </button>
+
+      </div>
+
+      <div class="sidebar-info_more">
+
+        <div class="separator"></div>
+
+        <ul class="contacts-list">
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="mail-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Email</p>
+
+              <a href="mailto:elvernneylmav@gmail.com" class="contact-link">elvernneylmav@gmail.com</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="phone-portrait-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Phone</p>
+
+              <a href="tel:+6588894252" class="contact-link">+65 88894252</a>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Birthday</p>
+
+              <time datetime="2003-04-18">April 18, 2003</time>
+            </div>
+
+          </li>
+
+          <li class="contact-item">
+
+            <div class="icon-box">
+              <ion-icon name="location-outline"></ion-icon>
+            </div>
+
+            <div class="contact-info">
+              <p class="contact-title">Location</p>
+
+              <address>Singapore</address>
+            </div>
+
+          </li>
+
+        </ul>
+
+        <div class="separator"></div>
+
+        <ul class="social-list">
+
+          <li class="social-item">
+            <a href="https://x.com/verneylmavt" class="social-link">
+              <ion-icon name="logo-twitter"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://www.linkedin.com/in/elvern-neylmav-t/" class="social-link">
+              <ion-icon name="logo-linkedin"></ion-icon>
+            </a>
+          </li>
+
+          <li class="social-item">
+            <a href="https://github.com/verneylmavt" class="social-link">
+              <ion-icon name="logo-github"></ion-icon>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+    </aside>
+
+
+
+
+
+    <!--
+      - #main-content
+    -->
+
+    <div class="main-content">
+
+      <!--
+        - #NAVBAR
+      -->
+
+      <nav class="navbar">
+
+        <ul class="navbar-list">
+
+          <li class="navbar-item">
+            <button class="navbar-link  active" data-nav-link>About</button>
+          </li>
+
+          <li class="navbar-item">
+            <button class="navbar-link" data-nav-link>Project</button>
+          </li>
+
+          <li class="navbar-item navbar-item-toggle">
+            <button class="theme-toggle" type="button" data-theme-toggle role="switch" aria-label="Activate light mode" aria-checked="false" title="Toggle theme">
+              <span class="theme-toggle-track">
+                <ion-icon class="theme-icon theme-icon-sun" name="sunny-outline" aria-hidden="true"></ion-icon>
+                <ion-icon class="theme-icon theme-icon-moon" name="moon-outline" aria-hidden="true"></ion-icon>
+                <span class="theme-toggle-thumb" aria-hidden="true"></span>
+              </span>
+            </button>
+          </li>
+
+        </ul>
+
+      </nav>
+
+
+      <!--
+        - #ABOUT
+      -->
+
+      <article class="about  active" data-page="about">
+
+        <header>
+          <h2 class="h2 article-title">About Me</h2>
+        </header>
+
+        <section class="about-text">
+          <p>
+            I'm a Computer Science and Design (CSD) graduate from Singapore University of Technology and Design (SUTD), 
+            specializing in data science. I enjoy building scalable cloud-native systems and applying data-driven insights to solve problems.
+            <br><br>
+            If you'd like to know more about me, feel free to reach out via email or connect with me on LinkedIn!
+          </p>
+        </section>
+        
+        <!-- <svg height="10" width="100%">
+          <line x1="0" y1="5" x2="100%" y2="5" style="stroke:#FAFAFA;stroke-width:2" />
+        </svg>
+
+        <br><br> -->
+
+        <div class="separator"></div>
+
+        <!--
+          - service
+        -->
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="book-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Education</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Sciences</h4>
+              <h4 class="h4 timeline-item-desc">St. Louis 1 Catholic High School</h4>
+
+              <span>2018 - 2021</span>
+
+            </li>
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Bachelor of Engineering in Computer Science and Design</h4>
+              <h4 class="h4 timeline-item-desc">Singapore University of Technology and Design (SUTD)</h4>
+
+              <span>2021 - 2025</span>
+              
+              <!-- <p class="timeline-text" style="text-align: justify;">
+                Relevant Coursework:
+              </p>
+
+              <ul class="timeline-text-list" style="text-align: justify;">
+                <li>
+                  Mathematics
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-013-modelling-and-analysis/" target="_blank">
+                        Modelling and Analysis / Calculus (I & II)
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-018-modelling-space-and-systems" target="_blank">
+                        Modeling Space and Systems / Linear Algebra and Discrete Mathematics
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-022-modelling-uncertainty" target="_blank">
+                        Modelling Uncertainty / Probability and Statistics
+                      </a>
+                    </li>
+                    
+                  </ul>
+                </li>
+                <li>
+                  Physics
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-015-physical-world" target="_blank">
+                        Physical World / Classical Mechanics
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-017-technological-world" target="_blank">
+                        Technological World / Electromagnetism and Quantum Mechanics
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-023-designing-energy-systems-elective" target="_blank">
+                        Designing Energy Systems / Thermodynamics and Statistical Mechanics
+                      </a>
+                    </li>
+                    
+                  </ul>
+                </li>
+                <li>
+                  Design
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/03-007-design-thinking-and-innovation" target="_blank">
+                        Design Thinking and Innovation
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  Computer and Programming
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-014-computational-thinking-for-design/" target="_blank">
+                        Computational Thinking for Design
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-002-computation-structures" target="_blank">
+                        Computation Structures
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-004-algorithms/" target="_blank">
+                        Algorithms
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-005-computer-system-engineering" target="_blank">
+                        Computer System Engineering / Operating Systems and Computer Networks
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-049-parallel-computing-on-multicore-architectures" target="_blank">
+                        Parallel Computing on Multicore Architectures
+                      </a>
+                    </li>
+                  </ul>
+                  
+                </li>
+                <li>
+                  Software Engineering
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-001-information-systems-programming" target="_blank">
+                        Information Systems & Programming
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-003-elements-of-software-construction" target="_blank">
+                        Elements of Software Construction
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-043-database-systems" target="_blank">
+                        Database Systems
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-046-cloud-computing-and-internet-of-things" target="_blank">
+                        Cloud Computing and Internet of Things
+                      </a>
+                    </li>
+                  </ul>
+                  
+                <li>
+                  Machine Learning
+                  <ul>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/10-020-data-driven-world-elective/" target="_blank">
+                        Data Driven World
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-007-machine-learning/" target="_blank">
+                        Machine Learning
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-021-artificial-intelligence/" target="_blank">
+                        Artificial Intelligence
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-039-theory-and-practice-of-deep-learning/" target="_blank">
+                        Theory and Practice of Deep Learning
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-040-natural-language-processing/" target="_blank">
+                        Natural Language Processing
+                      </a>
+                    </li>
+                    <li>
+                      <a href="https://www.sutd.edu.sg/course/50-055-special-topic-machine-learning-operations/" target="_blank">
+                        Machine Learning Operations
+                      </a>
+                    </li>
+                  </ul>
+                  
+                </li>
+              </ul> -->
+              
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <section class="timeline">
+
+          <div class="title-wrapper">
+            <div class="icon-box">
+              <ion-icon name="briefcase-outline"></ion-icon>
+            </div>
+
+            <h3 class="h3">Work Experience</h3>
+          </div>
+
+          <ol class="timeline-list">
+
+            <li class="timeline-item">
+
+              <h4 class="h4 timeline-item-title">Technology Consulting Intern</h4>
+              <h4 class="h4 timeline-item-desc">Ernst & Young (EY) Singapore</h4>
+
+              <span>Aug 2023 — Dec 2023</span>
+
+              <p class="timeline-text" style="text-align: justify;">
+                <!-- I was involved in the ERP harmonization project during the implementation phase, focusing on system configuration and data migration within SAP S/4HANA. -->
+                
+                <!-- <br>
+                - Utilized ABAP scripting to extract and analyse records from 
+                SAP FI (Financial Accounting), CO (Controlling), and MM (Materials Management) modules, 
+                automating the identification of current process bottlenecks and reducing manual effort by 25%.
+                <br>
+                - Formulated strategies to standardize 20+ business processes across the merged entities.
+                <br>
+                - Mapped SAP workflows for financial and procurement operations using workflow builder and improved the system efficiency. -->
+              </p>
+
+              <!-- <ul class="timeline-text-list" style="text-align: justify;">
+                <li>
+                  Assisted in configuring new SAP S/4HANA modules to align with global standard processes.
+                </li>
+                <li>
+                  Developed Python-based data profiling scripts using Pandas and NumPy to assess the quality, completeness, and consistency of legacy data, ensuring seamless data transition.
+                </li>
+                <li>
+                  Contributed to the automation of data transformation and loading from non-SAP legacy systems into SAP S/4HANA by leveraging Python libraries such as SQLAlchemy.
+                </li>
+              </ul> -->
+
+            </li>
+
+          </ol>
+
+        </section>
+
+        <div class="separator"></div>
+
+        <section class="skills-icon-section">
+
+
+          <h3 class="h3 skills-title">Tools</h3>
+          
+          <ul class="skills-icon-list">
+        
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/python.svg" alt="Python" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Python</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/flask.svg" alt="Flask" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Flask</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/django.svg" alt="Django" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Django</span>
+            </li>
+
+          </ul>
+
+          <ul class="skills-icon-list">
+        
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/numpy.svg" alt="NumPy" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">NumPy</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/pandas.svg" alt="Pandas" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Pandas</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/matternet.svg" alt="Matplotlib" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Matplotlib</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/scikitlearn.svg" alt="Scikit-Learn" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Scikit-Learn</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/xgboost.svg" alt="XGBoost" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">XGBoost</span>
+            </li>
+          </ul>
+
+        <ul class="skills-icon-list">
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/pytorch.svg" alt="PyTorch" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">PyTorch</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/tensorflow.svg" alt="TensorFlow" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">TensorFlow</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/huggingface.svg" alt="Transformers" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Transformers</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/langchain.svg" alt="LangChain" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">LangChain</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/apachespark.svg" alt="Spark" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Spark</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/apachehadoop.svg" alt="Hadoop" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Hadoop</span>
+            </li>
+          </ul>
+
+          <ul class="skills-icon-list">
+        
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/html5.svg" alt="HTML" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">HTML</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/css3.svg" alt="CSS" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">CSS</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/javascript.svg" alt="JavaScript" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">JavaScript</span>
+            </li>
+
+            <!-- <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/typescript.svg" alt="TypeScript" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">TypeScript</span>
+            </li> -->
+
+            <!-- <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/svelte.svg" alt="Svelte" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Svelte</span>
+            </li> -->
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/react.svg" alt="React" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">React</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/nodedotjs.svg" alt="Node.js" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Node.js</span>
+            </li>
+<!-- 
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/express.svg" alt="Node.js" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Express.js</span>
+            </li> -->
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/mysql.svg" alt="MySQL" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">MySQL</span>
+            </li>
+            
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/mongodb.svg" alt="MongoDB" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">MongoDB</span>
+            </li>
+
+          </ul>
+
+          <ul class="skills-icon-list">
+        
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/git.svg" alt="Git" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Git</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/gnubash.svg" alt="Bash" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Bash</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/docker.svg" alt="Docker" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Docker</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/kubernetes.svg" alt="Kubernetes" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Kubernetes</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/amazonwebservices.svg" alt="AWS" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">AWS</span>
+            </li>
+
+            <li class="skills-icon-item">
+              <div class="skill-icon-container">
+                <img src="./assets/skills/azure.svg" alt="Azure" class="skill-icon">
+              </div>
+              <span class="skill-icon-label">Azure</span>
+            </li>
+
+          </ul>
+        
+        </section>
+        
+      <div class="separator"></div>
+
+        <section class="skills-icon-section">
+
+          <h3 class="h3 skills-title">Certifications</h3>
+          
+          <ul class="skills-icon-list">
+
+            <li class="certs-icon-item">
+              <a href="https://www.credly.com/badges/3f3db845-9a3d-4c5f-82c4-0dfd1f41a149/public_url" target="_blank" class="cert-link">
+                <div class="cert-icon-container">
+                  <img src="./assets/certifications/aws-clf.png" alt="AWS Certified Cloud Practitioner" class="cert-icon">
+                </div>
+                <span class="cert-icon-label">AWS Certified CLF</span>
+              </a>
+            </li>
+            
+            <li class="certs-icon-item">
+              <a href="https://www.credly.com/badges/ae44fd6e-f626-4895-962f-1bc439bd8f85/public_url" target="_blank" class="cert-link">
+                <div class="cert-icon-container">
+                  <img src="./assets/certifications/aws-aif.png" alt="AWS Certified AI Practitioner" class="cert-icon">
+                </div>
+                <span class="cert-icon-label">AWS Certified AIF</span>
+              </a>
+            </li>
+
+            <li class="certs-icon-item">
+              <a href="https://www.credly.com/badges/e6a64bac-af94-4d97-a7e8-8dd962fc5076/public_url" target="_blank" class="cert-link">
+                <div class="cert-icon-container">
+                  <img src="./assets/certifications/aws-mla.png" alt="AWS Certified Machine Learning Engineer" class="cert-icon">
+                </div>
+                <span class="cert-icon-label">AWS Certified MLA</span>
+              </a>
+            </li>
+
+            <li class="certs-icon-item">
+              <a href="https://www.credly.com/badges/9d542062-136f-44bc-829e-5c0ceb2444d1/public_url" target="_blank" class="cert-link">
+                <div class="cert-icon-container">
+                  <img src="./assets/certifications/aws-mls.png" alt="AWS Certified Machine Learning" class="cert-icon">
+                </div>
+                <span class="cert-icon-label">AWS Certified MLS</span>
+              </a>
+            </li>
+
+          </ul>
+
+        </section>
+
+      </article>
+
+
+      <!--
+        - #PORTFOLIO
+      -->
+
+      <article class="project" data-page="project">
+
+        <header>
+          <h2 class="h2 article-title">Project</h2>
+        </header>
+
+        <section class="projects">
+
+          <ul class="filter-list">
+
+            <li class="filter-item">
+              <button class="active" data-filter-btn>All</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Web App</button>
+            </li>
+            
+            <li class="filter-item">
+              <button data-filter-btn>Machine Learning</button>
+            </li>
+
+            <li class="filter-item">
+              <button data-filter-btn>Others</button>
+            </li>
+
+          </ul>
+
+          <div class="filter-select-box">
+
+            <button class="filter-select" data-select>
+
+              <div class="select-value" data-selecct-value>Select Category</div>
+
+              <div class="select-icon">
+                <ion-icon name="chevron-down"></ion-icon>
+              </div>
+
+            </button>
+
+            <ul class="select-list">
+
+              <li class="select-item">
+                <button data-select-item>Web App</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Machine Learning</button>
+              </li>
+
+              <li class="select-item">
+                <button data-select-item>Others</button>
+              </li>
+
+            </ul>
+
+          </div>
+
+          <h2 class="project-category-tile">School Project</h2>
+
+          <ul class="project-list">
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.055.png" alt="blood-sugar-prediction" loading="lazy">
+                </figure>
+                <h3 class="project-title">SUTD Chatbot</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.055) Machine Learning Operations - 1D Project
+                  </span>
+
+                  Project "SUTD Chatbot" builds an SUTD-focused chatbot that first generates synthetic question–answer pairs on topics prospective students care about using Google Gemini, then fine-tunes a 1B-parameter Llama 3.2 model via LoRA-PEFT on those pairs. It scrapes official SUTD web pages and FAQs, cleans and splits the text into chunks, embeds them into a vector store, and implements retrieval-augmented generation pipelines—evaluating four configurations (base vs. fine-tuned, with vs. without RAG) on a curated question set. An automated LLM-as-judge evaluation is implemented at the end to score each configuration for accuracy, relevance, and groundedness.
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href=https://github.com/verneylmavt/sutd_5055mlop class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+            
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.039.png" alt="blood-sugar-prediction" loading="lazy">
+                </figure>
+                <h3 class="project-title">Blood Sugar Prediction</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.039) Theory and Practice of Deep Learning - 1D Project
+                  </span>
+
+                  Project "Blood Sugar Prediction" uses glucose monitor, heart rate, insulin and carbohydrate intake, total steps walked, and calories burnt—aggregated into five-minute intervals over a sliding six-hour window—to predict glucose levels one hour ahead (bg+1:00). Missing glucose and heart-rate readings are linearly interpolated (with row-mean fallback), while insulin, carbohydrate, steps, and calorie gaps are zero-filled and any residual NaNs forward-then backward-filled. For training, small Gaussian noise (1% of each feature’s standard deviation) augments the dataset, and only the most recent 24 time steps of each of the six sensor channels (i.e., two hours of data) are retained. Finally, all features and the target glucose value are standardized to zero mean and unit variance. A two-block Temporal Convolutional Network then processes each sample as a 24×6 sequence: each block applies dilated 1D convolutions with chomp layers and residual connections to extract temporal features, ending in a linear layer that outputs a single glucose prediction. The model is trained with MSE loss, Adam optimization, and early stopping, using an 80/10/10 split for training, validation, and testing. Predictions are evaluated with RMSE, MAE, MARD, MBE, MAPE and Pearson’s r.
+                </p>
+                <a href=https://g20-blood-sugar-spike-prediction.streamlit.app/ class="project-demo" style="display: none;">
+                </a>
+                <a href=https://github.com/verneylmavt/st-blood-sugar-spike-prediction class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+            
+            <li class="project-item active" data-filter-item data-category="web app">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/01.400-01.401.png" alt="cargo-management-system" loading="lazy">
+                </figure>
+                <h3 class="project-title">OOG Navigator - Cargo Management System</h3>
+                <p class="project-category">Web App</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                  (01.400/01.401) Capstone Final Year Project
+                  </span>
+
+                  Project "OOG Navigator" is an AI-powered WebApp designed to streamline and 
+                  automate the management of Out of Gauge (OOG) cargo by integrating advanced technical features and 
+                  establishing a centralized database, providing a seamless all-in-one solution for DB Schenker.
+                  
+                  <br>
+                  The system encompasses three core features—MSRA Generation, Equipment Recommendation, and Project Management—each addressing a critical aspect of OOG operations. The MSRA Generation feature automates the creation of Method Statements and Risk Assessments through two subsystems: a Document Analyzer that extracts and refines key information from vendor-submitted MSRA documents, and a Template Engine that populates standardized templates for faster, more accurate approvals. The Equipment Recommendation feature applies machine learning and historical data to suggest optimal equipment such as cranes, trailers, and prime movers, minimizing selection errors and enhancing operational reliability. The Project Management module serves as the central coordination hub, integrating these capabilities with tools like Approvals Manager, Email Reminders, Checklists, and a Progress Tracker to maintain accountability, ensure smooth task execution, and align all stakeholders throughout the cargo management process.
+                  <br>
+                  The application’s architecture and technology stack are designed for scalability, modularity, and security within the Azure cloud environment. It integrates three main subsystems—Document Analyzer, Template Engine, and Equipment Recommender—deployed as Azure Function Apps that interact with an Azure SQL Database for structured data and Azure File Storage for unstructured data. The backend, built with Node.js and Express.js, manages API routing, data retrieval, and business logic, while the frontend, developed using Flutter and Dart with JavaScript support, provides a responsive and cross-platform user interface. System integrity and secure communication between components are ensured through Azure Network Security Groups (NSGs). Collectively, this architecture enables OOG Navigator to deliver a robust, intelligent, and secure digital infrastructure for DB Schenker’s OOG cargo management.
+                </p>
+                <a href=https://capstoneshowcase.sutd.edu.sg/project/proj-23-schenker-out-of-gauge-cargo/ class="project-demo" style="display: none;">
+                </a>
+                <a class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="web app">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.046.png" alt="smart-parking-management-system" loading="lazy">
+                </figure>
+                <h3 class="project-title">FindMyCar - Parking Management System</h3>
+                <p class="project-category">Web App</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.046) Cloud Computing and IoT - 1D Project
+                  </span>
+
+                  Project "FindMyCar" is an IoT-based parking assistance app designed to help users locate their 
+                  parked cars by leveraging Raspberry Pi and a camera module. 
+                  The system captures images of license plates at designated parking spots, processes 
+                  the images locally with OCR (Optical Character Recognition) and 
+                  sends the extracted data via the MQTT protocol to a centralized MongoDB cloud database.
+                  A React-based frontend dashboard allows users to query and display parking information in real time,
+                  using WebSockets and MongoDB Atlas Streams for live data updates.
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/Collaboration95/FindMyCar_50.046" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.040.png" alt="sentiment-analysis" loading="lazy">
+                </figure>
+                <h3 class="project-title">Sentiment Analysis</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.040) Natural Language Processing - 1D Project<br>
+                  </span>
+
+                  Project "Sentiment Analysis" is a machine learning task focused on developing a sentiment analysis system for social media texts, which are often informal, noisy, and differ from structured texts in news articles. The project utilizes a neural network architecture capable of learning feature representations and capturing contextual relationships within sequential data.
+                  To address the linguistic variability of social media content, FastText embeddings were used to effectively manage out-of-vocabulary (OOV) words, enhancing model generalization beyond static word embeddings. The model architecture comprises a hybrid CNN-RNN design with attention mechanisms, integrating convolutional layers for feature extraction, recurrent layers for sequence modeling, and attention layers for context-aware weighting. This structure enables the system to better capture semantic and contextual nuances within textual data.
+                  Further optimization was achieved through hyperparameter tuning with Optuna, adjusting parameters such as kernel size and learning rate to maximize performance. The optimized model attained 95% accuracy on the IMDB dataset, demonstrating strong classification performance. Finally, the trained network was converted to the ONNX format and underwent optimization and quantization, significantly accelerating inference speed while maintaining predictive accuracy. 
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/T2LIPthedeveloper/50.040-NLP-Final-Project" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.007.png" alt="text-analysis" loading="lazy">
+                </figure>
+                <h3 class="project-title">Text Analysis</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.007) Machine Learning - 1D Project
+                  </span>
+
+                  Project "Text Analysis" is a machine learning task focused on developing a sentiment analysis system 
+                  for social media texts, which are often informal, noisy, and differ from structured texts in 
+                  news articles.
+                  The project utilizes the Hidden Markov Model (HMM), which is well-suited for handling sequential data and capturing dependencies between tokens in the text.
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/hmm-text_analysis-py" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="web app">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.003.png" alt="invoice-management-system" loading="lazy">
+                </figure>
+                <h3 class="project-title">Invoice Management System</h3>
+                <p class="project-category">Web App</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.003) Software Construction - 1D Project
+                  </span>
+
+                  Project "Invoice Management System" is a web app designed to streamline the invoice handling process 
+                  for Kim Eng Mini Supermarket.
+                  The project automates the manual process of managing invoices by 
+                  extracting data from scanned invoices for accurate digitization, 
+                  providing an interface to search, filter, and categorize records, 
+                  and supporting data export into commonly used formats for integration with accounting software and financial tools.
+                </p>
+                <a href="https://youtu.be/ZvkS2uVExVo" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/DeProfessorA/construct-software-wow" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="others">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.002.png" alt="4/5" loading="lazy">
+                </figure>
+                <h3 class="project-title">4/5 - Electronic Games</h3>
+                <p class="project-category">Field-Programmable Gate Array (FPGA)</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.002) Computation Structures - 1D Project
+                  </span>
+                  Project "4/5" is an electronic game that leverages FPGA (Field-Programmable Gate Array) technology to implement core functionalities using a hardware description language.
+                  A key focus of the project is the design and implementation of an Arithmetic Logic Unit (ALU) and a Finite State Machine (FSM) to define the game's distinct states and transitions.
+                </p>
+                <a href="https://youtu.be/HKUN6bI3qzg" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/50002-computation-structures/5Heads" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="others">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/50.001.png" alt="smart-tour-guide" loading="lazy">
+                </figure>
+                <h3 class="project-title">Digital Trails - Smart Tour Guide</h3>
+                <p class="project-category">Android App</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (50.001) Introduction to Information System & Program - 1D Project
+                  </span>
+                  
+                  Project "Digital Trails" is a smart tour guide app that enhances travel experiences by 
+                  providing real-time location updates and personalized recommendations based on weather and time. 
+                  Using Wi-Fi-enabled NFC tags across Singapore, users can access hyper-localized information by scanning 
+                  their smartphones, replacing static information boards. 
+                  This interactive approach offers insights in an engaging way, 
+                  as well as ensuring accurate and up-to-date recommendations throughout the journey.
+                </p>
+                <a href="https://youtu.be/REjeYuMzRts" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/nigelpoh/Digital-Trail-App" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/10.020.png" alt="food-security-prediction" loading="lazy">
+                </figure>
+                <h3 class="project-title">Food Security Prediction</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (10.020) Data Driven World & (10.022) Modelling Uncertainty- 2D Project
+                  </span>
+                  Project "Food Security Prediction" is a machine learning task aimed at forecasting the prevalence of undernourishment. 
+                  The model utilizes key economic indicators such as GDP per Capita, Annual Inflation Rate, and Gross per Capita Production Index Number to build predictive models. 
+                  A Linear Regression was implemented to analyze and predict relationships between these features and undernourishment prevalence.
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/regression-food_security-py" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="others">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/03.007.png" alt="interactive-booth" loading="lazy">
+                </figure>
+                <h3 class="project-title">Bootheractive - Interactive Booth</h3>
+                <p class="project-category">Art Installation</p>
+                <p class="project-description" style="display: none;">
+                  <span style="font-weight: bold; display: block; text-align: center;">
+                    (03.007) Design Thinking and Innovation - 1D Project
+                  </span>
+                  Project "Bootheractive" is an interactive art installation designed to enhance social interaction within Changi Business Park. 
+                  Resembling a game machine, it encourages engagement by allowing users to select music, record, and play back videos featuring positive messages. 
+                  The UI and the UX are designed to provide an engaging and intuitive interaction, making it easy and enjoyable for visitors to participate and spread positivity in a busy business environment.
+                </p>
+                <a href="https://asd.courses.sutd.edu.sg/dti-teams/cohort-9-group-6-part-4/" class="project-demo" style="display: none;">
+                </a>
+                <a class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+
+
+          </ul>
+          
+
+          <br>
+
+
+          <h2 class="project-category-tile">Personal Project</h2>
+          <ul class="project-list">
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/kjv-vis.png" alt="kjv-bible-analysis-visualization" loading="lazy">
+                </figure>
+                <h3 class="project-title">Bible Analysis & Visualization</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project offers a holistic analysis of Bible datasets by examining the textual, referential, historical, and geographical dimensions of the scriptures. It investigates the internal structure of the Bible through metrics like verse and chapter counts, lexical richness, and sentiment, and reveals the rich network of cross-references among the books using dynamic visualizations. In addition, it presents a timeline of key biblical events across BC and AD periods and maps significant biblical sites, thereby illuminating the enduring connections between scripture, history, and geography.
+                </p>
+                <a href="https://verneylogyt-kjv-vis.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-kjv-vis" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/nba-vis.png" alt="nba-analysis-visualization" loading="lazy">
+                </figure>
+                <h3 class="project-title">NBA Analysis & Visualization</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project uses an NBA dataset to explore multiple aspects of player performance, including regression analyses of assists, turnovers, steals, blocks, and fouls; classification of player positions based on shooting and other key statistics; and similarity analysis through learned player embeddings, all illustrated with insightful visualizations.
+                </p>
+                <a href="https://verneylogyt-nba-vis.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-nba-vis" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/sn-dgt-recognition.png" alt="single-digit-recognition" loading="lazy">
+                </figure>
+                <h3 class="project-title">Single Digit Recognition</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project implements a CNN-based single digit recognition system using the MNIST dataset, featuring robust data augmentation and a deep residual network architecture for effective feature extraction. The model is trained with an adaptive learning rate and early stopping, and it is exported in the ONNX format with options for quantization to facilitate flexible deployment.
+                </p>
+                <a href="https://verneylogyt-sn-dgt-recognition.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-sn-dgt-recognition" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/mov-recsys.png" alt="movie-recommendation-system" loading="lazy">
+                </figure>
+                <h3 class="project-title">Movie Recommender System</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project presents a movie recommender system built on the MovieLens dataset that delivers personalized movie suggestions by leveraging user ratings, movie metadata, and genre information. It employs neural collaborative filtering, where both users and movies are represented as embeddings in a latent space that capture intrinsic characteristics and preferences. The system utilizes a multilayer perceptron to learn complex interactions between these embeddings, thereby enabling the recommendation engine to suggest movies that a user is likely to enjoy. Additionally, the project offers multiple recommendation strategies: it provides user-based recommendations that identify unseen movies for each user, similarity-based recommendations that use cosine similarity to find movies with closely aligned embeddings, genre-based filtering that targets movies within specific genres, and a combined approach that integrates both similarity and genre criteria for more refined suggestions.
+                </p>
+                <a href="https://verneylogyt-mov-recsys.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-mov-recsys" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/ner.png" alt="named-entity-recognition" loading="lazy">
+                </figure>
+                <h3 class="project-title">Named Entity Recognition (NER)</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project features a Named Entity Recognition model that leverages the CoNLL-2003 dataset and pre-trained GloVe embeddings to build rich word and character representations. The model integrates a bidirectional LSTM with a multi-head attention mechanism to capture nuanced contextual information, and it utilizes Optuna for fine-tuning key parameters such as learning rate, hidden dimensions, and dropout rate to achieve optimal performance.
+                </p>
+                <a href="https://verneylogyt-ner.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-ner" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/nli.png" alt="natural-language-inference" loading="lazy">
+                </figure>
+                <h3 class="project-title">Natural Language Inference (NLI)</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project features a decomposable attention model for Natural Language Inference that processes sentence pairs from the SNLI dataset by aligning, comparing, and aggregating information. It incorporates pre-trained GloVe embeddings to enhance word representations, enabling the model to accurately classify relationships between premises and hypotheses as entailment, contradiction, or neutral.
+                </p>
+                <a href="https://verneylogyt-nli.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-nli" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/pos-tagging.png" alt="pos-tagging" loading="lazy">
+                </figure>
+                <h3 class="project-title">POS Tagging</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project features a transformer-based POS tagger that utilizes the Penn Treebank corpus and pre-trained GloVe embeddings to build a robust model capable of accurately tagging words in a sentence. It encompasses comprehensive data processing to extract and map words and tags, and incorporates a sophisticated transformer encoder with positional encoding. Additionally, the project leverages Optuna for hyperparameter tuning to optimize model performance on the POS tagging task.
+                </p>
+                <a href="https://verneylogyt-pos-tagging.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-pos-tagging" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="machine learning">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/snt-analysis.png" alt="sentiment-analysis" loading="lazy">
+                </figure>
+                <h3 class="project-title">Sentiment Analysis</h3>
+                <p class="project-category">Machine Learning</p>
+                <p class="project-description" style="display: none;">
+                  This project features a sentiment analysis system using the IMDB movie review dataset and pre-trained GloVe/FastText embeddings. It explores three deep learning architectures—a bidirectional RNN, a TextCNN, and a hybrid CNN-RNN with attention—to classify movie reviews into positive or negative sentiments.
+                </p>
+                <a href="https://verneylogyt-snt-analysis.streamlit.app/" class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/st-snt-analysis" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+            <li class="project-item active" data-filter-item data-category="web app">
+              <a href="#">
+                <figure class="project-img">
+                  <div class="project-item-icon-box" data-project-eye>
+                    <ion-icon name="eye-outline"></ion-icon>
+                  </div>
+                  <img src="./assets/projects/recipe-generator.png" alt="recipe-generator" loading="lazy">
+                </figure>
+                <h3 class="project-title">Recipe Generator</h3>
+                <p class="project-category">Web App</p>
+                <p class="project-description" style="display: none;">
+                  A Recipe Generator that suggests creative recipes based on user-input ingredients or uploaded images, along with nutritional insights.
+                </p>
+                <a class="project-demo" style="display: none;">
+                </a>
+                <a href="https://github.com/verneylmavt/recipe-generator" class="project-repo" style="display: none;">
+                </a>
+              </a>
+            </li>
+
+          </ul>
+
+          <div class="modal-container-project" data-modal-container-project>
+            <div class="overlay-project" data-overlay-project></div>
+            <section class="project-modal">
+              <button class="modal-close-btn-project" data-modal-close-btn-project>
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+
+              <div class="modal-img-wrapper-project">
+                <figure class="modal-img-box-project">
+                  <img src="" alt="" width="80" data-project-modal-img>
+                </figure>
+              </div>
+
+              <div class="modal-content-project">
+                <h4 class="modal-title-project" data-project-modal-title>Project Title</h4>
+                <div class="modal-text-project" data-project-modal-text>
+
+                  <p>
+                    Lorem ipsum odor amet, consectetuer adipiscing elit. Hendrerit cras eu sit mi habitasse pharetra nullam facilisi. 
+                    Lacus penatibus ex litora tempus fringilla vel lacinia congue. Tellus eros litora lorem finibus felis auctor nam sapien justo. 
+                    Mi urna aptent aptent porta senectus turpis nullam ullamcorper. Purus hendrerit vel elit aptent commodo donec in, magna hendrerit. 
+                    Ex eu placerat viverra risus sollicitudin nulla ultricies etiam. Faucibus interdum nostra metus maecenas massa montes.
+                  </p>
+                </div>
+              </div>
+
+              <div class="modal-links-project">
+                <a href="#" class="demo-link" data-project-modal-demo target="_blank">
+                  <ion-icon name="share-outline"></ion-icon> Demo
+                </a>
+                <a href="#" class="repo-link" data-project-modal-repo target="_blank">
+                  <ion-icon name="logo-github"></ion-icon> GitHub Repo
+                </a>
+              </div>
+            </div>
+
+            </section>
+          </div>
+
+        </section>
+
+      </article>
+
+    </div>
+
+  </main>
+
+  <!--
+    - custom js link
+  -->
+  <script src="./static/js/script.js"></script>
+
+  <!--
+    - ionicon link
+  -->
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+</body>
+
+</html>

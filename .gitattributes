@@ -1,0 +1,2 @@
+assets/projects/** filter=lfs diff=lfs merge=lfs -text
+assets/certifications/** filter=lfs diff=lfs merge=lfs -text
