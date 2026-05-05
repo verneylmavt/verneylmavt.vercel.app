@@ -1,41 +1,48 @@
 # verneylmavt.vercel.app (v1)
 
-Legacy / first iteration of my personal website.
+1st iteration of verneylmavt.vercel.app.
 
-This branch is a **static site** (plain HTML/CSS/JS) with a sidebar layout, a light/dark theme toggle, filterable projects, and a project-details modal.
+Built with: HTML + CSS + JavaScript.
 
-## Screenshots
+## Galleries
 
 ![About](public/demo_about.png)
 
 ![Projects](public/demo_project.png)
 
-## Run locally
+## Run
 
-No build step is required.
+### Requirements
 
-- Quick: open `index.html` directly in your browser
-- Recommended: serve the folder with a static file server
+- Browser
+- Optional: Node.js / Python
 
-Examples:
+### Local Run
 
 ```bash
-# Node
+# Node.js
 npx serve .
 
 # Python
 python -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Open: `http://localhost:8000`.
 
 ## Customize
 
-- Content + structure: `index.html`
+- Content + Structure: `index.html`
 - Styles: `static/css/style.css`
-- Interactions (theme toggle, filtering, modals, navigation): `static/js/script.js`
-- Images/icons: `assets/**`
+- Interactions: `static/js/script.js`
+- Images + Icons: `assets/**`
 
-## Deploy
+## Project structure
 
-Deploy as a static site (Vercel / Netlify / GitHub Pages). The entry point is `index.html` in the repository root.
+```text
+assets/        # Images/icons used by the site
+public/        # README screenshots
+static/
+  css/         # Stylesheets
+  js/          # Browser scripts
+index.html     # Main entry point
+```
