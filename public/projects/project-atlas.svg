@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="850" viewBox="0 0 1200 850" role="img" aria-label="Project thumbnail placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0a0c"/>
+      <stop offset="55%" stop-color="#0f1116"/>
+      <stop offset="100%" stop-color="#050507"/>
+    </linearGradient>
+    <radialGradient id="a" cx="30%" cy="30%" r="65%">
+      <stop offset="0%" stop-color="#2184ff" stop-opacity="0.85"/>
+      <stop offset="72%" stop-color="#2184ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="b" cx="72%" cy="38%" r="60%">
+      <stop offset="0%" stop-color="#7fb4ff" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#7fb4ff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="c" cx="55%" cy="95%" r="85%">
+      <stop offset="0%" stop-color="#ff4a8d" stop-opacity="0.55"/>
+      <stop offset="75%" stop-color="#ff4a8d" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.16"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="1200" height="850" rx="56" fill="url(#bg)"/>
+  <rect width="1200" height="850" rx="56" fill="url(#a)"/>
+  <rect width="1200" height="850" rx="56" fill="url(#b)"/>
+  <rect width="1200" height="850" rx="56" fill="url(#c)"/>
+  <rect width="1200" height="850" rx="56" filter="url(#grain)" opacity="0.9"/>
+
+  <g fill="rgba(255,255,255,0.88)" font-family="ui-serif, Georgia, Times, serif">
+    <text x="72" y="170" font-size="64" letter-spacing="-0.02em">Atlas</text>
+  </g>
+  <text x="72" y="225" font-size="22" fill="rgba(255,255,255,0.70)" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial">
+    Calm density · Tokenized theming · Fast UI
+  </text>
+  <g opacity="0.6" stroke="rgba(255,255,255,0.20)" stroke-width="1">
+    <path d="M72 290h520"/>
+    <path d="M72 340h380"/>
+    <path d="M72 390h460"/>
+  </g>
+</svg>
+
