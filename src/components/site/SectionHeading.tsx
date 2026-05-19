@@ -28,7 +28,10 @@ export function SectionHeading({
     <header className={cn("mb-8", className)}>
       <div className="flex items-baseline justify-between gap-4 mb-2">
         <span className="text-[0.75rem] uppercase tracking-[0.06em] text-muted">
-          {`// ${padded}_${slug}`}
+          <span aria-hidden="true">{"// "}</span>
+          <span className="text-[rgb(var(--accent))]">{padded}</span>
+          <span aria-hidden="true">_</span>
+          <span>{slug}</span>
         </span>
         <span className="hidden md:inline text-[0.6875rem] tracking-[0.04em] text-muted-soft">
           [ {file} ]

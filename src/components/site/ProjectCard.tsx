@@ -77,7 +77,7 @@ export function ProjectCard({
       </div>
 
       {/* Index — top-right inside */}
-      <div className="absolute top-3 right-3 z-[1] text-[0.6875rem] text-muted-soft tabular-nums">
+      <div className="absolute top-3 right-3 z-[1] text-[0.6875rem] text-[rgb(var(--accent))] tabular-nums">
         {padIndex(index + 1)}
       </div>
 
@@ -129,8 +129,12 @@ export function ProjectCard({
           </div>
         ) : null}
 
-        {/* Metric strip */}
-        <div className="mt-auto pt-3">
+        {/* Metric strip — accent hairline above brightens on hover */}
+        <div className="mt-auto pt-3 relative">
+          <div
+            aria-hidden="true"
+            className="absolute left-0 right-0 top-1 h-px bg-[rgb(var(--accent)/0)] group-hover:bg-[rgb(var(--accent)/0.55)] transition-colors duration-[var(--dur-base)]"
+          />
           <div className="grid grid-cols-4 border border-[rgb(var(--rule)/0.14)] divide-x divide-[rgb(var(--rule)/0.10)]">
             {metrics.map((m, i) => (
               <div key={i} className="flex flex-col px-2 py-2 min-w-0">

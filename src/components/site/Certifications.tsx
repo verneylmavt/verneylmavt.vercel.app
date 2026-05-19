@@ -57,6 +57,7 @@ export function Certifications({ site }: { site: SiteContent }) {
                       rel="noopener noreferrer"
                       className="mt-1 inline-flex items-center gap-1.5 self-start text-[0.75rem] uppercase tracking-[0.04em] text-muted hover:text-[rgb(var(--accent))]"
                     >
+                      <span aria-hidden="true" className="text-[rgb(var(--accent))]">●</span>
                       <Glyph name="ExternalLink" size={12} />
                       <span>verify</span>
                     </a>

@@ -7,18 +7,13 @@ import { Glyph } from "@/components/ui/glyphs";
 import { BlinkingCaret } from "@/components/ui/BlinkingCaret";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { Hairline } from "@/components/ui/Hairline";
+import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
 import { cn } from "@/lib/cn";
 
 const TYPEWRITER_COMMANDS = [
   "const interest = Product, Backend, AI/ML;",
   "const mbti = ENTP;",
 ] as const;
-
-const AVAILABILITY_LABEL: Record<SiteContent["availability"], string> = {
-  open: "open for opportunities",
-  selective: "selective",
-  closed: "not available",
-};
 
 export function Hero({ site }: { site: SiteContent }) {
   const reducedMotion = useReducedMotion();
@@ -83,22 +78,29 @@ export function Hero({ site }: { site: SiteContent }) {
             {"// 00_intro"}
           </p>
           <h1
+            onMouseEnter={fireScramble}
+            onFocus={fireScramble}
+            tabIndex={0}
             className={cn(
-              "font-medium tracking-[-0.025em] uppercase",
+              "font-medium tracking-[-0.025em] uppercase outline-none",
               "leading-[0.85] text-[clamp(3rem,12vw,8rem)]",
-              "text-foreground",
+              "text-foreground cursor-default select-none",
             )}
+            aria-label={site.name}
           >
             {nameTokens.map((t, i) => (
               <span key={i} className="block">
-                {t}
+                <ScrambleText text={t} duration={620} />
               </span>
             ))}
           </h1>
 
-          {/* Terminal status line */}
-          <div className="mt-8 inline-flex items-center gap-2 text-[0.875rem] md:text-[1rem]">
-            <span className="text-muted-soft">~/elvern</span>
+          {/* Terminal status line — draws an accent underline on hover */}
+          <div
+            tabIndex={0}
+            className="draw-accent mt-8 inline-flex items-center gap-2 text-[0.875rem] md:text-[1rem] outline-none cursor-default"
+          >
+            <span className="text-muted-soft">~/verneylmavt</span>
             <span className="text-[rgb(var(--accent))]">$</span>
             <span className="text-foreground">{visible}</span>
             <BlinkingCaret />
@@ -166,21 +168,6 @@ export function Hero({ site }: { site: SiteContent }) {
           <div className="flex flex-col gap-3 max-w-sm">
             <KeyValue k="role" v={site.roleTitle} />
             {site.location ? <KeyValue k="location" v={site.location} /> : null}
-            <KeyValue
-              k="status"
-              v={
-                <span
-                  className={cn(
-                    site.availability === "open"
-                      ? "text-[rgb(var(--accent))]"
-                      : "text-foreground",
-                  )}
-                >
-                  ● {AVAILABILITY_LABEL[site.availability]}
-                </span>
-              }
-            />
-            <KeyValue k="since" v="2019" />
           </div>
 
           {/* Photography cross-promo */}
@@ -217,18 +204,19 @@ export function Hero({ site }: { site: SiteContent }) {
               </span>
             </div>
           </a>
-        </aside>
-      </div>
 
-      {/* Scroll affordance */}
-      <div className="mx-auto max-w-[88rem] px-6 md:px-12 mt-16">
-        <a
-          href="#about"
-          className="inline-flex items-center gap-3 text-[0.6875rem] tracking-[0.06em] uppercase text-muted hover:text-foreground"
-        >
-          <span aria-hidden="true" className="inline-block w-10 h-px bg-[rgb(var(--rule)/0.30)]" />
-          <span>↓ 01 about</span>
-        </a>
+          {/* Scroll affordance — pinned to right column under the photography card */}
+          <a
+            href="#about"
+            className="mt-6 inline-flex items-center gap-3 text-[0.6875rem] tracking-[0.06em] uppercase text-muted hover:text-foreground"
+          >
+            <span
+              aria-hidden="true"
+              className="inline-block w-10 h-px bg-[rgb(var(--rule)/0.30)]"
+            />
+            <span>↓ scroll</span>
+          </a>
+        </aside>
       </div>
     </section>
   );

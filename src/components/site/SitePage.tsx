@@ -14,11 +14,19 @@ import { Contact } from "./Contact";
 import { Footer } from "./Footer";
 import { StatusBar } from "./StatusBar";
 import { ViewportBrackets } from "@/components/visual/ViewportBrackets";
+import { BootSequence } from "@/components/visual/BootSequence";
+import { CursorCrosshair } from "@/components/visual/CursorCrosshair";
+import {
+  DiagnosticOverlay,
+  readDiagnosticInitial,
+} from "@/components/visual/DiagnosticOverlay";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { CmdPalette, type PaletteItem } from "@/components/ui/CmdPalette";
 import { ShortcutHelp } from "@/components/ui/ShortcutHelp";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
+import { useKonami } from "@/hooks/useKonami";
+import { useTheme } from "@/components/ThemeProvider";
 
 const SECTIONS: NavSection[] = [
   { id: "top", label: "home" },
@@ -37,6 +45,20 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const [paletteOpen, setPaletteOpen] = React.useState(false);
   const [helpOpen, setHelpOpen] = React.useState(false);
+  // Initial state must match server (false) for clean hydration. After mount,
+  // restore from sessionStorage if user previously activated diagnostic mode.
+  const [diagnosticOn, setDiagnosticOn] = React.useState<boolean>(false);
+  const { theme, resolvedTheme } = useTheme();
+
+  React.useEffect(() => {
+    if (readDiagnosticInitial()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDiagnosticOn(true);
+    }
+  }, []);
+
+  // Konami code toggles diagnostic mode.
+  useKonami(React.useCallback(() => setDiagnosticOn((v) => !v), []));
 
   const scrollToSection = React.useCallback((id: string) => {
     const el = document.getElementById(id);
@@ -61,6 +83,8 @@ export function SitePage({ content }: { content: SiteContent }) {
     onCloseOverlays: () => {
       setPaletteOpen(false);
       setHelpOpen(false);
+      // Esc does NOT exit diagnostic mode here; DiagnosticOverlay handles it itself
+      // to avoid colliding with palette/help close.
     },
     onOpenCommandPalette: () => setPaletteOpen((v) => !v),
   });
@@ -118,8 +142,24 @@ export function SitePage({ content }: { content: SiteContent }) {
     return items;
   }, [content]);
 
+  const themeLabel =
+    theme === "system" ? `system (${resolvedTheme})` : theme;
+
   return (
     <>
+      {/* First-paint boot sequence (once per session) */}
+      <BootSequence />
+
+      {/* Cursor crosshair — desktop, non-reduced-motion only */}
+      <CursorCrosshair />
+
+      {/* Diagnostic mode — Konami toggle */}
+      <DiagnosticOverlay
+        active={diagnosticOn}
+        onClose={() => setDiagnosticOn(false)}
+        themeLabel={themeLabel}
+      />
+
       <ViewportBrackets />
       <ScrollIndicator />
 

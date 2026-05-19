@@ -68,14 +68,13 @@ export function Header({
                   "px-2.5 py-1.5 text-[0.75rem] uppercase tracking-[0.05em]",
                   "transition-colors duration-[var(--dur-fast)]",
                   isActive
-                    ? "text-foreground"
+                    ? "text-[rgb(var(--accent))]"
                     : "text-muted hover:text-foreground",
                 )}
               >
                 {isActive ? (
                   <>
-                    <span className="text-[rgb(var(--accent))]" aria-hidden="true">›</span>{" "}
-                    {s.label}
+                    <span aria-hidden="true">›</span> {s.label}
                   </>
                 ) : (
                   s.label

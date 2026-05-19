@@ -43,12 +43,37 @@ export type WorkExperienceItem = {
   highlights?: string[];
 };
 
-export type ToolCategory = "lang" | "ml" | "infra" | "data" | "web" | "ai";
+/**
+ * Lucide icon names used for the Tools section. Stored as strings so the
+ * content file stays serializable; the component maps these to React
+ * components at render time.
+ */
+export type ToolIconName =
+  | "LineSquiggle"
+  | "Zap"
+  | "Sigma"
+  | "Table"
+  | "Brain"
+  | "TrendingUp"
+  | "Flame"
+  | "Smile"
+  | "Link"
+  | "ChartNetwork"
+  | "Bot"
+  | "Star"
+  | "CodeXml"
+  | "Atom"
+  | "Package"
+  | "Database"
+  | "DatabaseZap"
+  | "Container"
+  | "Network"
+  | "Gpu"
+  | "Cloud";
 
 export type ToolItem = {
   name: string;
-  version?: string;
-  category?: ToolCategory;
+  icon: ToolIconName;
 };
 
 export type CertificationItem = {
@@ -193,28 +218,28 @@ export const site: SiteContent = {
     },
   ],
   tools: [
-    { name: "Python", category: "lang" },
-    { name: "FastAPI", category: "web" },
-    { name: "NumPy", category: "data" },
-    { name: "Pandas", category: "data" },
-    { name: "Scikit-Learn", category: "ml" },
-    { name: "XGBoost", category: "ml" },
-    { name: "PyTorch", category: "ml" },
-    { name: "Transformers", category: "ml" },
-    { name: "LangChain", category: "ai" },
-    { name: "n8n", category: "ai" },
-    { name: "OpenAI SDK", category: "ai" },
-    { name: "Claude Code", category: "ai" },
-    { name: "Apache Spark", category: "data" },
-    { name: "HTML / CSS / JS / TS", category: "web" },
-    { name: "React", category: "web" },
-    { name: "Node.js", category: "web" },
-    { name: "SQL", category: "data" },
-    { name: "NoSQL", category: "data" },
-    { name: "Docker", category: "infra" },
-    { name: "Kubernetes", category: "infra" },
-    { name: "NVIDIA", category: "infra" },
-    { name: "AWS", category: "infra" },
+    { name: "Python", icon: "LineSquiggle" },
+    { name: "FastAPI", icon: "Zap" },
+    { name: "NumPy", icon: "Sigma" },
+    { name: "Pandas", icon: "Table" },
+    { name: "Scikit-Learn", icon: "Brain" },
+    { name: "XGBoost", icon: "TrendingUp" },
+    { name: "PyTorch", icon: "Flame" },
+    { name: "Transformers", icon: "Smile" },
+    { name: "LangChain", icon: "Link" },
+    { name: "n8n", icon: "ChartNetwork" },
+    { name: "OpenAI SDK", icon: "Bot" },
+    { name: "Claude Code", icon: "Bot" },
+    { name: "Apache Spark", icon: "Star" },
+    { name: "HTML / CSS / JS / TS", icon: "CodeXml" },
+    { name: "React", icon: "Atom" },
+    { name: "Node.js", icon: "Package" },
+    { name: "SQL", icon: "Database" },
+    { name: "NoSQL", icon: "DatabaseZap" },
+    { name: "Docker", icon: "Container" },
+    { name: "Kubernetes", icon: "Network" },
+    { name: "NVIDIA", icon: "Gpu" },
+    { name: "AWS", icon: "Cloud" },
   ],
   certifications: [
     {

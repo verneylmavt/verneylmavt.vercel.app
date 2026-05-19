@@ -2,6 +2,7 @@
 
 import { LocalClock } from "@/components/ui/LocalClock";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
+import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/cn";
 import type { Availability } from "@/content/site";
 
@@ -14,6 +15,10 @@ const AVAILABILITY_LABEL: Record<Availability, string> = {
 export function StatusBar({ availability }: { availability: Availability }) {
   const progress = useScrollProgress();
   const pct = Math.round(progress * 100);
+  const { theme, resolvedTheme, cycleTheme } = useTheme();
+
+  const themeLabel =
+    theme === "system" ? `system (${resolvedTheme})` : theme;
 
   return (
     <div
@@ -28,10 +33,27 @@ export function StatusBar({ availability }: { availability: Availability }) {
         <div className="flex items-center gap-3 min-w-0">
           <LocalClock timeZone="Asia/Jakarta" zoneLabel="JKT" />
           <span aria-hidden="true" className="hidden sm:inline">·</span>
-          <span className="hidden sm:inline tabular-nums">scroll {String(pct).padStart(2, "0")}%</span>
+          <span className="hidden sm:inline tabular-nums">
+            scroll {String(pct).padStart(2, "0")}%
+          </span>
         </div>
         <div className="flex items-center gap-3">
-          <span className="hidden sm:inline">v3.0.0</span>
+          <button
+            type="button"
+            onClick={cycleTheme}
+            aria-label={`Theme: ${themeLabel}. Click to cycle.`}
+            className={cn(
+              "hidden sm:inline-flex items-center px-1.5 py-0.5",
+              "text-[0.6875rem] tracking-[0.04em]",
+              "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
+              "bg-[rgb(var(--surface)/0.4)] text-muted",
+              "transition-colors duration-[var(--dur-base)]",
+              "hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]",
+            )}
+          >
+            [ theme: {themeLabel} ]
+          </button>
+          <span className="hidden sm:inline text-[rgb(var(--accent))] tabular-nums">v3.1.0</span>
           <span aria-hidden="true" className="hidden sm:inline">·</span>
           <span className="inline-flex items-center gap-1.5">
             <span
@@ -39,7 +61,7 @@ export function StatusBar({ availability }: { availability: Availability }) {
               className={cn(
                 "inline-block w-1.5 h-1.5 rounded-full",
                 availability === "open"
-                  ? "bg-[rgb(var(--accent))]"
+                  ? "bg-[rgb(var(--accent))] pulse-accent"
                   : "bg-muted-soft",
               )}
             />

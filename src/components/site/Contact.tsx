@@ -44,13 +44,13 @@ export function Contact({ site }: { site: SiteContent }) {
                 return (
                   <li
                     key={c.label}
-                    className="flex items-baseline gap-3 text-[0.875rem]"
+                    className="contact-row group flex items-baseline gap-3 text-[0.875rem]"
                   >
-                    <Glyph name={c.icon} size={14} className="text-muted relative top-[0.15em]" />
+                    <Glyph name={c.icon} size={14} className="text-muted relative top-[0.15em] group-hover:text-[rgb(var(--accent))] transition-colors" />
                     <span className="text-foreground w-24 shrink-0">
                       {contactKey(c.label)}
                     </span>
-                    <span className="text-muted-soft">=</span>
+                    <span className="text-muted-soft group-hover:text-[rgb(var(--accent))] transition-colors">=</span>
                     <a
                       href={c.href}
                       target={c.href.startsWith("http") ? "_blank" : undefined}
@@ -76,10 +76,10 @@ export function Contact({ site }: { site: SiteContent }) {
                 );
               })}
               {site.links?.resume ? (
-                <li className="flex items-baseline gap-3 text-[0.875rem] pt-2 border-t border-[rgb(var(--rule)/0.10)]">
-                  <Glyph name="FileText" size={14} className="text-muted relative top-[0.15em]" />
+                <li className="contact-row group flex items-baseline gap-3 text-[0.875rem] pt-2 border-t border-[rgb(var(--rule)/0.10)]">
+                  <Glyph name="FileText" size={14} className="text-muted relative top-[0.15em] group-hover:text-[rgb(var(--accent))] transition-colors" />
                   <span className="text-foreground w-24 shrink-0">resume</span>
-                  <span className="text-muted-soft">=</span>
+                  <span className="text-muted-soft group-hover:text-[rgb(var(--accent))] transition-colors">=</span>
                   <a
                     href={site.links.resume}
                     target="_blank"

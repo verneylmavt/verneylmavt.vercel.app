@@ -2,11 +2,13 @@
 
 /* ──────────────────────────────────────────────────────────────
  * v3 design tokens — Swiss / monospace / engineering
- * Light-only by design. See README.
+ * Light is :root default; dark applied via [data-theme="dark"]
+ * by ThemeProvider + FOUC-prevention script (see layout.tsx).
  * ─────────────────────────────────────────────────────────── */
 
 :root {
-  --background: 244 242 236;   /* warm off-white (paper) */
+  /* Light theme (paper) */
+  --background: 244 242 236;   /* warm off-white */
   --foreground: 18 18 20;      /* charcoal, not pure black */
   --muted: 80 80 84;           /* AA on background for micro text */
   --muted-soft: 110 110 114;   /* metadata where AA contrast isn't needed */
@@ -20,6 +22,17 @@
   --dur-fast: 120ms;
   --dur-base: 200ms;
   --dur-slow: 360ms;
+}
+
+[data-theme="dark"] {
+  --background: 14 14 16;       /* near-black */
+  --foreground: 235 235 240;    /* off-white */
+  --muted: 168 168 174;         /* AA on dark bg */
+  --muted-soft: 130 130 138;
+  --rule: 235 235 240;          /* hairlines re-map to bright */
+  --grid-dot: 235 235 240;      /* dotted bg dots become bright */
+  --surface: 22 22 26;          /* card depth on dark */
+  --accent: 240 110 50;         /* slightly brighter burnt-orange for dark contrast */
 }
 
 @theme inline {
@@ -143,6 +156,19 @@ body {
   background-size: 6px 1em;
   background-position: 0 center;
   background-repeat: repeat-x;
+  transition: background-image var(--dur-base) var(--ease-precise);
+}
+
+/* Tools / Contact: tint dot-leader accent on row hover */
+.tools-row:hover .dot-leader,
+.tools-row:focus-within .dot-leader,
+.contact-row:hover .dot-leader,
+.contact-row:focus-within .dot-leader {
+  background-image: radial-gradient(
+    circle,
+    rgb(var(--accent) / 0.7) 0.85px,
+    transparent 0.85px
+  );
 }
 
 /* ──────────────────────────────────────────────────────────────
@@ -167,9 +193,10 @@ body {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.875rem;
   line-height: 1;
-  color: rgb(var(--foreground) / 0.35);
+  color: rgb(var(--foreground) / 0.30);
   pointer-events: none;
   user-select: none;
+  transition: color var(--dur-base) var(--ease-precise);
 }
 
 .plus-corners::before {
@@ -182,6 +209,85 @@ body {
   content: "+";
   bottom: -0.45rem;
   left: -0.45rem;
+}
+
+/* Bolder accent — parent hover/focus tints the corner markers */
+.plus-corners:hover::before,
+.plus-corners:hover::after,
+.plus-corners:focus-within::before,
+.plus-corners:focus-within::after {
+  color: rgb(var(--accent) / 0.65);
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Accent helpers + keyframes
+ * ─────────────────────────────────────────────────────────── */
+
+/* Pulsing accent dot (scroll indicator head, status flashes) */
+@keyframes pulse-accent {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(1.6);
+  }
+}
+
+.pulse-accent {
+  animation: pulse-accent 1.6s var(--ease-precise) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-accent {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* Accent underline that draws in left→right on hover of `.draw-accent` parent */
+.draw-accent {
+  position: relative;
+}
+.draw-accent::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: auto;
+  bottom: -0.15em;
+  height: 1px;
+  width: 0;
+  background-color: rgb(var(--accent));
+  transition: width var(--dur-slow) var(--ease-precise);
+  pointer-events: none;
+}
+.draw-accent:hover::after,
+.draw-accent:focus-within::after {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-accent::after {
+    transition: none;
+  }
+}
+
+/* Smooth theme transition (limited to color tokens — not transform/opacity) */
+html {
+  transition: background-color var(--dur-slow) ease;
+}
+body {
+  transition: background-color var(--dur-slow) ease, color var(--dur-slow) ease;
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Diagnostic mode (Konami code) overlay class
+ * Applied to <html data-diag="on"> by the DiagnosticOverlay component.
+ * ─────────────────────────────────────────────────────────── */
+
+html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
+  outline: 1px solid rgb(var(--accent) / 0.22) !important;
 }
 
 /* ──────────────────────────────────────────────────────────────
