@@ -61,6 +61,7 @@ export type ToolIconName =
   | "ChartNetwork"
   | "Bot"
   | "Star"
+  | "Binary"
   | "CodeXml"
   | "Atom"
   | "Package"
@@ -231,7 +232,8 @@ export const site: SiteContent = {
     { name: "OpenAI SDK", icon: "Bot" },
     { name: "Claude Code", icon: "Bot" },
     { name: "Apache Spark", icon: "Star" },
-    { name: "HTML / CSS / JS / TS", icon: "CodeXml" },
+    { name: "HTML / CSS", icon: "Binary" },
+    { name: "JS / TS", icon: "CodeXml" },
     { name: "React", icon: "Atom" },
     { name: "Node.js", icon: "Package" },
     { name: "SQL", icon: "Database" },
