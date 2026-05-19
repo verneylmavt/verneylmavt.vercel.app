@@ -12,7 +12,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${site.handle} — ${site.roleTitle}`,
+  title: `${site.handle}`,
   description: `Personal Website of ${site.name}. ${site.about.paragraph}`,
   icons: {
     icon: "/favicon.ico",

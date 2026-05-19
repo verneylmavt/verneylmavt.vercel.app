@@ -26,7 +26,7 @@ import {
 
 import type { SiteContent, ToolIconName } from "@/content/site";
 import { SectionHeading } from "./SectionHeading";
-import { sortByName } from "@/lib/format";
+import { cn } from "@/lib/cn";
 
 const TOOL_ICON_MAP: Record<ToolIconName, LucideIcon> = {
   LineSquiggle,
@@ -53,7 +53,8 @@ const TOOL_ICON_MAP: Record<ToolIconName, LucideIcon> = {
 };
 
 export function Tools({ site }: { site: SiteContent }) {
-  const sorted = sortByName(site.tools);
+  // Preserve insertion order from site.tools — no alphabetical sort.
+  const tools = site.tools;
   return (
     <section
       id="tools"
@@ -68,11 +69,11 @@ export function Tools({ site }: { site: SiteContent }) {
           filename="src/sections/tools.lock"
         />
         <p className="text-[0.75rem] uppercase tracking-[0.06em] text-muted-soft mb-6">
-          {/* {`// ${sorted.length} tools`} */}
+          {/* {`// ${tools.length} tools`} */}
         </p>
 
-        <ul className="grid gap-x-8 gap-y-1.5 md:grid-cols-2 lg:grid-cols-3">
-          {sorted.map((tool) => {
+        <ul className="grid gap-x-8 gap-y-1.5 sm:grid-cols-2 md:grid-cols-3">
+          {tools.map((tool) => {
             const Icon = TOOL_ICON_MAP[tool.icon];
             const slug = tool.name
               .toLowerCase()
@@ -81,26 +82,43 @@ export function Tools({ site }: { site: SiteContent }) {
             return (
               <li
                 key={tool.name}
-                className="group tools-row flex items-center gap-2.5 text-[0.875rem] py-1.5 border-b border-[rgb(var(--rule)/0.06)]"
+                className={cn(
+                  "group tools-row relative",
+                  "grid grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-2.5",
+                  "text-[0.875rem] py-1.5 border-b border-[rgb(var(--rule)/0.06)]",
+                )}
               >
                 <Icon
-                  className="h-3.5 w-3.5 shrink-0 text-muted group-hover:text-[rgb(var(--accent))] transition-colors"
+                  className="h-3.5 w-3.5 text-muted group-hover:text-[rgb(var(--accent))] transition-colors"
                   aria-hidden="true"
                 />
                 <span className="text-foreground truncate">
                   {tool.name.toLowerCase()}
                 </span>
-                {/* Fixed-width dot decoration — same per row regardless of name length */}
+                {/* Dots — sit in their own grid column, anchored to the right
+                    edge of every row → aligned across rows. Fade on hover. */}
                 <span
                   aria-hidden="true"
-                  className="ml-auto tracking-[0.2em] text-[rgb(var(--rule)/0.35)] group-hover:text-[rgb(var(--accent)/0.6)] transition-colors select-none"
+                  className={cn(
+                    "tracking-[0.2em] text-[rgb(var(--rule)/0.35)] select-none",
+                    "transition-opacity duration-[var(--dur-base)]",
+                    "lg:group-hover:opacity-0",
+                  )}
                 >
                   ······
                 </span>
-                {/* Hover ghost — visible only on lg+ */}
+                {/* Import ghost — absolutely positioned so it never affects
+                    the dot column width. Anchored to LI right edge; fades in
+                    on hover and replaces the dots visually. */}
                 <span
                   aria-hidden="true"
-                  className="hidden lg:inline-block w-[7.5rem] text-right text-[0.6875rem] text-muted-soft opacity-0 group-hover:opacity-100 transition-opacity"
+                  className={cn(
+                    "hidden lg:block pointer-events-none",
+                    "absolute right-0 top-1/2 -translate-y-1/2",
+                    "whitespace-nowrap text-[0.6875rem] text-muted-soft",
+                    "opacity-0 group-hover:opacity-100",
+                    "transition-opacity duration-[var(--dur-base)]",
+                  )}
                 >
                   {`import { ${slug} }`}
                 </span>

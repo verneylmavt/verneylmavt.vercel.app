@@ -183,7 +183,7 @@ export function SitePage({ content }: { content: SiteContent }) {
 
       <Footer />
 
-      <StatusBar availability={content.availability} />
+      <StatusBar />
 
       <CmdPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
       <ShortcutHelp open={helpOpen} onClose={() => setHelpOpen(false)} />

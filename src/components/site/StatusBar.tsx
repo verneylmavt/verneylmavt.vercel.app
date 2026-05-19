@@ -4,15 +4,8 @@ import { LocalClock } from "@/components/ui/LocalClock";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/cn";
-import type { Availability } from "@/content/site";
 
-const AVAILABILITY_LABEL: Record<Availability, string> = {
-  open: "available",
-  selective: "selective",
-  closed: "closed",
-};
-
-export function StatusBar({ availability }: { availability: Availability }) {
+export function StatusBar() {
   const progress = useScrollProgress();
   const pct = Math.round(progress * 100);
   const { theme, resolvedTheme, cycleTheme } = useTheme();
@@ -53,19 +46,8 @@ export function StatusBar({ availability }: { availability: Availability }) {
           >
             [ theme: {themeLabel} ]
           </button>
-          <span className="hidden sm:inline text-[rgb(var(--accent))] tabular-nums">v3.1.0</span>
-          <span aria-hidden="true" className="hidden sm:inline">·</span>
-          <span className="inline-flex items-center gap-1.5">
-            <span
-              aria-hidden="true"
-              className={cn(
-                "inline-block w-1.5 h-1.5 rounded-full",
-                availability === "open"
-                  ? "bg-[rgb(var(--accent))] pulse-accent"
-                  : "bg-muted-soft",
-              )}
-            />
-            <span>{AVAILABILITY_LABEL[availability]}</span>
+          <span className="hidden sm:inline text-[rgb(var(--accent))] tabular-nums">
+            v3
           </span>
         </div>
       </div>

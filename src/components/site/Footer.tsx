@@ -1,7 +1,6 @@
 import { Hairline } from "@/components/ui/Hairline";
 
 export function Footer() {
-  const year = new Date().getFullYear();
   return (
     <footer className="mx-auto w-full max-w-[88rem] px-6 md:px-12 pb-16">
       <Hairline className="mb-6" />

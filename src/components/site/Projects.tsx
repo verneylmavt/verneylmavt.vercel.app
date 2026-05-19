@@ -10,9 +10,28 @@ import { cn } from "@/lib/cn";
 
 export const PROJECT_SEARCH_ID = "project-search";
 
+const INITIAL_VISIBLE = 4;
+const PAGE_STEP = 3;
+
 export function Projects({ site }: { site: SiteContent }) {
   const [query, setQuery] = React.useState("");
   const [tag, setTag] = React.useState<string>("all");
+  const [visibleCount, setVisibleCount] = React.useState(INITIAL_VISIBLE);
+
+  // Reset pagination whenever the user changes the filter; done in the
+  // handlers so we avoid `setState`-in-effect.
+  const handleQueryChange = React.useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setQuery(e.target.value);
+      setVisibleCount(INITIAL_VISIBLE);
+    },
+    [],
+  );
+
+  const handleTagChange = React.useCallback((next: string) => {
+    setTag(next);
+    setVisibleCount(INITIAL_VISIBLE);
+  }, []);
 
   const tags = React.useMemo(() => {
     const counts = new Map<string, number>();
@@ -35,11 +54,22 @@ export function Projects({ site }: { site: SiteContent }) {
     });
   }, [site.projects, query, tag]);
 
-  const featured = filtered.find((p) => p.featured);
-  const rest = filtered.filter((p) => !p.featured || p !== featured);
+  // Unify featured + rest into one ordered list so pagination works uniformly.
+  const ordered = React.useMemo(() => {
+    const featured = filtered.find((p) => p.featured);
+    if (!featured) return filtered;
+    return [featured, ...filtered.filter((p) => p !== featured)];
+  }, [filtered]);
+
+  const visibleProjects = ordered.slice(0, visibleCount);
+  const hasMore = visibleCount < ordered.length;
 
   return (
-    <section id="projects" aria-labelledby="projects-title" className="scroll-mt-24 py-24 md:py-32">
+    <section
+      id="projects"
+      aria-labelledby="projects-title"
+      className="scroll-mt-24 py-24 md:py-32"
+    >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={6} slug="projects" title="Projects" />
 
@@ -49,8 +79,8 @@ export function Projects({ site }: { site: SiteContent }) {
             <SearchInput
               id={PROJECT_SEARCH_ID}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              prompt="> search"
+              onChange={handleQueryChange}
+              prompt=">"
               placeholder="title or description..."
             />
           </div>
@@ -58,7 +88,7 @@ export function Projects({ site }: { site: SiteContent }) {
             <TagFilter
               tags={tags}
               active={tag}
-              onChange={setTag}
+              onChange={handleTagChange}
               includeAll
               allLabel="all"
               className="md:justify-end"
@@ -67,7 +97,9 @@ export function Projects({ site }: { site: SiteContent }) {
         </div>
 
         <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-4">
-          {`// ${filtered.length} of ${site.projects.length} project${site.projects.length === 1 ? "" : "s"}`}
+          {`// showing ${visibleProjects.length} of ${ordered.length} project${
+            ordered.length === 1 ? "" : "s"
+          }`}
         </p>
 
         {filtered.length === 0 ? (
@@ -75,14 +107,44 @@ export function Projects({ site }: { site: SiteContent }) {
             {"// no projects match the filter"}
           </div>
         ) : (
-          <div className={cn("grid gap-6 md:grid-cols-3")}>
-            {featured ? (
-              <ProjectCard project={featured} index={0} featured />
+          <>
+            <div className={cn("grid gap-6 md:grid-cols-3")}>
+              {visibleProjects.map((p, i) => (
+                <ProjectCard
+                  key={p.slug}
+                  project={p}
+                  index={i}
+                  featured={!!p.featured}
+                />
+              ))}
+            </div>
+
+            {hasMore ? (
+              <div className="mt-10 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() =>
+                    setVisibleCount((v) =>
+                      Math.min(v + PAGE_STEP, ordered.length),
+                    )
+                  }
+                  className={cn(
+                    "inline-flex items-center gap-2 px-4 py-2",
+                    "text-[0.75rem] uppercase tracking-[0.06em]",
+                    "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
+                    "bg-[rgb(var(--surface)/0.4)] text-foreground",
+                    "transition-colors duration-[var(--dur-base)]",
+                    "hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]",
+                  )}
+                >
+                  <span>
+                    [ load more ]
+                  </span>
+                  <span aria-hidden="true">↓</span>
+                </button>
+              </div>
             ) : null}
-            {rest.map((p, i) => (
-              <ProjectCard key={p.slug} project={p} index={i + (featured ? 1 : 0)} />
-            ))}
-          </div>
+          </>
         )}
       </div>
     </section>

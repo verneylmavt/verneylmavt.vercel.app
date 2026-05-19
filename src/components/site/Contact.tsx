@@ -29,8 +29,7 @@ export function Contact({ site }: { site: SiteContent }) {
               talk<span className="text-[rgb(var(--accent))]">.</span>
             </h3>
             <p className="mt-6 max-w-md text-[0.9375rem] leading-[1.6] text-muted">
-              Open to collaborations, conversations, and ideas worth building.
-              I read every message.
+              Let’s collaborate and build something meaningful. I’m always open to exchanging ideas!
             </p>
           </div>
 
