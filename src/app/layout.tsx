@@ -27,6 +27,7 @@ export const metadata: Metadata = {
  * Placed in <body> (not <head>) because React 19 warns about script tags
  * rendered inside React components — body placement still executes during
  * HTML parsing before any subsequent DOM is laid out.
+ * <TBC></TBC>
  */
 const themeBootScript = `(function(){try{var k='v3-theme',s=localStorage.getItem(k)||'system';var d=s==='dark'||(s==='system'&&matchMedia('(prefers-color-scheme: dark)').matches);document.documentElement.setAttribute('data-theme',d?'dark':'light');}catch(e){document.documentElement.setAttribute('data-theme','light');}})();`;
 
