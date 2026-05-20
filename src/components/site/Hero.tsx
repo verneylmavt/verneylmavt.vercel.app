@@ -8,12 +8,19 @@ import { BlinkingCaret } from "@/components/ui/BlinkingCaret";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { Hairline } from "@/components/ui/Hairline";
 import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
+import { MiniTerminal } from "./MiniTerminal";
 import { cn } from "@/lib/cn";
 
 const TYPEWRITER_COMMANDS = [
   "const interest = Product, Backend, AI/ML;",
   "const mbti = ENTP;",
 ] as const;
+
+// ASCII portrait — shown briefly when the user clicks the hero name.
+const ASCII_ART = `   ____      __
+  / __/__   / /
+ / _// _ \\ / _ \\
+/___/_//_//_//_/`;
 
 export function Hero({ site }: { site: SiteContent }) {
   const reducedMotion = useReducedMotion();
@@ -25,8 +32,23 @@ export function Hero({ site }: { site: SiteContent }) {
   const [charIndex, setCharIndex] = React.useState(0);
   const [deleting, setDeleting] = React.useState(false);
 
+  // ASCII art reveal on hero click
+  const [asciiOpen, setAsciiOpen] = React.useState(false);
+
+  // Mini-terminal open state (triggered by clicking the `$` prompt)
+  const [terminalOpen, setTerminalOpen] = React.useState(false);
+
+  // Auto-revert ASCII art after 3s
+  React.useEffect(() => {
+    if (!asciiOpen) return;
+    const id = window.setTimeout(() => setAsciiOpen(false), 3000);
+    return () => window.clearTimeout(id);
+  }, [asciiOpen]);
+
   React.useEffect(() => {
     if (reducedMotion) return;
+    // Pause typewriter when the mini terminal is open
+    if (terminalOpen) return;
 
     const phrase = TYPEWRITER_COMMANDS[cmdIndex] ?? "";
     const typeMs = 60;
@@ -54,7 +76,7 @@ export function Hero({ site }: { site: SiteContent }) {
     return () => {
       if (id) clearTimeout(id);
     };
-  }, [reducedMotion, cmdIndex, charIndex, deleting]);
+  }, [reducedMotion, terminalOpen, cmdIndex, charIndex, deleting]);
 
   const phrase = TYPEWRITER_COMMANDS[cmdIndex] ?? "";
   // When reduced motion is active, show the first command in full (no animation).
@@ -80,31 +102,67 @@ export function Hero({ site }: { site: SiteContent }) {
           <h1
             onMouseEnter={fireScramble}
             onFocus={fireScramble}
+            onClick={() => setAsciiOpen((v) => !v)}
             tabIndex={0}
+            role="button"
+            aria-pressed={asciiOpen}
+            aria-label={site.name}
             className={cn(
               "font-medium tracking-[-0.025em] uppercase outline-none",
-              "leading-[0.85] text-[clamp(3rem,12vw,8rem)]",
-              "text-foreground cursor-default select-none",
+              "leading-[0.85]",
+              "text-foreground select-none",
+              asciiOpen ? "cursor-pointer" : "cursor-pointer",
             )}
-            aria-label={site.name}
           >
-            {nameTokens.map((t, i) => (
-              <span key={i} className="block">
-                <ScrambleText text={t} duration={620} />
+            {asciiOpen ? (
+              <pre
+                aria-hidden="true"
+                className="block whitespace-pre text-[rgb(var(--accent))] leading-[1.0] text-[clamp(0.75rem,2.4vw,1.5rem)] font-bold"
+              >
+                {ASCII_ART}
+              </pre>
+            ) : (
+              <span className="text-[clamp(3rem,12vw,8rem)] block leading-[0.85]">
+                {nameTokens.map((t, i) => (
+                  <span key={i} className="block">
+                    <ScrambleText text={t} duration={620} autoGlitch />
+                  </span>
+                ))}
               </span>
-            ))}
+            )}
           </h1>
 
-          {/* Terminal status line — draws an accent underline on hover */}
-          <div
-            tabIndex={0}
-            className="draw-accent mt-8 inline-flex items-center gap-2 text-[0.875rem] md:text-[1rem] outline-none cursor-default"
-          >
-            <span className="text-muted-soft">~/verneylmavt</span>
-            <span className="text-[rgb(var(--accent))]">$</span>
-            <span className="text-foreground">{visible}</span>
-            <BlinkingCaret />
-          </div>
+          {/* Terminal status line — click the `$` prompt to open the mini terminal */}
+          {terminalOpen ? (
+            <div className="mt-8 w-full max-w-2xl">
+              <MiniTerminal
+                open={terminalOpen}
+                onClose={() => setTerminalOpen(false)}
+                site={site}
+              />
+            </div>
+          ) : (
+            <div
+              tabIndex={0}
+              className="draw-accent mt-8 inline-flex items-center gap-2 text-[0.875rem] md:text-[1rem] outline-none cursor-default"
+            >
+              <span className="text-muted-soft">~/verneylmavt</span>
+              <button
+                type="button"
+                onClick={() => setTerminalOpen(true)}
+                aria-label="Open mini terminal"
+                className={cn(
+                  "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
+                  "px-1 rounded-[2px] cursor-pointer",
+                  "transition-colors duration-[var(--dur-base)]",
+                )}
+              >
+                $
+              </button>
+              <span className="text-foreground">{visible}</span>
+              <BlinkingCaret />
+            </div>
+          )}
 
           {/* Tagline */}
           {site.tagline ? (

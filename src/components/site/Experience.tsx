@@ -18,17 +18,23 @@ export function Experience({ site }: { site: SiteContent }) {
           filename="src/sections/work.tsx"
         />
 
-        <ol className="border-t border-[rgb(var(--rule)/0.10)]">
-          {site.workExperience.map((item, i) => (
-            <ExperienceRow
-              key={`${item.company}-${item.start}`}
-              item={item}
-              index={i}
-              open={openIndex === i}
-              onToggle={() => setOpenIndex((v) => (v === i ? null : i))}
-            />
-          ))}
-        </ol>
+        {site.workExperience.length === 0 ? (
+          <div className="border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] px-5 py-6 text-[0.875rem] text-muted-soft">
+            {"// no entries"}
+          </div>
+        ) : (
+          <ol className="border-t border-[rgb(var(--rule)/0.10)]">
+            {site.workExperience.map((item, i) => (
+              <ExperienceRow
+                key={`${item.company}-${item.start}`}
+                item={item}
+                index={i}
+                open={openIndex === i}
+                onToggle={() => setOpenIndex((v) => (v === i ? null : i))}
+              />
+            ))}
+          </ol>
+        )}
       </div>
     </section>
   );

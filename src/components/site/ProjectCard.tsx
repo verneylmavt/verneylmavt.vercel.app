@@ -1,8 +1,14 @@
+"use client";
+
+import * as React from "react";
+import { useReducedMotion } from "framer-motion";
 import type { ProjectItem } from "@/content/site";
 import { Glyph } from "@/components/ui/glyphs";
 import { KeyValue } from "@/components/ui/KeyValue";
 import { padIndex, formatRange } from "@/lib/format";
 import { cn } from "@/lib/cn";
+
+const MAX_TILT_DEG = 5;
 
 function categoryTag(p: ProjectItem): string {
   const t = p.tags ?? [];
@@ -17,25 +23,120 @@ export function ProjectCard({
   project,
   index,
   featured = false,
+  dimmed = false,
 }: {
   project: ProjectItem;
   index: number;
   featured?: boolean;
+  /** When true, dim the card (used for tag-hover preview). */
+  dimmed?: boolean;
 }) {
   const primaryUrl = project.demoUrl || project.repoUrl;
   const cat = categoryTag(project);
   const year = formatRange(project.start, project.end);
 
+  const articleRef = React.useRef<HTMLElement | null>(null);
+  const reduced = useReducedMotion();
+
+  // Initial state must match server (false). After mount, enable tilt on
+  // pointer-capable, non-reduced-motion clients.
+  const [tiltEnabled, setTiltEnabled] = React.useState(false);
+  React.useEffect(() => {
+    if (reduced) return;
+    if (typeof window === "undefined") return;
+    if (!window.matchMedia) return;
+    if (window.matchMedia("(hover: none)").matches) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTiltEnabled(true);
+  }, [reduced]);
+
+  // Tilt is driven imperatively (DOM transform written from a rAF loop)
+  // so mousemove doesn't churn React state at ~60fps. We lerp `current`
+  // toward `target`; the loop stops once both are at rest.
+  const targetRef = React.useRef({ x: 0, y: 0 });
+  const currentRef = React.useRef({ x: 0, y: 0 });
+  const rafRef = React.useRef<number>(0);
+
+  const ensureLoop = React.useCallback(() => {
+    if (rafRef.current) return;
+    const tick = () => {
+      const el = articleRef.current;
+      if (!el) {
+        rafRef.current = 0;
+        return;
+      }
+      const lerp = 0.18;
+      const cx = currentRef.current.x;
+      const cy = currentRef.current.y;
+      const tx = targetRef.current.x;
+      const ty = targetRef.current.y;
+      const nx = cx + (tx - cx) * lerp;
+      const ny = cy + (ty - cy) * lerp;
+      currentRef.current = { x: nx, y: ny };
+
+      el.style.transform = `perspective(900px) rotateX(${-ny}deg) rotateY(${nx}deg)`;
+
+      const settled =
+        Math.abs(tx - nx) < 0.01 && Math.abs(ty - ny) < 0.01;
+      if (settled && tx === 0 && ty === 0) {
+        // Snap to zero and stop
+        currentRef.current = { x: 0, y: 0 };
+        el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+        rafRef.current = 0;
+        return;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  }, []);
+
+  const onMouseMove: React.MouseEventHandler<HTMLElement> = (e) => {
+    if (!tiltEnabled) return;
+    const el = articleRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    targetRef.current = {
+      x: Math.max(-1, Math.min(1, dx)) * MAX_TILT_DEG,
+      y: Math.max(-1, Math.min(1, dy)) * MAX_TILT_DEG,
+    };
+    ensureLoop();
+  };
+
+  const onMouseLeave = () => {
+    if (!tiltEnabled) return;
+    targetRef.current = { x: 0, y: 0 };
+    ensureLoop();
+  };
+
+  // Unmount safety: cancel any in-flight rAF
+  React.useEffect(() => {
+    return () => {
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = 0;
+      }
+    };
+  }, []);
+
   return (
     <article
+      ref={articleRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
       className={cn(
         "relative group plus-corners flex flex-col",
         "border border-[rgb(var(--rule)/0.14)] rounded-[2px]",
         "bg-[rgb(var(--surface)/0.45)]",
-        "transition-all duration-[var(--dur-base)] ease-[var(--ease-precise)]",
+        "transition-[opacity,border-color,transform,box-shadow] duration-[var(--dur-base)] ease-[var(--ease-precise)]",
         "hover:border-[rgb(var(--rule)/0.30)] hover:-translate-y-0.5",
         featured && "md:col-span-3",
+        dimmed && "opacity-40",
       )}
+      style={{ transformStyle: "preserve-3d" }}
     >
       {/* Category tag — top-left */}
       <div className="absolute -top-px left-3 z-[1]">

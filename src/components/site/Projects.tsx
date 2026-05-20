@@ -17,6 +17,7 @@ export function Projects({ site }: { site: SiteContent }) {
   const [query, setQuery] = React.useState("");
   const [tag, setTag] = React.useState<string>("all");
   const [visibleCount, setVisibleCount] = React.useState(INITIAL_VISIBLE);
+  const [hoveredTag, setHoveredTag] = React.useState<string | null>(null);
 
   // Reset pagination whenever the user changes the filter; done in the
   // handlers so we avoid `setState`-in-effect.
@@ -89,6 +90,7 @@ export function Projects({ site }: { site: SiteContent }) {
               tags={tags}
               active={tag}
               onChange={handleTagChange}
+              onHover={setHoveredTag}
               includeAll
               allLabel="all"
               className="md:justify-end"
@@ -115,6 +117,10 @@ export function Projects({ site }: { site: SiteContent }) {
                   project={p}
                   index={i}
                   featured={!!p.featured}
+                  dimmed={
+                    hoveredTag !== null &&
+                    !(p.tags ?? []).includes(hoveredTag)
+                  }
                 />
               ))}
             </div>

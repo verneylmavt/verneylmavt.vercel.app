@@ -1,3 +1,6 @@
+"use client";
+
+import * as React from "react";
 import { Hairline } from "@/components/ui/Hairline";
 import { cn } from "@/lib/cn";
 
@@ -7,6 +10,9 @@ import { cn } from "@/lib/cn";
  *   // 02_work                              [ src/sections/work.tsx ]
  *   WORK EXPERIENCES
  *   ─────────────────────────────────────────────────────────────
+ *
+ * The title "compiles in" via clip-path reveal the first time the heading
+ * enters the viewport. Reduced-motion users get the static title immediately.
  */
 export function SectionHeading({
   number,
@@ -37,15 +43,56 @@ export function SectionHeading({
           [ {file} ]
         </span>
       </div>
-      <h2
-        className={cn(
-          "text-[clamp(2rem,5vw,3.5rem)] leading-[1.0] font-medium tracking-[-0.01em]",
-          "text-foreground uppercase",
-        )}
-      >
-        {title}
-      </h2>
+      <CompileInTitle title={title} />
       <Hairline className="mt-4" />
     </header>
+  );
+}
+
+function CompileInTitle({ title }: { title: string }) {
+  const ref = React.useRef<HTMLHeadingElement | null>(null);
+  const [revealed, setRevealed] = React.useState(false);
+
+  React.useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setRevealed(true);
+      return;
+    }
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setRevealed(true);
+            obs.disconnect();
+            break;
+          }
+        }
+      },
+      { threshold: 0.2 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <h2
+      ref={ref}
+      className={cn(
+        "text-[clamp(2rem,5vw,3.5rem)] leading-[1.0] font-medium tracking-[-0.01em]",
+        "text-foreground uppercase",
+      )}
+    >
+      <span
+        className="compile-in"
+        style={{ ["--reveal" as string]: revealed ? 1 : 0 }}
+      >
+        {title}
+      </span>
+    </h2>
   );
 }

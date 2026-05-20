@@ -20,12 +20,17 @@ import {
   DiagnosticOverlay,
   readDiagnosticInitial,
 } from "@/components/visual/DiagnosticOverlay";
+import { MouseSpotlight } from "@/components/visual/MouseSpotlight";
+import { Scanline } from "@/components/visual/Scanline";
+import { MatrixRain } from "@/components/visual/MatrixRain";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { CmdPalette, type PaletteItem } from "@/components/ui/CmdPalette";
 import { ShortcutHelp } from "@/components/ui/ShortcutHelp";
+import { ContextMenu, type ContextMenuItem } from "@/components/ui/ContextMenu";
 import { useActiveSection } from "@/hooks/useActiveSection";
 import { useGlobalShortcuts } from "@/hooks/useGlobalShortcuts";
 import { useKonami } from "@/hooks/useKonami";
+import { useTypedSequence } from "@/hooks/useTypedSequence";
 import { useTheme } from "@/components/ThemeProvider";
 
 const SECTIONS: NavSection[] = [
@@ -48,7 +53,14 @@ export function SitePage({ content }: { content: SiteContent }) {
   // Initial state must match server (false) for clean hydration. After mount,
   // restore from sessionStorage if user previously activated diagnostic mode.
   const [diagnosticOn, setDiagnosticOn] = React.useState<boolean>(false);
-  const { theme, resolvedTheme } = useTheme();
+  const [matrixOn, setMatrixOn] = React.useState<boolean>(false);
+  const [ctxMenu, setCtxMenu] = React.useState<{
+    open: boolean;
+    x: number;
+    y: number;
+  }>({ open: false, x: 0, y: 0 });
+
+  const { theme, resolvedTheme, cycleTheme } = useTheme();
 
   React.useEffect(() => {
     if (readDiagnosticInitial()) {
@@ -57,8 +69,14 @@ export function SitePage({ content }: { content: SiteContent }) {
     }
   }, []);
 
-  // Konami code toggles diagnostic mode.
+  // Konami code → diagnostic mode
   useKonami(React.useCallback(() => setDiagnosticOn((v) => !v), []));
+
+  // Typed "matrix" → MatrixRain
+  useTypedSequence(
+    "matrix",
+    React.useCallback(() => setMatrixOn(true), []),
+  );
 
   const scrollToSection = React.useCallback((id: string) => {
     const el = document.getElementById(id);
@@ -71,7 +89,9 @@ export function SitePage({ content }: { content: SiteContent }) {
   const focusSearch = React.useCallback(() => {
     scrollToSection("projects");
     setTimeout(() => {
-      const input = document.getElementById(PROJECT_SEARCH_ID) as HTMLInputElement | null;
+      const input = document.getElementById(
+        PROJECT_SEARCH_ID,
+      ) as HTMLInputElement | null;
       input?.focus();
     }, 200);
   }, [scrollToSection]);
@@ -83,8 +103,7 @@ export function SitePage({ content }: { content: SiteContent }) {
     onCloseOverlays: () => {
       setPaletteOpen(false);
       setHelpOpen(false);
-      // Esc does NOT exit diagnostic mode here; DiagnosticOverlay handles it itself
-      // to avoid colliding with palette/help close.
+      setCtxMenu((c) => ({ ...c, open: false }));
     },
     onOpenCommandPalette: () => setPaletteOpen((v) => !v),
   });
@@ -96,8 +115,11 @@ export function SitePage({ content }: { content: SiteContent }) {
       window.history.scrollRestoration = "manual";
     }
     if (window.location.hash) {
-      // Let the browser jump to the hash naturally, but strip from URL afterward.
-      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+      window.history.replaceState(
+        null,
+        "",
+        window.location.pathname + window.location.search,
+      );
     } else {
       window.scrollTo(0, 0);
     }
@@ -145,10 +167,71 @@ export function SitePage({ content }: { content: SiteContent }) {
   const themeLabel =
     theme === "system" ? `system (${resolvedTheme})` : theme;
 
+  const onContextMenu: React.MouseEventHandler<HTMLElement> = (e) => {
+    if (e.shiftKey) return; // let native menu through
+    e.preventDefault();
+    setCtxMenu({ open: true, x: e.clientX, y: e.clientY });
+  };
+
+  const ctxItems: ContextMenuItem[] = React.useMemo(() => {
+    return [
+      {
+        label: "open palette",
+        hint: "⌘K",
+        onSelect: () => setPaletteOpen(true),
+      },
+      { divider: true, label: "", onSelect: () => {} },
+      {
+        label: "jump to home",
+        hint: "g h",
+        onSelect: () => scrollToSection("top"),
+      },
+      {
+        label: "jump to projects",
+        hint: "g p",
+        onSelect: () => scrollToSection("projects"),
+      },
+      {
+        label: "jump to contact",
+        hint: "g x",
+        onSelect: () => scrollToSection("contact"),
+      },
+      { divider: true, label: "", onSelect: () => {} },
+      {
+        label: `theme: ${themeLabel}`,
+        onSelect: () => cycleTheme(),
+      },
+      {
+        label: "copy url",
+        onSelect: () => {
+          try {
+            void navigator.clipboard?.writeText(window.location.href);
+          } catch {
+            // ignore
+          }
+        },
+      },
+      {
+        label: "view source",
+        external: true,
+        onSelect: () =>
+          window.open(
+            "https://github.com/verneylmavt",
+            "_blank",
+            "noopener,noreferrer",
+          ),
+      },
+    ];
+  }, [scrollToSection, themeLabel, cycleTheme]);
+
   return (
     <>
       {/* First-paint boot sequence (once per session) */}
       <BootSequence />
+
+      {/* Ambient layers */}
+      <MouseSpotlight />
+      <Scanline />
 
       {/* Cursor crosshair — desktop, non-reduced-motion only */}
       <CursorCrosshair />
@@ -160,33 +243,47 @@ export function SitePage({ content }: { content: SiteContent }) {
         themeLabel={themeLabel}
       />
 
+      {/* Matrix rain — typed "matrix" easter egg */}
+      <MatrixRain
+        active={matrixOn}
+        onClose={() => setMatrixOn(false)}
+      />
+
       <ViewportBrackets />
       <ScrollIndicator />
 
-      <Header
-        handle={content.handle}
-        sections={SECTIONS}
-        activeId={activeId}
-        onOpenPalette={() => setPaletteOpen(true)}
-      />
+      <div onContextMenu={onContextMenu}>
+        <Header
+          handle={content.handle}
+          sections={SECTIONS}
+          activeId={activeId}
+          onOpenPalette={() => setPaletteOpen(true)}
+        />
 
-      <main id="main" className="flex-1 pb-12">
-        <Hero site={content} />
-        <About site={content} />
-        <Education site={content} />
-        <Experience site={content} />
-        <Tools site={content} />
-        <Certifications site={content} />
-        <Projects site={content} />
-        <Contact site={content} />
-      </main>
+        <main id="main" className="flex-1 pb-12">
+          <Hero site={content} />
+          <About site={content} />
+          <Education site={content} />
+          <Experience site={content} />
+          <Tools site={content} />
+          <Certifications site={content} />
+          <Projects site={content} />
+          <Contact site={content} />
+        </main>
 
-      <Footer />
+        <Footer />
+      </div>
 
       <StatusBar />
 
       <CmdPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
       <ShortcutHelp open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <ContextMenu
+        open={ctxMenu.open}
+        anchor={{ x: ctxMenu.x, y: ctxMenu.y }}
+        items={ctxItems}
+        onClose={() => setCtxMenu((c) => ({ ...c, open: false }))}
+      />
     </>
   );
 }

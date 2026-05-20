@@ -7,6 +7,12 @@
  * ─────────────────────────────────────────────────────────── */
 
 :root {
+  /* Safe-area insets — non-zero on notched / rounded-corner devices */
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+
   /* Light theme (paper) */
   --background: 244 242 236;   /* warm off-white */
   --foreground: 18 18 20;      /* charcoal, not pure black */
@@ -288,6 +294,78 @@ body {
 
 html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
   outline: 1px solid rgb(var(--accent) / 0.22) !important;
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * CRT scanline drift
+ * ─────────────────────────────────────────────────────────── */
+
+.scanline {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    rgb(var(--foreground) / 0.07) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  animation: scanline-drift 10s linear infinite;
+  will-change: transform;
+}
+
+@keyframes scanline-drift {
+  0% {
+    transform: translateY(-10vh);
+  }
+  100% {
+    transform: translateY(110vh);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scanline {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Toast (EOF notification) — fade in/out
+ * ─────────────────────────────────────────────────────────── */
+
+.toast-enter {
+  opacity: 0;
+  transform: translateY(0.5rem);
+}
+.toast-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity var(--dur-base) var(--ease-precise),
+    transform var(--dur-base) var(--ease-precise);
+}
+.toast-exit {
+  opacity: 1;
+}
+.toast-exit-active {
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-precise);
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * Compile-in section heading reveal
+ * Title text uses inline-block + width animation to reveal char by char
+ * (managed by JS via setting `--reveal: 0..1`).
+ * ─────────────────────────────────────────────────────────── */
+
+.compile-in {
+  display: inline-block;
+  clip-path: inset(0 calc((1 - var(--reveal, 1)) * 100%) 0 0);
+  transition: clip-path 240ms steps(20, end);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compile-in {
+    clip-path: none;
+  }
 }
 
 /* ──────────────────────────────────────────────────────────────

@@ -18,21 +18,27 @@ export function Education({ site }: { site: SiteContent }) {
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={2} slug="education" title="Education" />
 
-        <ol className="flex flex-col gap-10">
-          {site.education.map((edu, i) => (
-            <React.Fragment key={`${edu.institution}-${edu.start}`}>
-              <EducationRow
-                item={edu}
-                index={i}
-                open={openIndex === i}
-                onToggle={() =>
-                  setOpenIndex((v) => (v === i ? null : i))
-                }
-              />
-              {i < site.education.length - 1 ? <Hairline /> : null}
-            </React.Fragment>
-          ))}
-        </ol>
+        {site.education.length === 0 ? (
+          <div className="border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] px-5 py-6 text-[0.875rem] text-muted-soft">
+            {"// no entries"}
+          </div>
+        ) : (
+          <ol className="flex flex-col gap-10">
+            {site.education.map((edu, i) => (
+              <React.Fragment key={`${edu.institution}-${edu.start}`}>
+                <EducationRow
+                  item={edu}
+                  index={i}
+                  open={openIndex === i}
+                  onToggle={() =>
+                    setOpenIndex((v) => (v === i ? null : i))
+                  }
+                />
+                {i < site.education.length - 1 ? <Hairline /> : null}
+              </React.Fragment>
+            ))}
+          </ol>
+        )}
       </div>
     </section>
   );

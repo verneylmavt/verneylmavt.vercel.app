@@ -1,17 +1,74 @@
 "use client";
 
+import * as React from "react";
+import { useReducedMotion } from "framer-motion";
 import { LocalClock } from "@/components/ui/LocalClock";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/components/ThemeProvider";
 import { cn } from "@/lib/cn";
 
-export function StatusBar() {
+type Flash = "idle" | "compiling" | "ok";
+
+/**
+ * Scroll-percent display, isolated into its own subscriber so the rest of
+ * StatusBar (clock, theme button, compile flash, version) doesn't re-render
+ * on every scroll frame.
+ */
+function ScrollPercent() {
   const progress = useScrollProgress();
   const pct = Math.round(progress * 100);
+  return (
+    <span className="hidden sm:inline tabular-nums">
+      scroll {String(pct).padStart(2, "0")}%
+    </span>
+  );
+}
+
+export function StatusBar() {
   const { theme, resolvedTheme, cycleTheme } = useTheme();
+  const reduced = useReducedMotion();
 
   const themeLabel =
     theme === "system" ? `system (${resolvedTheme})` : theme;
+
+  // Periodic "compiling…" → "ok" flash that briefly replaces the version label.
+  // Pauses under reduced-motion and when the page is hidden.
+  const [flash, setFlash] = React.useState<Flash>("idle");
+
+  React.useEffect(() => {
+    if (reduced) return;
+    let chain: number[] = [];
+
+    const schedule = () => {
+      const delay = 50_000 + Math.random() * 20_000;
+      chain.push(
+        window.setTimeout(() => {
+          if (document.visibilityState !== "visible") {
+            schedule();
+            return;
+          }
+          setFlash("compiling");
+          chain.push(
+            window.setTimeout(() => {
+              setFlash("ok");
+              chain.push(
+                window.setTimeout(() => {
+                  setFlash("idle");
+                  schedule();
+                }, 600),
+              );
+            }, 1400),
+          );
+        }, delay),
+      );
+    };
+
+    schedule();
+    return () => {
+      chain.forEach((t) => window.clearTimeout(t));
+      chain = [];
+    };
+  }, [reduced]);
 
   return (
     <div
@@ -26,11 +83,26 @@ export function StatusBar() {
         <div className="flex items-center gap-3 min-w-0">
           <LocalClock timeZone="Asia/Jakarta" zoneLabel="JKT" />
           <span aria-hidden="true" className="hidden sm:inline">·</span>
-          <span className="hidden sm:inline tabular-nums">
-            scroll {String(pct).padStart(2, "0")}%
-          </span>
+          <ScrollPercent />
         </div>
         <div className="flex items-center gap-3">
+          {/* Compile flash — only visible while flashing */}
+          {flash === "compiling" ? (
+            <span
+              aria-hidden="true"
+              className="hidden sm:inline text-muted-soft tabular-nums"
+            >
+              compiling…
+            </span>
+          ) : flash === "ok" ? (
+            <span
+              aria-hidden="true"
+              className="hidden sm:inline text-[rgb(var(--accent))] tabular-nums"
+            >
+              ok
+            </span>
+          ) : null}
+
           <button
             type="button"
             onClick={cycleTheme}
