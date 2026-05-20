@@ -72,6 +72,10 @@ body {
   color: rgb(var(--foreground));
   font-family: var(--font-mono), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-variant-numeric: tabular-nums;
+  /* Safety net — clip horizontal overflow so a single misbehaving child can't
+     cause the entire page to scroll sideways on mobile. `clip` (not `hidden`)
+     keeps the sticky-header context valid. */
+  overflow-x: clip;
   font-feature-settings: "calt" 1, "ss01" 1, "zero" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

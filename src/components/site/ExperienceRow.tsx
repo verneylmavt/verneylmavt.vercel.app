@@ -7,8 +7,22 @@ import { DotLeader } from "@/components/ui/DotLeader";
 import { padIndex } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
-const HEADER_COLS =
-  "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]";
+/**
+ * Header grid layout:
+ *  - mobile (default): 3 cols, areas
+ *      [idx company chev]
+ *      [.   title   title]
+ *      [.   year    year]
+ *  - md+: single row, 5 cols
+ *      [idx company title year chev]
+ */
+const HEADER_GRID = cn(
+  "grid items-baseline gap-y-1 gap-x-3 pt-4",
+  "grid-cols-[2.5rem_1fr_1.25rem]",
+  "[grid-template-areas:'idx_company_chev'_'._title_title'_'._year_year']",
+  "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]",
+  "md:[grid-template-areas:'idx_company_title_year_chev']",
+);
 const BODY_COLS = "md:grid-cols-[2.5rem_1fr] md:gap-x-3";
 
 export function ExperienceRow({
@@ -27,17 +41,23 @@ export function ExperienceRow({
 
   return (
     <li className="border-b border-[rgb(var(--rule)/0.10)]">
-      {/* ── Header row — 5-col grid; company hugs widest, titles align ── */}
-      <div className={cn("grid items-baseline gap-y-2 gap-x-3 pt-4", HEADER_COLS)}>
+      {/* ── Header row — responsive grid via grid-template-areas ── */}
+      <div className={HEADER_GRID}>
         {/* Index */}
-        <span className="text-[0.75rem] tabular-nums whitespace-nowrap">
+        <span
+          style={{ gridArea: "idx" }}
+          className="text-[0.75rem] tabular-nums whitespace-nowrap"
+        >
           <span className="text-[rgb(var(--accent))]">[</span>
           <span className="text-muted-soft">{padIndex(index + 1)}</span>
           <span className="text-[rgb(var(--accent))]">]</span>
         </span>
 
-        {/* Company link + ↗ + • bullet — hugs content; widest sets the column */}
-        <span className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.9375rem] md:text-[1rem]">
+        {/* Company link + ↗ + • bullet (bullet only on md+) */}
+        <span
+          style={{ gridArea: "company" }}
+          className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.9375rem] md:text-[1rem] min-w-0"
+        >
           {item.companyUrl ? (
             <a
               href={item.companyUrl}
@@ -49,25 +69,38 @@ export function ExperienceRow({
                 "hover:text-[rgb(var(--accent))]",
               )}
             >
-              <span>{item.company}</span>
-              <span aria-hidden="true" className="text-[0.6875rem]">↗</span>
+              <span className="truncate">{item.company}</span>
+              <span aria-hidden="true" className="text-[0.6875rem] shrink-0">
+                ↗
+              </span>
             </a>
           ) : (
-            <span className="text-foreground">{item.company}</span>
+            <span className="text-foreground truncate">{item.company}</span>
           )}
-          <span aria-hidden="true" className="text-muted-soft mx-1">•</span>
+          <span
+            aria-hidden="true"
+            className="hidden md:inline text-muted-soft mx-1"
+          >
+            •
+          </span>
         </span>
 
-        {/* Title + dotted fill — titles all start at the same column position */}
-        <span className="flex items-baseline gap-3 min-w-0">
+        {/* Title + dotted fill */}
+        <span
+          style={{ gridArea: "title" }}
+          className="flex items-baseline gap-3 min-w-0"
+        >
           <span className="text-[0.8125rem] text-muted truncate">
             {item.title.toLowerCase()}
           </span>
-          <DotLeader />
+          <DotLeader className="hidden md:block" />
         </span>
 
         {/* Year range */}
-        <span className="text-[0.75rem] text-muted-soft tabular-nums whitespace-nowrap text-right">
+        <span
+          style={{ gridArea: "year" }}
+          className="text-[0.75rem] text-muted-soft tabular-nums whitespace-nowrap md:text-right"
+        >
           {item.start} — {item.end}
         </span>
 
@@ -78,6 +111,7 @@ export function ExperienceRow({
           aria-expanded={open}
           aria-controls={`${id}-panel`}
           aria-label={open ? "Hide details" : "Show details"}
+          style={{ gridArea: "chev" }}
           className={cn(
             "justify-self-end text-[0.75rem] text-muted hover:text-foreground",
             "transition-transform duration-[var(--dur-base)]",

@@ -53,11 +53,13 @@ export function KeyValue({
         className,
       )}
     >
-      <span className={cn("text-muted uppercase tracking-[0.05em] text-[0.75rem]", keyClassName)}>
+      <span className={cn("text-muted uppercase tracking-[0.05em] text-[0.75rem] shrink-0", keyClassName)}>
         {k}
       </span>
       <DotLeader />
-      <span className={cn("text-foreground", valueClassName)}>{v}</span>
+      <span className={cn("text-foreground min-w-0 break-words", valueClassName)}>
+        {v}
+      </span>
     </div>
   );
 }

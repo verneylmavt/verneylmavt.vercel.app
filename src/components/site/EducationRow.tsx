@@ -37,7 +37,7 @@ export function EducationRow({
           <KeyValue
             k="institution"
             v={item.institution}
-            valueClassName="whitespace-nowrap overflow-hidden text-ellipsis"
+            valueClassName="md:whitespace-nowrap md:overflow-hidden md:text-ellipsis"
           />
           <KeyValue k="degree" v={item.title} />
           <KeyValue k="period" v={`${item.start} — ${item.end}`} />

@@ -54,11 +54,11 @@ export function Contact({ site }: { site: SiteContent }) {
                       href={c.href}
                       target={c.href.startsWith("http") ? "_blank" : undefined}
                       rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                      className="text-foreground hover:text-[rgb(var(--accent))] truncate"
+                      className="text-foreground hover:text-[rgb(var(--accent))] truncate min-w-0 flex-1"
                     >
                       {display}
                     </a>
-                    <DotLeader />
+                    <DotLeader className="hidden sm:block" />
                     <CopyChip value={display} />
                     {c.href.startsWith("http") ? (
                       <a
@@ -83,11 +83,11 @@ export function Contact({ site }: { site: SiteContent }) {
                     href={site.links.resume}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-foreground hover:text-[rgb(var(--accent))] truncate"
+                    className="text-foreground hover:text-[rgb(var(--accent))] truncate min-w-0 flex-1"
                   >
                     {displayHref(site.links.resume)}
                   </a>
-                  <DotLeader />
+                  <DotLeader className="hidden sm:block" />
                   <CopyChip value={site.links.resume} />
                   <a
                     href={site.links.resume}

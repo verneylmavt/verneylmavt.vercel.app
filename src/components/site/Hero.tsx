@@ -144,22 +144,26 @@ export function Hero({ site }: { site: SiteContent }) {
           ) : (
             <div
               tabIndex={0}
-              className="draw-accent mt-8 inline-flex items-center gap-2 text-[0.875rem] md:text-[1rem] outline-none cursor-default"
+              className="draw-accent mt-8 flex flex-wrap items-baseline gap-x-2 gap-y-1 max-w-full text-[0.875rem] md:text-[1rem] outline-none cursor-default"
             >
-              <span className="text-muted-soft">~/verneylmavt</span>
+              <span className="text-muted-soft whitespace-nowrap">
+                ~/verneylmavt
+              </span>
               <button
                 type="button"
                 onClick={() => setTerminalOpen(true)}
                 aria-label="Open mini terminal"
                 className={cn(
                   "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
-                  "px-1 rounded-[2px] cursor-pointer",
+                  "px-1 rounded-[2px] cursor-pointer shrink-0",
                   "transition-colors duration-[var(--dur-base)]",
                 )}
               >
                 $
               </button>
-              <span className="text-foreground">{visible}</span>
+              <span className="text-foreground break-all min-w-0">
+                {visible}
+              </span>
               <BlinkingCaret />
             </div>
           )}
