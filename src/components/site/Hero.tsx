@@ -16,11 +16,15 @@ const TYPEWRITER_COMMANDS = [
   "const mbti = ENTP;",
 ] as const;
 
-// ASCII portrait — shown briefly when the user clicks the hero name.
-const ASCII_ART = `   ____      __
-  / __/__   / /
- / _// _ \\ / _ \\
-/___/_//_//_//_/`;
+// ASCII art spelling "VERNEYLMAVT" — shown briefly when the user clicks the
+// hero name. ANSI Shadow block-letter style. Width is intentional; on narrow
+// screens the <pre> scrolls horizontally inside the hero column.
+const ASCII_ART = `██╗   ██╗███████╗██████╗ ███╗   ██╗███████╗██╗   ██╗██╗     ███╗   ███╗ █████╗ ██╗   ██╗████████╗
+██║   ██║██╔════╝██╔══██╗████╗  ██║██╔════╝╚██╗ ██╔╝██║     ████╗ ████║██╔══██╗██║   ██║╚══██╔══╝
+██║   ██║█████╗  ██████╔╝██╔██╗ ██║█████╗   ╚████╔╝ ██║     ██╔████╔██║███████║██║   ██║   ██║
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝    ╚██╔╝  ██║     ██║╚██╔╝██║██╔══██║╚██╗ ██╔╝   ██║
+ ╚████╔╝ ███████╗██║  ██║██║ ╚████║███████╗   ██║   ███████╗██║ ╚═╝ ██║██║  ██║ ╚████╔╝    ██║
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝  ╚═══╝     ╚═╝   `;
 
 export function Hero({ site }: { site: SiteContent }) {
   const reducedMotion = useReducedMotion();
@@ -117,7 +121,7 @@ export function Hero({ site }: { site: SiteContent }) {
             {asciiOpen ? (
               <pre
                 aria-hidden="true"
-                className="block whitespace-pre text-[rgb(var(--accent))] leading-[1.0] text-[clamp(0.75rem,2.4vw,1.5rem)] font-bold"
+                className="block whitespace-pre text-[rgb(var(--accent))] leading-[1.0] text-[clamp(0.4rem,1.05vw,0.875rem)] overflow-x-auto max-w-full"
               >
                 {ASCII_ART}
               </pre>
