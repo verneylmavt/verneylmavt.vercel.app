@@ -5,7 +5,7 @@ import { useReducedMotion } from "framer-motion";
 import type { SiteContent } from "@/content/site";
 import { Glyph } from "@/components/ui/glyphs";
 import { BlinkingCaret } from "@/components/ui/BlinkingCaret";
-import { KeyValue } from "@/components/ui/KeyValue";
+import { DotLeader } from "@/components/ui/DotLeader";
 import { Hairline } from "@/components/ui/Hairline";
 import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
 import { MiniTerminal } from "./MiniTerminal";
@@ -23,12 +23,43 @@ const serverMountedSnapshot = () => false;
 // ASCII art spelling "VERNEYLMAVT" — shown briefly when the user clicks the
 // hero name. ANSI Shadow block-letter style. Width is intentional; on narrow
 // screens the <pre> scrolls horizontally inside the hero column.
-const ASCII_ART = `██╗   ██╗███████╗██████╗ ███╗   ██╗███████╗██╗   ██╗██╗     ███╗   ███╗ █████╗ ██╗   ██╗████████╗
-██║   ██║██╔════╝██╔══██╗████╗  ██║██╔════╝╚██╗ ██╔╝██║     ████╗ ████║██╔══██╗██║   ██║╚══██╔══╝
-██║   ██║█████╗  ██████╔╝██╔██╗ ██║█████╗   ╚████╔╝ ██║     ██╔████╔██║███████║██║   ██║   ██║
-╚██╗ ██╔╝██╔══╝  ██╔══██╗██║╚██╗██║██╔══╝    ╚██╔╝  ██║     ██║╚██╔╝██║██╔══██║╚██╗ ██╔╝   ██║
- ╚████╔╝ ███████╗██║  ██║██║ ╚████║███████╗   ██║   ███████╗██║ ╚═╝ ██║██║  ██║ ╚████╔╝    ██║
-  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝  ╚═══╝     ╚═╝   `;
+const ASCII_ART = 
+`
+███████╗██╗    ██╗   ██╗███████╗██████╗ ███╗   ██╗
+██╔════╝██║    ██║   ██║██╔════╝██╔══██╗████╗  ██║
+█████╗  ██║    ██║   ██║█████╗  ██████╔╝██╔██╗ ██║
+██╔══╝  ██║    ╚██╗ ██╔╝██╔══╝  ██╔══██╗██║╚██╗██║
+███████╗███████╗╚████╔╝ ███████╗██║  ██║██║ ╚████║
+╚══════╝╚══════╝ ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+
+███╗   ██╗███████╗██╗   ██╗██╗     ███╗   ███╗ █████╗ ██╗   ██╗
+████╗  ██║██╔════╝╚██╗ ██╔╝██║     ████╗ ████║██╔══██╗██║   ██║
+██╔██╗ ██║█████╗   ╚████╔╝ ██║     ██╔████╔██║███████║██║   ██║
+██║╚██╗██║██╔══╝    ╚██╔╝  ██║     ██║╚██╔╝██║██╔══██║╚██╗ ██╔╝
+██║ ╚████║███████╗   ██║   ███████╗██║ ╚═╝ ██║██║  ██║ ╚████╔╝
+╚═╝  ╚═══╝╚══════╝   ╚═╝   ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝  ╚═══╝
+
+████████╗ █████╗ ███╗   ██╗███╗   ██╗██╗   ██╗
+╚══██╔══╝██╔══██╗████╗  ██║████╗  ██║╚██╗ ██╔╝
+   ██║   ███████║██╔██╗ ██║██╔██╗ ██║ ╚████╔╝ 
+   ██║   ██╔══██║██║╚██╗██║██║╚██╗██║  ╚██╔╝  
+   ██║   ██║  ██║██║ ╚████║██║ ╚████║   ██║   
+   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝   
+  `;
+
+function HeroMetaRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[0.8125rem] sm:grid-cols-[auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
+      <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-muted sm:text-[0.75rem]">
+        {label}
+      </span>
+      <DotLeader className="hidden sm:block" />
+      <span className="min-w-0 break-words text-foreground sm:whitespace-nowrap sm:break-normal">
+        {value}
+      </span>
+    </div>
+  );
+}
 
 export function Hero({ site }: { site: SiteContent }) {
   const reducedMotion = useReducedMotion();
@@ -242,9 +273,11 @@ export function Hero({ site }: { site: SiteContent }) {
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
             {"// metadata"}
           </p>
-          <div className="flex flex-col gap-3 max-w-sm">
-            <KeyValue k="role" v={site.roleTitle} />
-            {site.location ? <KeyValue k="location" v={site.location} /> : null}
+          <div className="flex max-w-md flex-col gap-3">
+            <HeroMetaRow label="role" value={site.roleTitle} />
+            {site.location ? (
+              <HeroMetaRow label="location" value={site.location} />
+            ) : null}
           </div>
 
           {/* Photography cross-promo */}
