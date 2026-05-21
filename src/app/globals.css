@@ -19,7 +19,7 @@
   --muted: 80 80 84;           /* AA on background for micro text */
   --muted-soft: 110 110 114;   /* metadata where AA contrast isn't needed */
   --rule: 18 18 20;            /* hairlines, used at /0.12 */
-  --accent: 230 88 34;         /* burnt orange, surgical */
+  --accent: 199 53 43;         /* restrained signal red */
   --grid-dot: 18 18 20;        /* dotted background, used at /0.07 */
   --surface: 232 229 222;      /* slightly darker paper for card depth */
 
@@ -38,7 +38,7 @@
   --rule: 235 235 240;          /* hairlines re-map to bright */
   --grid-dot: 235 235 240;      /* dotted bg dots become bright */
   --surface: 22 22 26;          /* card depth on dark */
-  --accent: 240 110 50;         /* slightly brighter burnt-orange for dark contrast */
+  --accent: 239 68 68;          /* brighter red for dark contrast */
 }
 
 @theme inline {
