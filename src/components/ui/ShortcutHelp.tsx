@@ -4,7 +4,9 @@ import * as React from "react";
 import { Kbd } from "./Kbd";
 import { cn } from "@/lib/cn";
 
-type Row = { keys: React.ReactNode[]; label: string };
+type Row =
+  | { kind?: "row"; keys: React.ReactNode[]; label: string }
+  | { kind: "heading"; label: string };
 
 const ROWS: Row[] = [
   { keys: [<Kbd key="g">g</Kbd>, <Kbd key="h">h</Kbd>], label: "go home" },
@@ -19,6 +21,26 @@ const ROWS: Row[] = [
   { keys: [<Kbd key="cmd">⌘</Kbd>, <Kbd key="k">K</Kbd>], label: "open command palette" },
   { keys: [<Kbd key="q">?</Kbd>], label: "toggle this help" },
   { keys: [<Kbd key="esc">esc</Kbd>], label: "close overlays" },
+  { kind: "heading", label: "// easter eggs" },
+  {
+    keys: [
+      <Kbd key="u1">↑</Kbd>,
+      <Kbd key="u2">↑</Kbd>,
+      <Kbd key="d1">↓</Kbd>,
+      <Kbd key="d2">↓</Kbd>,
+      <Kbd key="l1">←</Kbd>,
+      <Kbd key="r1">→</Kbd>,
+      <Kbd key="l2">←</Kbd>,
+      <Kbd key="r2">→</Kbd>,
+      <Kbd key="b">b</Kbd>,
+      <Kbd key="a">a</Kbd>,
+    ],
+    label: "diagnostic mode",
+  },
+  {
+    keys: "matrix".split("").map((c, i) => <Kbd key={`m${i}`}>{c}</Kbd>),
+    label: "matrix rain",
+  },
 ];
 
 export function ShortcutHelp({
@@ -82,12 +104,26 @@ export function ShortcutHelp({
         </div>
 
         <ul className="space-y-2 text-[0.875rem]">
-          {ROWS.map((row, i) => (
-            <li key={i} className="flex items-center justify-between gap-3">
-              <span className="text-foreground">{row.label}</span>
-              <span className="flex items-center gap-1">{row.keys}</span>
-            </li>
-          ))}
+          {ROWS.map((row, i) => {
+            if (row.kind === "heading") {
+              return (
+                <li
+                  key={i}
+                  className="pt-3 mt-2 border-t border-[rgb(var(--rule)/0.12)] text-[0.6875rem] uppercase tracking-[0.08em] text-muted"
+                >
+                  {row.label}
+                </li>
+              );
+            }
+            return (
+              <li key={i} className="flex items-center justify-between gap-3">
+                <span className="text-foreground">{row.label}</span>
+                <span className="flex flex-wrap items-center gap-1 justify-end">
+                  {row.keys}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

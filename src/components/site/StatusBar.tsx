@@ -24,7 +24,13 @@ function ScrollPercent() {
   );
 }
 
-export function StatusBar() {
+export function StatusBar({
+  onOpenHelp,
+}: {
+  /** Opens the ShortcutHelp overlay. Hooked up from SitePage so the chip
+   *  is a second entry point alongside the `?` keyboard shortcut. */
+  onOpenHelp?: () => void;
+} = {}) {
   const { theme, resolvedTheme, cycleTheme } = useTheme();
   const reduced = useReducedMotion();
 
@@ -106,6 +112,24 @@ export function StatusBar() {
             >
               ok
             </span>
+          ) : null}
+
+          {onOpenHelp ? (
+            <button
+              type="button"
+              onClick={onOpenHelp}
+              aria-label="Open keyboard shortcuts and easter eggs"
+              className={cn(
+                "inline-flex items-center px-1.5 py-0.5",
+                "text-[0.6875rem] tracking-[0.04em]",
+                "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
+                "bg-[rgb(var(--surface)/0.4)] text-muted",
+                "transition-colors duration-[var(--dur-base)]",
+                "hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]",
+              )}
+            >
+              [ ? help ]
+            </button>
           ) : null}
 
           <button
