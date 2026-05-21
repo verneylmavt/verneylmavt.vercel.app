@@ -11,7 +11,7 @@ function contactKey(label: string): string {
 
 function displayHref(href: string): string {
   if (href.startsWith("mailto:")) return href.replace("mailto:", "");
-  return href.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  return href.replace(/^https?:\/\//, "").replace(/^www\./, "").replace(/\/$/, "");
 }
 
 function ContactRow({
@@ -29,7 +29,7 @@ function ContactRow({
   const display = displayHref(href);
 
   return (
-    <li className="contact-row group grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 text-[0.875rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline">
+    <li className="contact-row group grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 text-[0.8125rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline sm:text-[0.875rem]">
       <Glyph
         name={icon}
         size={14}
@@ -43,7 +43,7 @@ function ContactRow({
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="col-[2/3] row-[2] min-w-0 break-all text-foreground hover:text-[rgb(var(--accent))] sm:col-[4] sm:row-[1] sm:truncate sm:break-normal"
+        className="col-[2/3] row-[2] min-w-0 truncate text-[0.6875rem] text-foreground hover:text-[rgb(var(--accent))] sm:col-[4] sm:row-[1] sm:text-[0.8125rem] md:text-[0.875rem]"
       >
         {display}
       </a>

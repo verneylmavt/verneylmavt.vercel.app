@@ -10,7 +10,7 @@ export function About({ site }: { site: SiteContent }) {
 
         <div className="flex flex-col gap-10 max-w-3xl">
           {/* Paragraph */}
-          <p className="text-[1.0625rem] leading-[1.55] text-foreground">
+          <p className="text-[0.9375rem] leading-[1.65] text-foreground md:text-[1.0625rem] md:leading-[1.55]">
             {site.about.paragraph}
           </p>
 
@@ -20,7 +20,7 @@ export function About({ site }: { site: SiteContent }) {
               <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-2">
                 {`// currently — updated ${site.now.updatedAt}`}
               </p>
-              <p className="text-[0.9375rem] leading-[1.55] text-muted">
+              <p className="text-[0.875rem] leading-[1.6] text-muted md:text-[0.9375rem] md:leading-[1.55]">
                 {site.now.paragraph}
               </p>
             </div>

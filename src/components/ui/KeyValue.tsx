@@ -27,7 +27,7 @@ export function KeyValue({
 }) {
   if (variant === "toml") {
     return (
-      <div className={cn("flex items-baseline gap-2 text-sm", className)}>
+      <div className={cn("flex items-baseline gap-2 text-[0.8125rem] sm:text-sm", className)}>
         <span className={cn("text-foreground", keyClassName)}>{k}</span>
         <span className="text-muted-soft">=</span>
         <span className={cn("text-foreground", valueClassName)}>{v}</span>
@@ -37,7 +37,7 @@ export function KeyValue({
 
   if (variant === "comment") {
     return (
-      <div className={cn("text-sm text-muted-soft", className)}>
+      <div className={cn("text-[0.8125rem] text-muted-soft sm:text-sm", className)}>
         <span aria-hidden="true">{"// "}</span>
         <span className={cn(keyClassName)}>{k}</span>
         <span className="mx-1">=</span>
@@ -49,11 +49,11 @@ export function KeyValue({
   return (
     <div
       className={cn(
-        "flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm sm:flex-nowrap",
+        "flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[0.8125rem] sm:flex-nowrap sm:text-sm",
         className,
       )}
     >
-      <span className={cn("text-muted uppercase tracking-[0.05em] text-[0.75rem] shrink-0", keyClassName)}>
+      <span className={cn("text-muted uppercase tracking-[0.05em] text-[0.6875rem] shrink-0 sm:text-[0.75rem]", keyClassName)}>
         {k}
       </span>
       <DotLeader className="hidden sm:block" />

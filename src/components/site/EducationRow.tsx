@@ -17,14 +17,14 @@ function EducationKeyValue({
   valueClassName?: string;
 }) {
   return (
-    <div className="flex items-baseline gap-3 text-sm">
+    <div className="grid grid-cols-[auto_minmax(2rem,1fr)_minmax(0,62%)] items-baseline gap-3 text-[0.8125rem] sm:text-sm md:grid-cols-[auto_minmax(2rem,1fr)_minmax(0,1fr)]">
       <span className="shrink-0 text-[0.75rem] uppercase tracking-[0.05em] text-muted">
         {k}
       </span>
-      <DotLeader className="min-w-[2rem]" />
+      <DotLeader />
       <span
         className={cn(
-          "max-w-[64%] break-words text-right text-foreground md:max-w-none md:flex-1 md:text-left",
+          "min-w-0 break-words text-left text-foreground",
           valueClassName,
         )}
       >
