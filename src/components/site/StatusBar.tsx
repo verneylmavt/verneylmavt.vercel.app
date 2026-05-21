@@ -79,9 +79,14 @@ export function StatusBar() {
         "border-t border-[rgb(var(--rule)/0.12)] bg-[rgb(var(--background)/0.92)] backdrop-blur",
       )}
     >
-      <div className="mx-auto max-w-[88rem] px-4 lg:px-8 h-8 flex items-center justify-between text-[0.6875rem] tracking-[0.04em] text-muted">
+      <div className="mx-auto max-w-[88rem] px-4 lg:px-8 h-8 flex items-center justify-between gap-3 text-[0.6875rem] tracking-[0.04em] text-muted">
         <div className="flex items-center gap-3 min-w-0">
-          <LocalClock timeZone="Asia/Jakarta" zoneLabel="JKT" />
+          <span className="inline tabular-nums sm:hidden">JKT</span>
+          <LocalClock
+            timeZone="Asia/Jakarta"
+            zoneLabel="JKT"
+            className="hidden sm:inline-flex"
+          />
           <span aria-hidden="true" className="hidden sm:inline">·</span>
           <ScrollPercent />
         </div>
@@ -108,7 +113,7 @@ export function StatusBar() {
             onClick={cycleTheme}
             aria-label={`Theme: ${themeLabel}. Click to cycle.`}
             className={cn(
-              "hidden sm:inline-flex items-center px-1.5 py-0.5",
+              "inline-flex max-w-[52vw] items-center px-1.5 py-0.5",
               "text-[0.6875rem] tracking-[0.04em]",
               "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
               "bg-[rgb(var(--surface)/0.4)] text-muted",
