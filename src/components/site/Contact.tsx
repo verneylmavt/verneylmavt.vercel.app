@@ -29,7 +29,7 @@ function ContactRow({
   const display = displayHref(href);
 
   return (
-    <li className="contact-row group grid grid-cols-[1rem_6rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 text-[0.875rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline">
+    <li className="contact-row group grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 text-[0.875rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline">
       <Glyph
         name={icon}
         size={14}
@@ -43,13 +43,13 @@ function ContactRow({
         href={href}
         target={external ? "_blank" : undefined}
         rel={external ? "noopener noreferrer" : undefined}
-        className="col-[2/4] row-[2] min-w-0 break-all text-foreground hover:text-[rgb(var(--accent))] sm:col-[4] sm:row-[1] sm:truncate sm:break-normal"
+        className="col-[2/3] row-[2] min-w-0 break-all text-foreground hover:text-[rgb(var(--accent))] sm:col-[4] sm:row-[1] sm:truncate sm:break-normal"
       >
         {display}
       </a>
       <CopyChip
         value={copyValue ?? display}
-        className="col-[4] row-[1] justify-self-end sm:col-[5] sm:row-[1]"
+        className="col-[3] row-[1] justify-self-end sm:col-[5] sm:row-[1]"
       />
       {external ? (
         <a
@@ -57,7 +57,7 @@ function ContactRow({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={`Open ${label}`}
-          className="col-[4] row-[2] justify-self-end text-muted hover:text-[rgb(var(--accent))] sm:col-[6] sm:row-[1]"
+          className="col-[3] row-[2] justify-self-end text-muted hover:text-[rgb(var(--accent))] sm:col-[6] sm:row-[1]"
         >
           <span aria-hidden="true">-&gt;</span>
         </a>
@@ -77,7 +77,7 @@ export function Contact({ site }: { site: SiteContent }) {
         <SectionHeading number={7} slug="contact" title="Contact" />
 
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-6">
-          <div className="md:col-span-5">
+          <div className="min-w-0 md:col-span-5">
             <h3 className="text-[clamp(2.25rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
               Let&apos;s
               <br />
@@ -89,11 +89,11 @@ export function Contact({ site }: { site: SiteContent }) {
             </p>
           </div>
 
-          <div className="md:col-span-7">
+          <div className="min-w-0 md:col-span-7">
             <p className="mb-3 text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft">
               {"// contacts.spec"}
             </p>
-            <ul className="flex flex-col gap-3 rounded-[2px] border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] p-5">
+            <ul className="flex min-w-0 flex-col gap-3 rounded-[2px] border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] p-5">
               {site.contacts.map((c) => (
                 <ContactRow
                   key={c.label}

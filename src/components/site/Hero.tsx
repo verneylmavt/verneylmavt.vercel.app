@@ -16,6 +16,10 @@ const TYPEWRITER_COMMANDS = [
   "const mbti = ENTP;",
 ] as const;
 
+const subscribeNoop = () => () => {};
+const clientMountedSnapshot = () => true;
+const serverMountedSnapshot = () => false;
+
 // ASCII art spelling "VERNEYLMAVT" — shown briefly when the user clicks the
 // hero name. ANSI Shadow block-letter style. Width is intentional; on narrow
 // screens the <pre> scrolls horizontally inside the hero column.
@@ -28,6 +32,11 @@ const ASCII_ART = `██╗   ██╗███████╗█████�
 
 export function Hero({ site }: { site: SiteContent }) {
   const reducedMotion = useReducedMotion();
+  const mounted = React.useSyncExternalStore(
+    subscribeNoop,
+    clientMountedSnapshot,
+    serverMountedSnapshot,
+  );
 
   // Typewriter state — lifted from v2 (SitePage.tsx:134-181) but simplified.
   // No `mounted` state needed: initial charIndex=0 → visible="" matches both
@@ -84,7 +93,7 @@ export function Hero({ site }: { site: SiteContent }) {
 
   const phrase = TYPEWRITER_COMMANDS[cmdIndex] ?? "";
   // When reduced motion is active, show the first command in full (no animation).
-  const visible = reducedMotion
+  const visible = mounted && reducedMotion
     ? (TYPEWRITER_COMMANDS[0] ?? "")
     : phrase.slice(0, Math.max(0, charIndex));
 
@@ -148,27 +157,29 @@ export function Hero({ site }: { site: SiteContent }) {
           ) : (
             <div
               tabIndex={0}
-              className="draw-accent mt-8 min-w-0 flex items-baseline gap-2 max-w-full text-[0.875rem] md:text-[1rem] outline-none cursor-default"
+              className="draw-accent mt-8 min-w-0 flex max-w-full flex-col items-start gap-1 text-[0.875rem] outline-none cursor-default sm:flex-row sm:items-baseline sm:gap-2 md:text-[1rem]"
             >
               <span className="text-muted-soft shrink-0">
                 ~/verneylmavt
               </span>
-              <button
-                type="button"
-                onClick={() => setTerminalOpen(true)}
-                aria-label="Open mini terminal"
-                className={cn(
-                  "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
-                  "px-1 rounded-[2px] cursor-pointer shrink-0",
-                  "transition-colors duration-[var(--dur-base)]",
-                )}
-              >
-                $
-              </button>
-              <span className="text-foreground min-w-0 flex-1 break-words">
-                {visible}
+              <span className="flex min-h-[2.8em] min-w-0 items-baseline gap-2 text-[0.75rem] leading-[1.35] sm:min-h-0 sm:flex-1 sm:text-[0.875rem] md:text-[1rem]">
+                <button
+                  type="button"
+                  onClick={() => setTerminalOpen(true)}
+                  aria-label="Open mini terminal"
+                  className={cn(
+                    "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
+                    "px-1 rounded-[2px] cursor-pointer shrink-0",
+                    "transition-colors duration-[var(--dur-base)]",
+                  )}
+                >
+                  $
+                </button>
+                <span className="text-foreground min-w-0 flex-1 break-words">
+                  {visible}
+                </span>
+                <BlinkingCaret className="shrink-0" />
               </span>
-              <BlinkingCaret className="shrink-0" />
             </div>
           )}
 
@@ -180,7 +191,7 @@ export function Hero({ site }: { site: SiteContent }) {
           ) : null}
 
           {/* Contact chips */}
-          <div className="mt-10 flex flex-wrap items-center gap-2">
+          <div className="mt-10 grid grid-cols-2 items-stretch gap-2 sm:flex sm:flex-wrap sm:items-center">
             {site.contacts.map((c) => {
               const external = c.href.startsWith("http");
               return (
@@ -190,7 +201,7 @@ export function Hero({ site }: { site: SiteContent }) {
                   target={external ? "_blank" : undefined}
                   rel={external ? "noopener noreferrer" : undefined}
                   className={cn(
-                    "group inline-flex items-center gap-2 px-3 py-1.5",
+                    "group inline-flex min-w-0 items-center justify-center gap-2 px-3 py-1.5 sm:justify-start",
                     "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
                     "bg-[rgb(var(--surface)/0.4)] text-[0.75rem] uppercase tracking-[0.04em] text-foreground",
                     "transition-colors duration-[var(--dur-base)]",

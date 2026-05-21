@@ -23,7 +23,7 @@ const HEADER_GRID = cn(
   "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]",
   "md:[grid-template-areas:'idx_company_title_year_chev']",
 );
-const BODY_COLS = "md:grid-cols-[2.5rem_1fr] md:gap-x-3";
+const BODY_COLS = "grid-cols-[2.5rem_1fr] gap-x-3";
 
 export function ExperienceRow({
   item,
@@ -125,7 +125,7 @@ export function ExperienceRow({
       {/* Location — always visible beneath header */}
       {item.location ? (
         <div className={cn("grid pt-2", BODY_COLS)}>
-          <div className="hidden md:block" />
+          <div aria-hidden="true" />
           <p className="text-[0.75rem] uppercase tracking-[0.04em] text-muted-soft">
             {item.location}
           </p>
@@ -149,7 +149,7 @@ export function ExperienceRow({
             className="overflow-hidden"
           >
             <div className={cn("grid pt-3 pb-6", BODY_COLS)}>
-              <div className="hidden md:block" />
+              <div aria-hidden="true" />
               <div className="flex flex-col gap-3 max-w-3xl">
                 <p className="text-[0.875rem] leading-[1.6] text-muted">
                   {item.summary}

@@ -75,17 +75,19 @@ export function Projects({ site }: { site: SiteContent }) {
         <SectionHeading number={6} slug="projects" title="Projects" />
 
         {/* Filter / search bar */}
-        <div className="grid gap-3 md:grid-cols-12 mb-8">
-          <div className="md:col-span-5">
+        <div className="mb-8 grid min-w-0 gap-3 md:grid-cols-12">
+          <div className="min-w-0 md:col-span-5">
             <SearchInput
               id={PROJECT_SEARCH_ID}
               value={query}
               onChange={handleQueryChange}
               prompt=">"
               placeholder="title or description..."
+              containerClassName="max-w-full px-2.5 py-1.5 sm:px-3 sm:py-2"
+              className="text-[0.8125rem] sm:text-[0.875rem]"
             />
           </div>
-          <div className="md:col-span-7">
+          <div className="min-w-0 overflow-hidden md:col-span-7">
             <TagFilter
               tags={tags}
               active={tag}
@@ -93,7 +95,7 @@ export function Projects({ site }: { site: SiteContent }) {
               onHover={setHoveredTag}
               includeAll
               allLabel="all"
-              className="md:justify-end"
+              className="max-w-full max-md:flex-nowrap max-md:overflow-x-auto max-md:[-ms-overflow-style:none] max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden md:justify-end"
             />
           </div>
         </div>

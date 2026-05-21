@@ -45,7 +45,7 @@ export function TagFilter({
             onBlur={() => onHover?.(null)}
             aria-pressed={isActive}
             className={cn(
-              "whitespace-nowrap px-2.5 py-1 text-[0.75rem] tracking-[0.03em]",
+              "shrink-0 whitespace-nowrap px-2.5 py-1 text-[0.75rem] tracking-[0.03em]",
               "border rounded-[2px] transition-colors",
               "duration-[var(--dur-base)] ease-[var(--ease-precise)]",
               isActive

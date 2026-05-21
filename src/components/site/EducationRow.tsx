@@ -3,9 +3,36 @@
 import * as React from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { EducationItem } from "@/content/site";
-import { KeyValue } from "@/components/ui/KeyValue";
+import { DotLeader } from "@/components/ui/DotLeader";
 import { padIndex } from "@/lib/format";
 import { cn } from "@/lib/cn";
+
+function EducationKeyValue({
+  k,
+  v,
+  valueClassName,
+}: {
+  k: string;
+  v: string;
+  valueClassName?: string;
+}) {
+  return (
+    <div className="flex items-baseline gap-3 text-sm">
+      <span className="shrink-0 text-[0.75rem] uppercase tracking-[0.05em] text-muted">
+        {k}
+      </span>
+      <DotLeader className="min-w-[2rem]" />
+      <span
+        className={cn(
+          "max-w-[64%] break-words text-right text-foreground md:max-w-none md:flex-1 md:text-left",
+          valueClassName,
+        )}
+      >
+        {v}
+      </span>
+    </div>
+  );
+}
 
 export function EducationRow({
   item,
@@ -34,13 +61,13 @@ export function EducationRow({
 
         {/* Spec block (always visible) */}
         <div className="flex flex-col gap-2 min-w-0">
-          <KeyValue
+          <EducationKeyValue
             k="institution"
             v={item.institution}
             valueClassName="md:whitespace-nowrap md:overflow-hidden md:text-ellipsis"
           />
-          <KeyValue k="degree" v={item.title} />
-          <KeyValue k="period" v={`${item.start} — ${item.end}`} />
+          <EducationKeyValue k="degree" v={item.title} />
+          <EducationKeyValue k="period" v={`${item.start} - ${item.end}`} />
 
           {/* Description — hidden by default, revealed via chevron */}
           <AnimatePresence initial={false}>
