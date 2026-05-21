@@ -1,6 +1,6 @@
 "use client";
 
-import type { SiteContent } from "@/content/site";
+import type { IconName, SiteContent } from "@/content/site";
 import { SectionHeading } from "./SectionHeading";
 import { CopyChip } from "@/components/ui/CopyChip";
 import { Glyph } from "@/components/ui/glyphs";
@@ -20,7 +20,7 @@ function ContactRow({
   href,
   copyValue,
 }: {
-  icon: "Mail" | "Linkedin" | "Github" | "X" | "FileText";
+  icon: IconName;
   label: string;
   href: string;
   copyValue?: string;
