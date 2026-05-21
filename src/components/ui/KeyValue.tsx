@@ -49,15 +49,15 @@ export function KeyValue({
   return (
     <div
       className={cn(
-        "flex items-baseline gap-3 text-sm",
+        "flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm sm:flex-nowrap",
         className,
       )}
     >
       <span className={cn("text-muted uppercase tracking-[0.05em] text-[0.75rem] shrink-0", keyClassName)}>
         {k}
       </span>
-      <DotLeader />
-      <span className={cn("text-foreground min-w-0 break-words", valueClassName)}>
+      <DotLeader className="hidden sm:block" />
+      <span className={cn("text-foreground min-w-0 break-words sm:flex-1", valueClassName)}>
         {v}
       </span>
     </div>

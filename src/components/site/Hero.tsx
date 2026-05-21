@@ -99,7 +99,7 @@ export function Hero({ site }: { site: SiteContent }) {
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12 grid gap-y-10 md:grid-cols-12 md:gap-x-6">
         {/* Logotype — col-span-8 */}
-        <div className="md:col-span-8 flex flex-col justify-center">
+        <div className="md:col-span-8 min-w-0 flex flex-col justify-center">
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-4">
             {"// 00_intro"}
           </p>
@@ -126,7 +126,7 @@ export function Hero({ site }: { site: SiteContent }) {
                 {ASCII_ART}
               </pre>
             ) : (
-              <span className="text-[clamp(3rem,12vw,8rem)] block leading-[0.85]">
+              <span className="text-[clamp(2.25rem,12vw,8rem)] block leading-[0.85]">
                 {nameTokens.map((t, i) => (
                   <span key={i} className="block">
                     <ScrambleText text={t} duration={620} autoGlitch />
@@ -148,9 +148,9 @@ export function Hero({ site }: { site: SiteContent }) {
           ) : (
             <div
               tabIndex={0}
-              className="draw-accent mt-8 flex flex-wrap items-baseline gap-x-2 gap-y-1 max-w-full text-[0.875rem] md:text-[1rem] outline-none cursor-default"
+              className="draw-accent mt-8 min-w-0 flex items-baseline gap-2 max-w-full text-[0.875rem] md:text-[1rem] outline-none cursor-default"
             >
-              <span className="text-muted-soft whitespace-nowrap">
+              <span className="text-muted-soft shrink-0">
                 ~/verneylmavt
               </span>
               <button
@@ -165,10 +165,10 @@ export function Hero({ site }: { site: SiteContent }) {
               >
                 $
               </button>
-              <span className="text-foreground break-all min-w-0">
+              <span className="text-foreground min-w-0 flex-1 break-words">
                 {visible}
               </span>
-              <BlinkingCaret />
+              <BlinkingCaret className="shrink-0" />
             </div>
           )}
 
@@ -227,7 +227,7 @@ export function Hero({ site }: { site: SiteContent }) {
         </div>
 
         {/* Metadata column — col-span-4 */}
-        <aside className="md:col-span-4 md:pt-3">
+        <aside className="md:col-span-4 min-w-0 md:pt-3">
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
             {"// metadata"}
           </p>

@@ -229,6 +229,20 @@ body {
   color: rgb(var(--accent) / 0.65);
 }
 
+/* Keep corner markers inside card bounds on small screens so they don't create
+   horizontal overflow and accidental clipping. */
+@media (max-width: 640px) {
+  .plus-corners::before {
+    top: 0.3rem;
+    right: 0.3rem;
+  }
+
+  .plus-corners::after {
+    bottom: 0.3rem;
+    left: 0.3rem;
+  }
+}
+
 /* ──────────────────────────────────────────────────────────────
  * Accent helpers + keyframes
  * ─────────────────────────────────────────────────────────── */

@@ -27,9 +27,7 @@ export function TagFilter({
       aria-label="Filter projects"
       onMouseLeave={() => onHover?.(null)}
       className={cn(
-        "flex gap-1 flex-wrap",
-        // mobile: horizontal scroll fallback
-        "max-md:flex-nowrap max-md:overflow-x-auto max-md:[-ms-overflow-style:none] max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden",
+        "flex flex-wrap items-start gap-1",
         className,
       )}
     >
