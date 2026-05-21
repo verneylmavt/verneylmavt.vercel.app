@@ -45,7 +45,7 @@ const ASCII_ART =
    ██║   ██╔══██║██║╚██╗██║██║╚██╗██║  ╚██╔╝  
    ██║   ██║  ██║██║ ╚████║██║ ╚████║   ██║   
    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═══╝   ╚═╝   
-  `;
+`;
 
 function HeroMetaRow({ label, value }: { label: string; value: string }) {
   return (
@@ -161,7 +161,7 @@ export function Hero({ site }: { site: SiteContent }) {
             {asciiOpen ? (
               <pre
                 aria-hidden="true"
-                className="block whitespace-pre text-[rgb(var(--accent))] leading-[1.0] text-[clamp(0.4rem,1.05vw,0.875rem)] overflow-x-auto max-w-full"
+                className="block max-w-full overflow-x-auto overflow-y-hidden whitespace-pre py-1 text-[clamp(0.4rem,1.05vw,0.875rem)] font-normal leading-[1.25] tracking-normal text-[rgb(var(--accent))] normal-case [font-family:Consolas,'Courier_New',monospace] [font-feature-settings:'tnum'_1] [font-kerning:none] [font-synthesis:none] [font-variant-ligatures:none]"
               >
                 {ASCII_ART}
               </pre>
@@ -206,10 +206,10 @@ export function Hero({ site }: { site: SiteContent }) {
                 >
                   $
                 </button>
-                <span className="text-foreground min-w-0 flex-1 break-words">
+                <span className="min-w-0 break-words text-foreground">
                   {visible}
+                  <BlinkingCaret className="align-[-0.18em]" />
                 </span>
-                <BlinkingCaret className="shrink-0" />
               </span>
             </div>
           )}
@@ -241,11 +241,9 @@ export function Hero({ site }: { site: SiteContent }) {
                 >
                   <Glyph name={c.icon} className="opacity-80 group-hover:opacity-100" />
                   <span>{c.label}</span>
-                  {external ? (
-                    <span aria-hidden="true" className="text-muted-soft group-hover:text-[rgb(var(--accent))]">
-                      ↗
-                    </span>
-                  ) : null}
+                  <span aria-hidden="true" className="text-muted-soft group-hover:text-[rgb(var(--accent))]">
+                    ↗
+                  </span>
                 </a>
               );
             })}

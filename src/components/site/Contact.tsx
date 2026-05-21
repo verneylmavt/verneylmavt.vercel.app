@@ -51,17 +51,15 @@ function ContactRow({
         value={copyValue ?? display}
         className="col-[3] row-[1] justify-self-end sm:col-[5] sm:row-[1]"
       />
-      {external ? (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Open ${label}`}
-          className="col-[3] row-[2] justify-self-end text-muted hover:text-[rgb(var(--accent))] sm:col-[6] sm:row-[1]"
-        >
-          <span aria-hidden="true">-&gt;</span>
-        </a>
-      ) : null}
+      <a
+        href={href}
+        target={external ? "_blank" : undefined}
+        rel={external ? "noopener noreferrer" : undefined}
+        aria-label={`Open ${label}`}
+        className="col-[3] row-[2] justify-self-end text-muted hover:text-[rgb(var(--accent))] sm:col-[6] sm:row-[1]"
+      >
+        <span aria-hidden="true">→</span>
+      </a>
     </li>
   );
 }
