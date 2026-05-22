@@ -110,7 +110,7 @@ export function DiagnosticOverlay({
       <div
         role="status"
         aria-live="polite"
-        className="diag-hud fixed top-4 right-4 z-[55] border border-[rgb(var(--accent)/0.55)] bg-background/90 backdrop-blur px-3 py-2 text-[0.6875rem] uppercase tracking-[0.04em] text-[rgb(var(--accent))] tabular-nums shadow"
+        className="diag-hud hidden sm:block fixed top-4 right-4 z-[55] border border-[rgb(var(--accent)/0.55)] bg-background/90 backdrop-blur px-3 py-2 text-[0.6875rem] uppercase tracking-[0.04em] text-[rgb(var(--accent))] tabular-nums shadow"
       >
         <div className="opacity-70 mb-1">{"// diagnostic"}</div>
         <div ref={hudRef}>0 fps · -- · scroll 0px · theme=--</div>
