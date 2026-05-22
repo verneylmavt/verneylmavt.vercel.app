@@ -114,34 +114,34 @@ export function ShortcutHelp({
         ref={overlayRef}
         tabIndex={-1}
         className={cn(
-          "relative max-w-xl w-full",
+          "relative max-w-xl w-full max-h-[90svh] overflow-y-auto",
           "border border-[rgb(var(--rule)/0.20)] bg-background",
-          "p-6 shadow-[0_8px_32px_rgb(0_0_0/0.10)]",
+          "p-4 sm:p-6 shadow-[0_8px_32px_rgb(0_0_0/0.10)]",
         )}
       >
-        <div className="flex items-baseline justify-between mb-4">
+        <div className="flex items-baseline justify-between mb-3 sm:mb-4">
           <h2
             id="shortcut-help-title"
-            className="text-[0.75rem] uppercase tracking-[0.08em] text-muted"
+            className="text-[0.6875rem] sm:text-[0.75rem] uppercase tracking-[0.08em] text-muted"
           >
             {"// shortcuts"}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="text-[0.75rem] uppercase tracking-wider text-muted hover:text-foreground"
+            className="text-[0.6875rem] sm:text-[0.75rem] uppercase tracking-wider text-muted hover:text-foreground"
           >
             [esc] close
           </button>
         </div>
 
-        <ul className="space-y-2 text-[0.875rem]">
+        <ul className="space-y-1.5 sm:space-y-2 text-[0.75rem] sm:text-[0.875rem]">
           {ROWS.map((row, i) => {
             if (row.kind === "heading") {
               return (
                 <li
                   key={i}
-                  className="pt-3 mt-2 border-t border-[rgb(var(--rule)/0.12)] text-[0.6875rem] uppercase tracking-[0.08em] text-muted"
+                  className="pt-2.5 mt-1.5 sm:pt-3 sm:mt-2 border-t border-[rgb(var(--rule)/0.12)] text-[0.6rem] sm:text-[0.6875rem] uppercase tracking-[0.08em] text-muted"
                 >
                   {row.label}
                 </li>
@@ -162,8 +162,8 @@ export function ShortcutHelp({
                     type="button"
                     onClick={() => { handler?.(); onClose(); }}
                     className={cn(
-                      "w-full flex items-center justify-between gap-3",
-                      "rounded-[2px] px-2 py-1 -mx-2",
+                      "w-full flex items-center justify-between gap-1.5 sm:gap-3",
+                      "rounded-[2px] px-1.5 sm:px-2 py-0.5 sm:py-1 -mx-1.5 sm:-mx-2",
                       "text-left transition-colors duration-[var(--dur-base)]",
                       "hover:bg-[rgb(var(--accent)/0.08)] hover:text-[rgb(var(--accent))]",
                       "active:bg-[rgb(var(--accent)/0.15)]",
@@ -172,8 +172,14 @@ export function ShortcutHelp({
                     disabled={!handler}
                     aria-label={`Activate ${row.label}`}
                   >
-                    <span className="text-foreground">{row.label}</span>
-                    <span className="flex flex-wrap items-center gap-1 justify-end">
+                    <span className="text-foreground shrink-0">{row.label}</span>
+                    <span className={cn(
+                      "flex flex-wrap items-center justify-end",
+                      "gap-0.5 sm:gap-1",
+                      // Shrink Kbd chips on mobile so long sequences (e.g. "glitch") stay single-line
+                      "[&_kbd]:min-w-[1.1rem] [&_kbd]:px-[0.2rem] [&_kbd]:text-[0.5rem]",
+                      "sm:[&_kbd]:min-w-[1.4rem] sm:[&_kbd]:px-1.5 sm:[&_kbd]:text-[0.6875rem]",
+                    )}>
                       {row.keys}
                     </span>
                   </button>
@@ -181,7 +187,7 @@ export function ShortcutHelp({
               );
             }
             return (
-              <li key={i} className="flex items-center justify-between gap-3">
+              <li key={i} className="flex items-center justify-between gap-2 sm:gap-3">
                 <span className="text-foreground">{row.label}</span>
                 <span className="flex flex-wrap items-center gap-1 justify-end">
                   {row.keys}
