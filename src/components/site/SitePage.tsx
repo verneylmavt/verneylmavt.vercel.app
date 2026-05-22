@@ -70,6 +70,14 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const { theme, resolvedTheme, cycleTheme } = useTheme();
 
+  // Atomically activate exactly one persistent mode (or none for "default").
+  // Using useCallback with empty deps is safe because the setters are stable.
+  const setMode = React.useCallback((next: SiteMode) => {
+    setDiagnosticOn(next === "diagnostic");
+    setGlitchOn(next === "glitch storm");
+    setCrtOn(next === "crt");
+  }, []);
+
   React.useEffect(() => {
     if (readDiagnosticInitial()) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
@@ -85,39 +93,33 @@ export function SitePage({ content }: { content: SiteContent }) {
     }
   }, []);
 
-  // Konami code → diagnostic mode (kept as hidden alt trigger)
-  useKonami(React.useCallback(() => setDiagnosticOn((v) => !v), []));
+  // Ref so typed-sequence callbacks can read currentMode without being in deps.
+  // (currentMode is computed below, so the ref is synced after that derivation.)
+  const currentModeRef = React.useRef<SiteMode>("default");
+
+  // Konami code → diagnostic mode (hidden alt trigger)
+  useKonami(React.useCallback(() => {
+    setMode(currentModeRef.current === "diagnostic" ? "default" : "diagnostic");
+  }, [setMode]));
   // Typed "diag" → diagnostic mode (primary typed trigger)
-  useTypedSequence(
-    "diag",
-    React.useCallback(() => setDiagnosticOn((v) => !v), []),
-  );
+  useTypedSequence("diag", React.useCallback(() => {
+    setMode(currentModeRef.current === "diagnostic" ? "default" : "diagnostic");
+  }, [setMode]));
 
   // Typed "matrix" → MatrixRain
-  useTypedSequence(
-    "matrix",
-    React.useCallback(() => setMatrixOn(true), []),
-  );
+  useTypedSequence("matrix", React.useCallback(() => setMatrixOn(true), []));
   // Typed "warp" → HyperspeedWarp
-  useTypedSequence(
-    "warp",
-    React.useCallback(() => setWarpOn(true), []),
-  );
+  useTypedSequence("warp", React.useCallback(() => setWarpOn(true), []));
   // Typed "crash" → BSOD
-  useTypedSequence(
-    "crash",
-    React.useCallback(() => setBsodOn(true), []),
-  );
-  // Typed "glitch" → GlitchStorm (toggle)
-  useTypedSequence(
-    "glitch",
-    React.useCallback(() => setGlitchOn((v) => !v), []),
-  );
-  // Typed "crt" → CRT Mode (toggle)
-  useTypedSequence(
-    "crt",
-    React.useCallback(() => setCrtOn((v) => !v), []),
-  );
+  useTypedSequence("crash", React.useCallback(() => setBsodOn(true), []));
+  // Typed "glitch" → GlitchStorm (single-mode toggle)
+  useTypedSequence("glitch", React.useCallback(() => {
+    setMode(currentModeRef.current === "glitch storm" ? "default" : "glitch storm");
+  }, [setMode]));
+  // Typed "crt" → CRT Mode (single-mode toggle)
+  useTypedSequence("crt", React.useCallback(() => {
+    setMode(currentModeRef.current === "crt" ? "default" : "crt");
+  }, [setMode]));
 
   const scrollToSection = React.useCallback((id: string) => {
     const el = document.getElementById(id);
@@ -218,18 +220,17 @@ export function SitePage({ content }: { content: SiteContent }) {
         ? "crt"
         : "default";
 
-  const cycleMode = React.useCallback(() => {
-    // Reset all persistent modes
-    setDiagnosticOn(false);
-    setGlitchOn(false);
-    setCrtOn(false);
+  // Keep ref in sync so typed-sequence callbacks always see the latest mode.
+  React.useEffect(() => { currentModeRef.current = currentMode; }, [currentMode]);
 
-    // Activate the next mode in the cycle
-    if (currentMode === "default") setDiagnosticOn(true);
-    else if (currentMode === "diagnostic") setGlitchOn(true);
-    else if (currentMode === "glitch storm") setCrtOn(true);
-    // crt → default → leave everything off
-  }, [currentMode]);
+  const cycleMode = React.useCallback(() => {
+    const next: SiteMode =
+      currentMode === "default"       ? "diagnostic"   :
+      currentMode === "diagnostic"    ? "glitch storm"  :
+      currentMode === "glitch storm"  ? "crt"           :
+      "default";
+    setMode(next);
+  }, [currentMode, setMode]);
 
   const onContextMenu: React.MouseEventHandler<HTMLElement> = (e) => {
     if (e.shiftKey) return; // let native menu through
@@ -303,7 +304,7 @@ export function SitePage({ content }: { content: SiteContent }) {
       {/* Diagnostic mode — Konami toggle */}
       <DiagnosticOverlay
         active={diagnosticOn}
-        onClose={() => setDiagnosticOn(false)}
+        onClose={() => setMode("default")}
         themeLabel={themeLabel}
       />
 
@@ -328,13 +329,13 @@ export function SitePage({ content }: { content: SiteContent }) {
       {/* Glitch Storm — typed "glitch" easter egg */}
       <GlitchStorm
         active={glitchOn}
-        onClose={() => setGlitchOn(false)}
+        onClose={() => setMode("default")}
       />
 
       {/* CRT Mode — typed "crt" toggle easter egg */}
       <CRTMode
         active={crtOn}
-        onClose={() => setCrtOn(false)}
+        onClose={() => setMode("default")}
       />
 
       <ViewportBrackets />
@@ -351,12 +352,12 @@ export function SitePage({ content }: { content: SiteContent }) {
         <main id="main" className="flex-1 pb-12">
           <Hero
             site={content}
-            onToggleDiag={() => setDiagnosticOn((v) => !v)}
+            onToggleDiag={() => setMode(currentMode === "diagnostic" ? "default" : "diagnostic")}
             onShowMatrix={() => setMatrixOn(true)}
             onWarp={() => setWarpOn(true)}
             onCrash={() => setBsodOn(true)}
-            onGlitch={() => setGlitchOn(true)}
-            onToggleCRT={() => setCrtOn((v) => !v)}
+            onGlitch={() => setMode(currentMode === "glitch storm" ? "default" : "glitch storm")}
+            onToggleCRT={() => setMode(currentMode === "crt" ? "default" : "crt")}
           />
           <About site={content} />
           <Education site={content} />
@@ -380,12 +381,12 @@ export function SitePage({ content }: { content: SiteContent }) {
       <ShortcutHelp
         open={helpOpen}
         onClose={() => setHelpOpen(false)}
-        onToggleDiag={() => setDiagnosticOn((v) => !v)}
+        onToggleDiag={() => setMode(currentMode === "diagnostic" ? "default" : "diagnostic")}
         onShowMatrix={() => setMatrixOn(true)}
         onWarp={() => setWarpOn(true)}
         onCrash={() => setBsodOn(true)}
-        onGlitch={() => setGlitchOn(true)}
-        onToggleCRT={() => setCrtOn((v) => !v)}
+        onGlitch={() => setMode(currentMode === "glitch storm" ? "default" : "glitch storm")}
+        onToggleCRT={() => setMode(currentMode === "crt" ? "default" : "crt")}
       />
       <ContextMenu
         open={ctxMenu.open}
