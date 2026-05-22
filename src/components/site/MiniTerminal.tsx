@@ -34,10 +34,16 @@ export function MiniTerminal({
   open,
   onClose,
   site,
+  onToggleDiag,
+  onShowMatrix,
 }: {
   open: boolean;
   onClose: () => void;
   site: SiteContent;
+  /** Toggles Diagnostic Mode (the Konami-code easter egg). */
+  onToggleDiag?: () => void;
+  /** Activates Matrix Rain (the typed-`matrix` easter egg). */
+  onShowMatrix?: () => void;
 }) {
   const { setTheme } = useTheme();
   const [log, setLog] = React.useState<LogEntry[]>(() => [
@@ -95,6 +101,9 @@ export function MiniTerminal({
           append(
             cmd,
             <ul className="ml-2 grid gap-0.5">
+              <li className="mt-1 pt-1 border-t border-[rgb(var(--rule)/0.12)] text-muted-soft">
+                {"// main"}
+              </li>
               <li>
                 <span className="text-[rgb(var(--accent))]">help</span> — list
                 commands
@@ -130,6 +139,19 @@ export function MiniTerminal({
               <li>
                 <span className="text-[rgb(var(--accent))]">exit</span> — close
                 terminal
+              </li>
+              <li className="mt-1 pt-1 border-t border-[rgb(var(--rule)/0.12)] text-muted-soft">
+                {"// easter egg"}
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">diag</span> — toggle
+                the diagnostic mode (alt:{" "}
+                <span className="text-muted-soft">↑ ↑ ↓ ↓ ← → ← → b a</span>)
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">matrix</span> — enter
+                the matrix mode (alt:{" "}
+                <span className="text-muted-soft">m a t r i x</span>)
               </li>
             </ul>,
           );
@@ -194,6 +216,32 @@ export function MiniTerminal({
           }
           break;
         }
+        case "diag":
+        case "diagnostic": {
+          if (onToggleDiag) {
+            onToggleDiag();
+            append(cmd, "diagnostic mode toggled · esc to dismiss");
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">diag: not available here</span>,
+            );
+          }
+          break;
+        }
+        case "matrix": {
+          if (onShowMatrix) {
+            onShowMatrix();
+            append(cmd, "entering the matrix · esc to dismiss");
+            setTimeout(() => onClose(), 250);
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">matrix: not available here</span>,
+            );
+          }
+          break;
+        }
         case "clear": {
           setLog([]);
           break;
@@ -212,7 +260,7 @@ export function MiniTerminal({
       }
       setCurrent("");
     },
-    [append, onClose, setTheme, site],
+    [append, onClose, setTheme, site, onToggleDiag, onShowMatrix],
   );
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -39,7 +39,7 @@ const ROWS: Row[] = [
   },
   {
     keys: "matrix".split("").map((c, i) => <Kbd key={`m${i}`}>{c}</Kbd>),
-    label: "matrix rain",
+    label: "matrix mode",
   },
 ];
 
@@ -82,7 +82,7 @@ export function ShortcutHelp({
         ref={overlayRef}
         tabIndex={-1}
         className={cn(
-          "relative max-w-md w-full",
+          "relative max-w-xl w-full",
           "border border-[rgb(var(--rule)/0.20)] bg-background",
           "p-6 shadow-[0_8px_32px_rgb(0_0_0/0.10)]",
         )}
@@ -92,7 +92,7 @@ export function ShortcutHelp({
             id="shortcut-help-title"
             className="text-[0.75rem] uppercase tracking-[0.08em] text-muted"
           >
-            {"// keyboard shortcuts"}
+            {"// shortcuts"}
           </h2>
           <button
             type="button"

@@ -61,7 +61,17 @@ function HeroMetaRow({ label, value }: { label: string; value: string }) {
   );
 }
 
-export function Hero({ site }: { site: SiteContent }) {
+export function Hero({
+  site,
+  onToggleDiag,
+  onShowMatrix,
+}: {
+  site: SiteContent;
+  /** Forwarded to MiniTerminal so the `diag` command can toggle diagnostic mode. */
+  onToggleDiag?: () => void;
+  /** Forwarded to MiniTerminal so the `matrix` command can trigger Matrix Rain. */
+  onShowMatrix?: () => void;
+}) {
   const reducedMotion = useReducedMotion();
   const mounted = React.useSyncExternalStore(
     subscribeNoop,
@@ -183,6 +193,8 @@ export function Hero({ site }: { site: SiteContent }) {
                 open={terminalOpen}
                 onClose={() => setTerminalOpen(false)}
                 site={site}
+                onToggleDiag={onToggleDiag}
+                onShowMatrix={onShowMatrix}
               />
             </div>
           ) : (

@@ -261,7 +261,11 @@ export function SitePage({ content }: { content: SiteContent }) {
         />
 
         <main id="main" className="flex-1 pb-12">
-          <Hero site={content} />
+          <Hero
+            site={content}
+            onToggleDiag={() => setDiagnosticOn((v) => !v)}
+            onShowMatrix={() => setMatrixOn(true)}
+          />
           <About site={content} />
           <Education site={content} />
           <Experience site={content} />
