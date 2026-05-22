@@ -3,6 +3,7 @@
 import * as React from "react";
 import type { SiteContent } from "@/content/site";
 import { useTheme, type ThemePreference } from "@/components/ThemeProvider";
+import type { SiteMode } from "@/components/site/StatusBar";
 import { cn } from "@/lib/cn";
 
 type LogEntry = { input: string; output: React.ReactNode };
@@ -34,6 +35,7 @@ export function MiniTerminal({
   open,
   onClose,
   site,
+  currentMode = "default",
   onToggleDiag,
   onShowMatrix,
   onWarp,
@@ -44,6 +46,7 @@ export function MiniTerminal({
   open: boolean;
   onClose: () => void;
   site: SiteContent;
+  currentMode?: SiteMode;
   /** Toggles Diagnostic Mode (the Konami-code easter egg). */
   onToggleDiag?: () => void;
   /** Activates Matrix Rain (the typed-`matrix` easter egg). */
@@ -160,7 +163,7 @@ export function MiniTerminal({
                 the diagnostic mode
               </li>
               <li>
-                <span className="text-[rgb(var(--accent))]">glitch</span> — unleash
+                <span className="text-[rgb(var(--accent))]">glitch</span> — toggle
                 the glitch storm mode
               </li>
               <li>
@@ -245,8 +248,11 @@ export function MiniTerminal({
         case "diag":
         case "diagnostic": {
           if (onToggleDiag) {
+            const wasOn = currentMode === "diagnostic";
             onToggleDiag();
-            append(cmd, "diagnostic mode toggled · esc to dismiss");
+            append(cmd, wasOn
+              ? "diagnostic mode untoggled · type `diag` again to enter"
+              : "diagnostic mode toggled · type `diag` again to exit");
           } else {
             append(
               cmd,
@@ -255,10 +261,40 @@ export function MiniTerminal({
           }
           break;
         }
+        case "glitch": {
+          if (onGlitch) {
+            const wasOn = currentMode === "glitch storm";
+            onGlitch();
+            append(cmd, wasOn
+              ? "glitch storm untoggled · type `glitch` again to enter"
+              : "glitch storm toggled · type `glitch` again to exit");
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">glitch: not available here</span>,
+            );
+          }
+          break;
+        }
+        case "crt": {
+          if (onToggleCRT) {
+            const wasOn = currentMode === "crt";
+            onToggleCRT();
+            append(cmd, wasOn
+              ? "crt mode untoggled · type `crt` again to enter"
+              : "crt mode toggled · type `crt` again to exit");
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">crt: not available here</span>,
+            );
+          }
+          break;
+        }
         case "matrix": {
           if (onShowMatrix) {
             onShowMatrix();
-            append(cmd, "entering the matrix · esc to dismiss");
+            append(cmd, "entering the matrix");
             setTimeout(() => onClose(), 250);
           } else {
             append(
@@ -271,7 +307,7 @@ export function MiniTerminal({
         case "warp": {
           if (onWarp) {
             onWarp();
-            append(cmd, "engaging warp drive · esc to dismiss");
+            append(cmd, "engaging into the warp drive");
             setTimeout(() => onClose(), 250);
           } else {
             append(
@@ -284,36 +320,12 @@ export function MiniTerminal({
         case "crash": {
           if (onCrash) {
             onCrash();
-            append(cmd, "triggering bsod · esc to dismiss");
+            append(cmd, "triggering the bsod");
             setTimeout(() => onClose(), 250);
           } else {
             append(
               cmd,
               <span className="text-muted-soft">crash: not available here</span>,
-            );
-          }
-          break;
-        }
-        case "glitch": {
-          if (onGlitch) {
-            onGlitch();
-            append(cmd, "glitch storm toggled · type glitch again to exit");
-          } else {
-            append(
-              cmd,
-              <span className="text-muted-soft">glitch: not available here</span>,
-            );
-          }
-          break;
-        }
-        case "crt": {
-          if (onToggleCRT) {
-            onToggleCRT();
-            append(cmd, "crt mode toggled · type crt again to exit");
-          } else {
-            append(
-              cmd,
-              <span className="text-muted-soft">crt: not available here</span>,
             );
           }
           break;

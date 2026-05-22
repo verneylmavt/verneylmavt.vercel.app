@@ -9,6 +9,7 @@ import { DotLeader } from "@/components/ui/DotLeader";
 import { Hairline } from "@/components/ui/Hairline";
 import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
 import { MiniTerminal } from "./MiniTerminal";
+import type { SiteMode } from "@/components/site/StatusBar";
 import { cn } from "@/lib/cn";
 
 const TYPEWRITER_COMMANDS = [
@@ -63,6 +64,7 @@ function HeroMetaRow({ label, value }: { label: string; value: string }) {
 
 export function Hero({
   site,
+  currentMode = "default",
   onToggleDiag,
   onShowMatrix,
   onWarp,
@@ -71,6 +73,7 @@ export function Hero({
   onToggleCRT,
 }: {
   site: SiteContent;
+  currentMode?: SiteMode;
   /** Forwarded to MiniTerminal so the `diag` command can toggle diagnostic mode. */
   onToggleDiag?: () => void;
   /** Forwarded to MiniTerminal so the `matrix` command can trigger Matrix Rain. */
@@ -201,6 +204,7 @@ export function Hero({
                 open={terminalOpen}
                 onClose={() => setTerminalOpen(false)}
                 site={site}
+                currentMode={currentMode}
                 onToggleDiag={onToggleDiag}
                 onShowMatrix={onShowMatrix}
                 onWarp={onWarp}

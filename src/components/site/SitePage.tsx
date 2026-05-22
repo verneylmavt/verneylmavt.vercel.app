@@ -351,6 +351,7 @@ export function SitePage({ content }: { content: SiteContent }) {
         <main id="main" className="flex-1 pb-12">
           <Hero
             site={content}
+            currentMode={currentMode}
             onToggleDiag={() => setMode(currentMode === "diagnostic" ? "default" : "diagnostic")}
             onShowMatrix={() => setMatrixOn(true)}
             onWarp={() => setWarpOn(true)}
