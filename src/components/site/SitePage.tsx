@@ -70,12 +70,12 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const { theme, resolvedTheme, cycleTheme } = useTheme();
 
-  // Atomically activate exactly one persistent mode (or none for "default").
+  // Atomically set persistent mode state. "all" activates every layer at once.
   // Using useCallback with empty deps is safe because the setters are stable.
   const setMode = React.useCallback((next: SiteMode) => {
-    setDiagnosticOn(next === "diagnostic");
-    setGlitchOn(next === "glitch storm");
-    setCrtOn(next === "crt");
+    setDiagnosticOn(next === "diagnostic" || next === "all");
+    setGlitchOn(next === "glitch storm" || next === "all");
+    setCrtOn(next === "crt" || next === "all");
   }, []);
 
   React.useEffect(() => {
@@ -211,23 +211,22 @@ export function SitePage({ content }: { content: SiteContent }) {
     theme === "system" ? `system (${resolvedTheme})` : theme;
 
   // Cycle order for the StatusBar [mode: …] chip.
-  // Only one persistent mode is active at a time; cycling turns the others off.
-  const currentMode: SiteMode = diagnosticOn
-    ? "diagnostic"
-    : glitchOn
-      ? "glitch storm"
-      : crtOn
-        ? "crt"
-        : "default";
+  const currentMode: SiteMode =
+    (diagnosticOn && glitchOn && crtOn) ? "all"
+    : diagnosticOn ? "diagnostic"
+    : glitchOn     ? "glitch storm"
+    : crtOn        ? "crt"
+    : "default";
 
   // Keep ref in sync so typed-sequence callbacks always see the latest mode.
   React.useEffect(() => { currentModeRef.current = currentMode; }, [currentMode]);
 
   const cycleMode = React.useCallback(() => {
     const next: SiteMode =
-      currentMode === "default"       ? "diagnostic"   :
-      currentMode === "diagnostic"    ? "glitch storm"  :
-      currentMode === "glitch storm"  ? "crt"           :
+      currentMode === "default"      ? "diagnostic"  :
+      currentMode === "diagnostic"   ? "glitch storm" :
+      currentMode === "glitch storm" ? "crt"          :
+      currentMode === "crt"          ? "all"          :
       "default";
     setMode(next);
   }, [currentMode, setMode]);

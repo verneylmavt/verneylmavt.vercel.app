@@ -24,7 +24,7 @@ function ScrollPercent() {
   );
 }
 
-export type SiteMode = "default" | "diagnostic" | "glitch storm" | "crt";
+export type SiteMode = "default" | "diagnostic" | "glitch storm" | "crt" | "all";
 
 export function StatusBar({
   onOpenHelp,
