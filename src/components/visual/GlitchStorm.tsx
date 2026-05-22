@@ -3,25 +3,47 @@
 import * as React from "react";
 import { fireScramble } from "@/components/ui/ScrambleText";
 
+const STORAGE_KEY = "v3:glitch";
+
 /**
- * Glitch Storm easter egg. Triggered by typing "glitch".
- * - Fires fireScramble() on all mounted ScrambleText instances (twice, ~1.5s apart).
- * - Sets data-glitch="on" on <html> for CSS chromatic aberration via text-shadow.
- * - Canvas overlay draws random horizontal tear lines and full-screen flashes.
- * - Auto-dismisses after durationMs. Esc cancels early.
+ * Glitch Storm easter egg. Triggered by typing "glitch" (toggleable — type
+ * again to exit). Persistent like DiagnosticOverlay and CRTMode.
+ * - Sets data-glitch="on" on <html> for CSS chromatic aberration.
+ * - Canvas overlay draws random horizontal tear lines indefinitely.
+ * - Fires fireScramble() on activation for an initial text scramble burst.
+ * - Persists in sessionStorage across page refreshes.
  * - Skipped under prefers-reduced-motion.
  */
 export function GlitchStorm({
   active,
   onClose,
-  durationMs = 4000,
 }: {
   active: boolean;
   onClose: () => void;
-  durationMs?: number;
 }) {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
+  // Apply / remove the data-glitch attr and sessionStorage
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (active) {
+      document.documentElement.setAttribute("data-glitch", "on");
+      try {
+        sessionStorage.setItem(STORAGE_KEY, "1");
+      } catch {
+        // ignore
+      }
+    } else {
+      document.documentElement.removeAttribute("data-glitch");
+      try {
+        sessionStorage.removeItem(STORAGE_KEY);
+      } catch {
+        // ignore
+      }
+    }
+  }, [active]);
+
+  // Canvas tear lines + scramble burst rAF loop
   React.useEffect(() => {
     if (!active) return;
     if (typeof window === "undefined") return;
@@ -52,19 +74,14 @@ export function GlitchStorm({
         .trim() || "199 53 43";
     const [ar, ag, ab] = accentRgb.split(" ").map(Number);
 
-    // Activate CSS chromatic aberration
-    document.documentElement.setAttribute("data-glitch", "on");
-
-    // Fire scramble on all ScrambleText instances immediately and at 1.5 s
+    // Initial scramble burst on activation
     fireScramble();
     const scramble2 = window.setTimeout(() => fireScramble(), 1500);
 
     let raf = 0;
-    const start = performance.now();
     let frame = 0;
 
     const tick = () => {
-      const elapsed = performance.now() - start;
       const w = window.innerWidth;
       const h = window.innerHeight;
       frame++;
@@ -92,11 +109,7 @@ export function GlitchStorm({
         ctx.fillRect(0, 0, w, h);
       }
 
-      if (elapsed < durationMs) {
-        raf = requestAnimationFrame(tick);
-      } else {
-        onClose();
-      }
+      raf = requestAnimationFrame(tick);
     };
 
     raf = requestAnimationFrame(tick);
@@ -111,17 +124,46 @@ export function GlitchStorm({
       window.clearTimeout(scramble2);
       window.removeEventListener("resize", resize);
       window.removeEventListener("keydown", onKey);
-      document.documentElement.removeAttribute("data-glitch");
     };
-  }, [active, durationMs, onClose]);
+  }, [active, onClose]);
 
   if (!active) return null;
 
   return (
-    <canvas
-      ref={canvasRef}
-      aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[60]"
-    />
+    <>
+      {/* Tear lines canvas */}
+      <canvas
+        ref={canvasRef}
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-0 z-[60]"
+      />
+
+      {/* Persistent mode badge */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed bottom-10 left-4 z-[45]"
+      >
+        <div className="pointer-events-auto border border-[rgb(var(--accent)/0.55)] bg-background/90 backdrop-blur px-3 py-1.5 text-[0.6875rem] uppercase tracking-[0.04em] text-[rgb(var(--accent))]">
+          <span className="opacity-70">{"// glitch storm"}</span>
+          <button
+            type="button"
+            onClick={onClose}
+            className="ml-3 text-muted hover:text-foreground transition-colors duration-[var(--dur-base)]"
+          >
+            [ esc ]
+          </button>
+        </div>
+      </div>
+    </>
   );
+}
+
+/** Reads persisted glitch state for hydration-safe initialisation in SitePage. */
+export function readGlitchInitial(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    return window.sessionStorage.getItem(STORAGE_KEY) === "1";
+  } catch {
+    return false;
+  }
 }

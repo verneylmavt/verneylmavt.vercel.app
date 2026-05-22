@@ -12,7 +12,7 @@ import { Certifications } from "./Certifications";
 import { Projects, PROJECT_SEARCH_ID } from "./Projects";
 import { Contact } from "./Contact";
 import { Footer } from "./Footer";
-import { StatusBar } from "./StatusBar";
+import { StatusBar, type SiteMode } from "./StatusBar";
 import { ViewportBrackets } from "@/components/visual/ViewportBrackets";
 import { BootSequence } from "@/components/visual/BootSequence";
 import { CursorCrosshair } from "@/components/visual/CursorCrosshair";
@@ -25,7 +25,7 @@ import { Scanline } from "@/components/visual/Scanline";
 import { MatrixRain } from "@/components/visual/MatrixRain";
 import { HyperspeedWarp } from "@/components/visual/HyperspeedWarp";
 import { BSOD } from "@/components/visual/BSOD";
-import { GlitchStorm } from "@/components/visual/GlitchStorm";
+import { GlitchStorm, readGlitchInitial } from "@/components/visual/GlitchStorm";
 import { CRTMode, readCRTInitial } from "@/components/visual/CRTMode";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { CmdPalette, type PaletteItem } from "@/components/ui/CmdPalette";
@@ -75,6 +75,10 @@ export function SitePage({ content }: { content: SiteContent }) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setDiagnosticOn(true);
     }
+    if (readGlitchInitial()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setGlitchOn(true);
+    }
     if (readCRTInitial()) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setCrtOn(true);
@@ -104,10 +108,10 @@ export function SitePage({ content }: { content: SiteContent }) {
     "crash",
     React.useCallback(() => setBsodOn(true), []),
   );
-  // Typed "glitch" → GlitchStorm
+  // Typed "glitch" → GlitchStorm (toggle)
   useTypedSequence(
     "glitch",
-    React.useCallback(() => setGlitchOn(true), []),
+    React.useCallback(() => setGlitchOn((v) => !v), []),
   );
   // Typed "crt" → CRT Mode (toggle)
   useTypedSequence(
@@ -203,6 +207,29 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const themeLabel =
     theme === "system" ? `system (${resolvedTheme})` : theme;
+
+  // Cycle order for the StatusBar [mode: …] chip.
+  // Only one persistent mode is active at a time; cycling turns the others off.
+  const currentMode: SiteMode = diagnosticOn
+    ? "diagnostic"
+    : glitchOn
+      ? "glitch storm"
+      : crtOn
+        ? "crt"
+        : "default";
+
+  const cycleMode = React.useCallback(() => {
+    // Reset all persistent modes
+    setDiagnosticOn(false);
+    setGlitchOn(false);
+    setCrtOn(false);
+
+    // Activate the next mode in the cycle
+    if (currentMode === "default") setDiagnosticOn(true);
+    else if (currentMode === "diagnostic") setGlitchOn(true);
+    else if (currentMode === "glitch storm") setCrtOn(true);
+    // crt → default → leave everything off
+  }, [currentMode]);
 
   const onContextMenu: React.MouseEventHandler<HTMLElement> = (e) => {
     if (e.shiftKey) return; // let native menu through
@@ -343,7 +370,11 @@ export function SitePage({ content }: { content: SiteContent }) {
         <Footer />
       </div>
 
-      <StatusBar onOpenHelp={() => setHelpOpen((v) => !v)} />
+      <StatusBar
+        onOpenHelp={() => setHelpOpen((v) => !v)}
+        mode={currentMode}
+        onCycleMode={cycleMode}
+      />
 
       <CmdPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
       <ShortcutHelp

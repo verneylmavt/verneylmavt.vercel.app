@@ -297,8 +297,7 @@ export function MiniTerminal({
         case "glitch": {
           if (onGlitch) {
             onGlitch();
-            append(cmd, "glitch storm activated · esc to dismiss");
-            setTimeout(() => onClose(), 250);
+            append(cmd, "glitch storm toggled · type glitch again to exit");
           } else {
             append(
               cmd,

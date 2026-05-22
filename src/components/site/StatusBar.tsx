@@ -24,13 +24,24 @@ function ScrollPercent() {
   );
 }
 
+export type SiteMode = "default" | "diagnostic" | "glitch storm" | "crt";
+
 export function StatusBar({
   onOpenHelp,
+  mode,
+  onCycleMode,
 }: {
   /** Opens the ShortcutHelp overlay. Hooked up from SitePage so the chip
-   *  is a second entry point alongside the `?` keyboard shortcut. */
+   *  is a second entry point alongside the `?` keyboard shortcut.
+   *  Currently disabled in favour of the [mode: …] cycler — see below. */
   onOpenHelp?: () => void;
+  /** Current persistent mode (default | diagnostic | glitch storm | crt). */
+  mode?: SiteMode;
+  /** Cycles through the four modes in order. */
+  onCycleMode?: () => void;
 } = {}) {
+  // Silence the unused-variable lint while the help chip is disabled
+  void onOpenHelp;
   const { theme, resolvedTheme, cycleTheme } = useTheme();
   const reduced = useReducedMotion();
 
@@ -114,6 +125,8 @@ export function StatusBar({
             </span>
           ) : null}
 
+          {/* [ ? help ] chip — currently disabled in favour of the [mode: …]
+              cycler below. Kept here so it can be flipped back on easily.
           {onOpenHelp ? (
             <button
               type="button"
@@ -129,6 +142,26 @@ export function StatusBar({
               )}
             >
               [ ? help ]
+            </button>
+          ) : null}
+          */}
+
+          {/* Mode cycler — cycles default → diagnostic → glitch storm → crt */}
+          {onCycleMode ? (
+            <button
+              type="button"
+              onClick={onCycleMode}
+              aria-label={`Mode: ${mode ?? "default"}. Click to cycle.`}
+              className={cn(
+                "inline-flex max-w-[52vw] items-center px-1.5 py-0.5",
+                "text-[0.6875rem] tracking-[0.04em]",
+                "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
+                "bg-[rgb(var(--surface)/0.4)] text-muted",
+                "transition-colors duration-[var(--dur-base)]",
+                "hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]",
+              )}
+            >
+              [ mode: {mode ?? "default"} ]
             </button>
           ) : null}
 
