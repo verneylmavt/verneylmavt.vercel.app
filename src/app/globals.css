@@ -347,6 +347,28 @@ html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
 }
 
 /* ──────────────────────────────────────────────────────────────
+ * Glitch Storm easter egg (type "glitch")
+ * Chromatic aberration via text-shadow on text elements.
+ * Applied to <html data-glitch="on"> by GlitchStorm.tsx.
+ * ─────────────────────────────────────────────────────────── */
+
+html[data-glitch="on"] :is(h1, h2, h3, h4, p, span, li, a, button, pre, code, label) {
+  text-shadow:
+    -2px 0 rgba(255, 40, 40, 0.50),
+     2px 0 rgba(40, 40, 255, 0.50);
+}
+
+/* ──────────────────────────────────────────────────────────────
+ * CRT Mode easter egg (type "crt")
+ * Phosphor glow on text. Scanlines + vignette handled by canvas.
+ * Applied to <html data-crt="on"> by CRTMode.tsx.
+ * ─────────────────────────────────────────────────────────── */
+
+html[data-crt="on"] :is(h1, h2, h3, h4, p, span, li, a, button, pre, code, label) {
+  text-shadow: 0 0 7px rgb(var(--accent) / 0.28);
+}
+
+/* ──────────────────────────────────────────────────────────────
  * Toast (EOF notification) — fade in/out
  * ─────────────────────────────────────────────────────────── */
 

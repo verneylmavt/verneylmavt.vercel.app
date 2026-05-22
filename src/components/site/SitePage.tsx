@@ -23,6 +23,10 @@ import {
 import { MouseSpotlight } from "@/components/visual/MouseSpotlight";
 import { Scanline } from "@/components/visual/Scanline";
 import { MatrixRain } from "@/components/visual/MatrixRain";
+import { HyperspeedWarp } from "@/components/visual/HyperspeedWarp";
+import { BSOD } from "@/components/visual/BSOD";
+import { GlitchStorm } from "@/components/visual/GlitchStorm";
+import { CRTMode, readCRTInitial } from "@/components/visual/CRTMode";
 import { ScrollIndicator } from "@/components/ui/ScrollIndicator";
 import { CmdPalette, type PaletteItem } from "@/components/ui/CmdPalette";
 import { ShortcutHelp } from "@/components/ui/ShortcutHelp";
@@ -54,6 +58,10 @@ export function SitePage({ content }: { content: SiteContent }) {
   // restore from sessionStorage if user previously activated diagnostic mode.
   const [diagnosticOn, setDiagnosticOn] = React.useState<boolean>(false);
   const [matrixOn, setMatrixOn] = React.useState<boolean>(false);
+  const [warpOn, setWarpOn] = React.useState<boolean>(false);
+  const [bsodOn, setBsodOn] = React.useState<boolean>(false);
+  const [glitchOn, setGlitchOn] = React.useState<boolean>(false);
+  const [crtOn, setCrtOn] = React.useState<boolean>(false);
   const [ctxMenu, setCtxMenu] = React.useState<{
     open: boolean;
     x: number;
@@ -67,15 +75,44 @@ export function SitePage({ content }: { content: SiteContent }) {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setDiagnosticOn(true);
     }
+    if (readCRTInitial()) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCrtOn(true);
+    }
   }, []);
 
-  // Konami code → diagnostic mode
+  // Konami code → diagnostic mode (kept as hidden alt trigger)
   useKonami(React.useCallback(() => setDiagnosticOn((v) => !v), []));
+  // Typed "diag" → diagnostic mode (primary typed trigger)
+  useTypedSequence(
+    "diag",
+    React.useCallback(() => setDiagnosticOn((v) => !v), []),
+  );
 
   // Typed "matrix" → MatrixRain
   useTypedSequence(
     "matrix",
     React.useCallback(() => setMatrixOn(true), []),
+  );
+  // Typed "warp" → HyperspeedWarp
+  useTypedSequence(
+    "warp",
+    React.useCallback(() => setWarpOn(true), []),
+  );
+  // Typed "crash" → BSOD
+  useTypedSequence(
+    "crash",
+    React.useCallback(() => setBsodOn(true), []),
+  );
+  // Typed "glitch" → GlitchStorm
+  useTypedSequence(
+    "glitch",
+    React.useCallback(() => setGlitchOn(true), []),
+  );
+  // Typed "crt" → CRT Mode (toggle)
+  useTypedSequence(
+    "crt",
+    React.useCallback(() => setCrtOn((v) => !v), []),
   );
 
   const scrollToSection = React.useCallback((id: string) => {
@@ -249,6 +286,30 @@ export function SitePage({ content }: { content: SiteContent }) {
         onClose={() => setMatrixOn(false)}
       />
 
+      {/* Hyperspeed warp — typed "warp" easter egg */}
+      <HyperspeedWarp
+        active={warpOn}
+        onClose={() => setWarpOn(false)}
+      />
+
+      {/* BSOD — typed "crash" easter egg */}
+      <BSOD
+        active={bsodOn}
+        onClose={() => setBsodOn(false)}
+      />
+
+      {/* Glitch Storm — typed "glitch" easter egg */}
+      <GlitchStorm
+        active={glitchOn}
+        onClose={() => setGlitchOn(false)}
+      />
+
+      {/* CRT Mode — typed "crt" toggle easter egg */}
+      <CRTMode
+        active={crtOn}
+        onClose={() => setCrtOn(false)}
+      />
+
       <ViewportBrackets />
       <ScrollIndicator />
 
@@ -265,6 +326,10 @@ export function SitePage({ content }: { content: SiteContent }) {
             site={content}
             onToggleDiag={() => setDiagnosticOn((v) => !v)}
             onShowMatrix={() => setMatrixOn(true)}
+            onWarp={() => setWarpOn(true)}
+            onCrash={() => setBsodOn(true)}
+            onGlitch={() => setGlitchOn(true)}
+            onToggleCRT={() => setCrtOn((v) => !v)}
           />
           <About site={content} />
           <Education site={content} />
@@ -286,6 +351,10 @@ export function SitePage({ content }: { content: SiteContent }) {
         onClose={() => setHelpOpen(false)}
         onToggleDiag={() => setDiagnosticOn((v) => !v)}
         onShowMatrix={() => setMatrixOn(true)}
+        onWarp={() => setWarpOn(true)}
+        onCrash={() => setBsodOn(true)}
+        onGlitch={() => setGlitchOn(true)}
+        onToggleCRT={() => setCrtOn((v) => !v)}
       />
       <ContextMenu
         open={ctxMenu.open}

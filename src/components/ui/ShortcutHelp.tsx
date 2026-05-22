@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 type Row =
   | { kind?: "row"; keys: React.ReactNode[]; label: string }
   | { kind: "heading"; label: string }
-  | { kind: "egg"; keys: React.ReactNode[]; label: string; egg: "diag" | "matrix" };
+  | { kind: "egg"; keys: React.ReactNode[]; label: string; egg: "diag" | "matrix" | "warp" | "crash" | "glitch" | "crt" };
 
 const ROWS: Row[] = [
   { keys: [<Kbd key="g">g</Kbd>, <Kbd key="h">h</Kbd>], label: "go home" },
@@ -26,25 +26,38 @@ const ROWS: Row[] = [
   {
     kind: "egg" as const,
     egg: "diag" as const,
-    keys: [
-      <Kbd key="u1">↑</Kbd>,
-      <Kbd key="u2">↑</Kbd>,
-      <Kbd key="d1">↓</Kbd>,
-      <Kbd key="d2">↓</Kbd>,
-      <Kbd key="l1">←</Kbd>,
-      <Kbd key="r1">→</Kbd>,
-      <Kbd key="l2">←</Kbd>,
-      <Kbd key="r2">→</Kbd>,
-      <Kbd key="b">b</Kbd>,
-      <Kbd key="a">a</Kbd>,
-    ],
+    keys: "diag".split("").map((c, i) => <Kbd key={`dg${i}`}>{c}</Kbd>),
     label: "diagnostic mode",
+  },
+  {
+    kind: "egg" as const,
+    egg: "glitch" as const,
+    keys: "glitch".split("").map((c, i) => <Kbd key={`gl${i}`}>{c}</Kbd>),
+    label: "glitch storm mode",
+  },
+  {
+    kind: "egg" as const,
+    egg: "crt" as const,
+    keys: "crt".split("").map((c, i) => <Kbd key={`ct${i}`}>{c}</Kbd>),
+    label: "crt mode",
   },
   {
     kind: "egg" as const,
     egg: "matrix" as const,
     keys: "matrix".split("").map((c, i) => <Kbd key={`m${i}`}>{c}</Kbd>),
     label: "matrix mode",
+  },
+  {
+    kind: "egg" as const,
+    egg: "warp" as const,
+    keys: "warp".split("").map((c, i) => <Kbd key={`w${i}`}>{c}</Kbd>),
+    label: "hyperspeed mode",
+  },
+  {
+    kind: "egg" as const,
+    egg: "crash" as const,
+    keys: "crash".split("").map((c, i) => <Kbd key={`cr${i}`}>{c}</Kbd>),
+    label: "bsod mode",
   },
 ];
 
@@ -53,6 +66,10 @@ export function ShortcutHelp({
   onClose,
   onToggleDiag,
   onShowMatrix,
+  onWarp,
+  onCrash,
+  onGlitch,
+  onToggleCRT,
 }: {
   open: boolean;
   onClose: () => void;
@@ -60,6 +77,10 @@ export function ShortcutHelp({
   onToggleDiag?: () => void;
   /** Called when the user taps the matrix-mode egg row (mobile). */
   onShowMatrix?: () => void;
+  onWarp?: () => void;
+  onCrash?: () => void;
+  onGlitch?: () => void;
+  onToggleCRT?: () => void;
 }) {
   const overlayRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLElement | null>(null);
@@ -127,7 +148,14 @@ export function ShortcutHelp({
               );
             }
             if (row.kind === "egg") {
-              const handler = row.egg === "diag" ? onToggleDiag : onShowMatrix;
+              const handler =
+                row.egg === "diag"   ? onToggleDiag :
+                row.egg === "matrix" ? onShowMatrix  :
+                row.egg === "warp"   ? onWarp        :
+                row.egg === "crash"  ? onCrash       :
+                row.egg === "glitch" ? onGlitch      :
+                row.egg === "crt"    ? onToggleCRT   :
+                undefined;
               return (
                 <li key={i}>
                   <button

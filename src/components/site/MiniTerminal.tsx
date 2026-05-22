@@ -36,6 +36,10 @@ export function MiniTerminal({
   site,
   onToggleDiag,
   onShowMatrix,
+  onWarp,
+  onCrash,
+  onGlitch,
+  onToggleCRT,
 }: {
   open: boolean;
   onClose: () => void;
@@ -44,6 +48,14 @@ export function MiniTerminal({
   onToggleDiag?: () => void;
   /** Activates Matrix Rain (the typed-`matrix` easter egg). */
   onShowMatrix?: () => void;
+  /** Activates Hyperspeed Warp. */
+  onWarp?: () => void;
+  /** Activates BSOD. */
+  onCrash?: () => void;
+  /** Activates Glitch Storm. */
+  onGlitch?: () => void;
+  /** Toggles CRT Mode. */
+  onToggleCRT?: () => void;
 }) {
   const { setTheme } = useTheme();
   const [log, setLog] = React.useState<LogEntry[]>(() => [
@@ -145,13 +157,27 @@ export function MiniTerminal({
               </li>
               <li>
                 <span className="text-[rgb(var(--accent))]">diag</span> — toggle
-                the diagnostic mode (alt:{" "}
-                <span className="text-muted-soft">↑ ↑ ↓ ↓ ← → ← → b a</span>)
+                the diagnostic mode
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">glitch</span> — unleash
+                the glitch storm mode
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">crt</span> — toggle
+                the crt monitor mode
               </li>
               <li>
                 <span className="text-[rgb(var(--accent))]">matrix</span> — enter
-                the matrix mode (alt:{" "}
-                <span className="text-muted-soft">m a t r i x</span>)
+                the matrix mode
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">warp</span> — engage into
+                the hyperspeed mode
+              </li>
+              <li>
+                <span className="text-[rgb(var(--accent))]">crash</span> — trigger
+                the bsod mode
               </li>
             </ul>,
           );
@@ -242,6 +268,57 @@ export function MiniTerminal({
           }
           break;
         }
+        case "warp": {
+          if (onWarp) {
+            onWarp();
+            append(cmd, "engaging warp drive · esc to dismiss");
+            setTimeout(() => onClose(), 250);
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">warp: not available here</span>,
+            );
+          }
+          break;
+        }
+        case "crash": {
+          if (onCrash) {
+            onCrash();
+            append(cmd, "triggering bsod · esc to dismiss");
+            setTimeout(() => onClose(), 250);
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">crash: not available here</span>,
+            );
+          }
+          break;
+        }
+        case "glitch": {
+          if (onGlitch) {
+            onGlitch();
+            append(cmd, "glitch storm activated · esc to dismiss");
+            setTimeout(() => onClose(), 250);
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">glitch: not available here</span>,
+            );
+          }
+          break;
+        }
+        case "crt": {
+          if (onToggleCRT) {
+            onToggleCRT();
+            append(cmd, "crt mode toggled · type crt again to exit");
+          } else {
+            append(
+              cmd,
+              <span className="text-muted-soft">crt: not available here</span>,
+            );
+          }
+          break;
+        }
         case "clear": {
           setLog([]);
           break;
@@ -260,7 +337,7 @@ export function MiniTerminal({
       }
       setCurrent("");
     },
-    [append, onClose, setTheme, site, onToggleDiag, onShowMatrix],
+    [append, onClose, setTheme, site, onToggleDiag, onShowMatrix, onWarp, onCrash, onGlitch, onToggleCRT],
   );
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

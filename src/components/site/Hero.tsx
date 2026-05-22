@@ -65,12 +65,20 @@ export function Hero({
   site,
   onToggleDiag,
   onShowMatrix,
+  onWarp,
+  onCrash,
+  onGlitch,
+  onToggleCRT,
 }: {
   site: SiteContent;
   /** Forwarded to MiniTerminal so the `diag` command can toggle diagnostic mode. */
   onToggleDiag?: () => void;
   /** Forwarded to MiniTerminal so the `matrix` command can trigger Matrix Rain. */
   onShowMatrix?: () => void;
+  onWarp?: () => void;
+  onCrash?: () => void;
+  onGlitch?: () => void;
+  onToggleCRT?: () => void;
 }) {
   const reducedMotion = useReducedMotion();
   const mounted = React.useSyncExternalStore(
@@ -195,6 +203,10 @@ export function Hero({
                 site={site}
                 onToggleDiag={onToggleDiag}
                 onShowMatrix={onShowMatrix}
+                onWarp={onWarp}
+                onCrash={onCrash}
+                onGlitch={onGlitch}
+                onToggleCRT={onToggleCRT}
               />
             </div>
           ) : (
