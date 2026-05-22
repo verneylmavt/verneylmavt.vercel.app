@@ -120,7 +120,7 @@ export function StatusBar({
               onClick={onOpenHelp}
               aria-label="Open keyboard shortcuts and easter eggs"
               className={cn(
-                "hidden sm:inline-flex items-center px-1.5 py-0.5",
+                "inline-flex items-center px-1.5 py-0.5",
                 "text-[0.6875rem] tracking-[0.04em]",
                 "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
                 "bg-[rgb(var(--surface)/0.4)] text-muted",

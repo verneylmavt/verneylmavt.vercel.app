@@ -6,7 +6,8 @@ import { cn } from "@/lib/cn";
 
 type Row =
   | { kind?: "row"; keys: React.ReactNode[]; label: string }
-  | { kind: "heading"; label: string };
+  | { kind: "heading"; label: string }
+  | { kind: "egg"; keys: React.ReactNode[]; label: string; egg: "diag" | "matrix" };
 
 const ROWS: Row[] = [
   { keys: [<Kbd key="g">g</Kbd>, <Kbd key="h">h</Kbd>], label: "go home" },
@@ -23,6 +24,8 @@ const ROWS: Row[] = [
   { keys: [<Kbd key="esc">esc</Kbd>], label: "close overlays" },
   { kind: "heading", label: "// easter eggs" },
   {
+    kind: "egg" as const,
+    egg: "diag" as const,
     keys: [
       <Kbd key="u1">↑</Kbd>,
       <Kbd key="u2">↑</Kbd>,
@@ -38,6 +41,8 @@ const ROWS: Row[] = [
     label: "diagnostic mode",
   },
   {
+    kind: "egg" as const,
+    egg: "matrix" as const,
     keys: "matrix".split("").map((c, i) => <Kbd key={`m${i}`}>{c}</Kbd>),
     label: "matrix mode",
   },
@@ -46,9 +51,15 @@ const ROWS: Row[] = [
 export function ShortcutHelp({
   open,
   onClose,
+  onToggleDiag,
+  onShowMatrix,
 }: {
   open: boolean;
   onClose: () => void;
+  /** Called when the user taps the diagnostic-mode egg row (mobile). */
+  onToggleDiag?: () => void;
+  /** Called when the user taps the matrix-mode egg row (mobile). */
+  onShowMatrix?: () => void;
 }) {
   const overlayRef = React.useRef<HTMLDivElement>(null);
   const triggerRef = React.useRef<HTMLElement | null>(null);
@@ -112,6 +123,32 @@ export function ShortcutHelp({
                   className="pt-3 mt-2 border-t border-[rgb(var(--rule)/0.12)] text-[0.6875rem] uppercase tracking-[0.08em] text-muted"
                 >
                   {row.label}
+                </li>
+              );
+            }
+            if (row.kind === "egg") {
+              const handler = row.egg === "diag" ? onToggleDiag : onShowMatrix;
+              return (
+                <li key={i}>
+                  <button
+                    type="button"
+                    onClick={() => { handler?.(); onClose(); }}
+                    className={cn(
+                      "w-full flex items-center justify-between gap-3",
+                      "rounded-[2px] px-2 py-1 -mx-2",
+                      "text-left transition-colors duration-[var(--dur-base)]",
+                      "hover:bg-[rgb(var(--accent)/0.08)] hover:text-[rgb(var(--accent))]",
+                      "active:bg-[rgb(var(--accent)/0.15)]",
+                      handler ? "cursor-pointer" : "cursor-default opacity-50",
+                    )}
+                    disabled={!handler}
+                    aria-label={`Activate ${row.label}`}
+                  >
+                    <span className="text-foreground">{row.label}</span>
+                    <span className="flex flex-wrap items-center gap-1 justify-end">
+                      {row.keys}
+                    </span>
+                  </button>
                 </li>
               );
             }

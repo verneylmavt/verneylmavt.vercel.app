@@ -281,7 +281,12 @@ export function SitePage({ content }: { content: SiteContent }) {
       <StatusBar onOpenHelp={() => setHelpOpen((v) => !v)} />
 
       <CmdPalette open={paletteOpen} onOpenChange={setPaletteOpen} items={paletteItems} />
-      <ShortcutHelp open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <ShortcutHelp
+        open={helpOpen}
+        onClose={() => setHelpOpen(false)}
+        onToggleDiag={() => setDiagnosticOn((v) => !v)}
+        onShowMatrix={() => setMatrixOn(true)}
+      />
       <ContextMenu
         open={ctxMenu.open}
         anchor={{ x: ctxMenu.x, y: ctxMenu.y }}
