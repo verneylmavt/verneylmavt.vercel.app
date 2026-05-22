@@ -114,13 +114,6 @@ export function DiagnosticOverlay({
       >
         <div className="opacity-70 mb-1">{"// diagnostic"}</div>
         <div ref={hudRef}>0 fps · -- · scroll 0px · theme=--</div>
-        <button
-          type="button"
-          onClick={onClose}
-          className="mt-2 block text-[0.625rem] tracking-[0.06em] uppercase text-muted hover:text-foreground"
-        >
-          [ esc to dismiss ]
-        </button>
       </div>
     </>
   );

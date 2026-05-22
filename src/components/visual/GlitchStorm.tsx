@@ -130,31 +130,11 @@ export function GlitchStorm({
   if (!active) return null;
 
   return (
-    <>
-      {/* Tear lines canvas */}
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-[60]"
-      />
-
-      {/* Persistent mode badge */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed bottom-10 left-4 z-[45]"
-      >
-        <div className="pointer-events-auto border border-[rgb(var(--accent)/0.55)] bg-background/90 backdrop-blur px-3 py-1.5 text-[0.6875rem] uppercase tracking-[0.04em] text-[rgb(var(--accent))]">
-          <span className="opacity-70">{"// glitch storm"}</span>
-          <button
-            type="button"
-            onClick={onClose}
-            className="ml-3 text-muted hover:text-foreground transition-colors duration-[var(--dur-base)]"
-          >
-            [ esc ]
-          </button>
-        </div>
-      </div>
-    </>
+    <canvas
+      ref={canvasRef}
+      aria-hidden="true"
+      className="pointer-events-none fixed inset-0 z-[60]"
+    />
   );
 }
 
