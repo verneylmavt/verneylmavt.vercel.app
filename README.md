@@ -11,3 +11,5 @@ Rather than maintaining a single continuously modified codebase, the project is 
 - **`main`**
 - [**`v1`**](https://github.com/verneylmavt/verneylmavt.vercel.app/tree/v1): HTML + CSS + JavaScript
 - [**`v2`**](https://github.com/verneylmavt/verneylmavt.vercel.app/tree/v2): Next.js + Tailwind CSS + Framer Motion + React Three Fiber + Three.js + WebGL
+- [**`v3`**](https://github.com/verneylmavt/verneylmavt.vercel.app/tree/v3): Next.js + Tailwind CSS + Framer Motion + React Three Fiber + Three.js + WebGL
+- [**`v4`**](https://github.com/verneylmavt/verneylmavt.vercel.app/tree/v4)
