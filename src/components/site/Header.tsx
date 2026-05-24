@@ -1,53 +1,47 @@
 "use client";
 
 import * as React from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, Search, X } from "lucide-react";
 
 import { cn } from "@/lib/cn";
 
-export type NavSection = { id: string; label: string };
+export type NavSection = { id: string; label: string; index: string };
 
 export function Header({
   siteName,
   sections,
   activeId,
+  scrollProgress,
+  onOpenCommand,
 }: {
   siteName: string;
   sections: NavSection[];
   activeId?: string;
+  scrollProgress: number;
+  onOpenCommand: () => void;
 }) {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [scrolled, setScrolled] = React.useState(false);
-
-  React.useEffect(() => {
-    function onScroll() {
-      setScrolled(window.scrollY > 12);
-    }
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   return (
-    <header
-      className={cn(
-        "sticky top-0 z-40 w-full",
-        scrolled
-          ? "bg-[rgb(var(--background)/0.6)] backdrop-blur-xl"
-          : "bg-[rgb(var(--background)/0.15)] backdrop-blur-md",
-      )}
-    >
-      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-3 px-6">
+    <header className="sticky top-0 z-50 border-b border-border/20 bg-background/92 backdrop-blur-xl">
+      <div
+        aria-hidden="true"
+        className="absolute inset-x-0 bottom-[-1px] h-px bg-accent"
+        style={{ transform: `scaleX(${scrollProgress})`, transformOrigin: "0 50%" }}
+      />
+
+      <div className="mx-auto grid min-h-16 w-full max-w-[1440px] grid-cols-[1fr_auto] items-stretch lg:grid-cols-[280px_1fr_280px]">
         <a
           href="#top"
-          className="group inline-flex items-baseline gap-2 justify-self-start text-sm font-medium tracking-tight"
+          className="focus-ring flex items-center border-r border-border/20 px-4 text-xs font-semibold uppercase leading-none sm:px-6"
           aria-label="Scroll to top"
         >
-          <span className="text-foreground">{siteName}</span>
+          <span className="mr-3 inline-block h-2 w-2 bg-accent" />
+          {siteName}
         </a>
 
         <nav
-          className="hidden items-center gap-1 justify-self-center md:flex"
+          className="hidden grid-cols-8 divide-x divide-border/15 text-[11px] uppercase leading-none lg:grid"
           aria-label="Sections"
         >
           {sections.map((section) => {
@@ -58,68 +52,82 @@ export function Header({
                 href={`#${section.id}`}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "rounded-full px-3 py-2 text-sm transition",
-                  "text-muted hover:text-foreground",
-                  isActive &&
-                    "bg-[rgb(var(--foreground)/0.06)] text-foreground",
+                  "focus-ring flex items-center justify-center px-2 py-5 transition",
+                  "hover:bg-foreground hover:text-background",
+                  isActive && "bg-foreground text-background",
                 )}
               >
+                <span className="mr-2 text-[10px] opacity-60">{section.index}</span>
                 {section.label}
               </a>
             );
           })}
         </nav>
 
-        <div className="flex items-center justify-self-end gap-2">
+        <div className="flex items-stretch justify-end">
           <button
             type="button"
-            className={cn(
-              "inline-flex h-10 w-10 items-center justify-center rounded-full border border-[rgb(var(--border)/0.14)] bg-[rgb(var(--background)/0.4)] backdrop-blur-md transition md:hidden",
-              "hover:border-[rgb(var(--border)/0.22)] hover:bg-[rgb(var(--background)/0.55)]",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgb(var(--accent)/0.45)] focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-            )}
+            onClick={onOpenCommand}
+            className="focus-ring hidden items-center gap-3 border-l border-border/20 px-5 text-[11px] uppercase transition hover:bg-foreground hover:text-background sm:flex"
+          >
+            <Search className="h-3.5 w-3.5" aria-hidden="true" />
+            Command
+            <span className="border border-current px-1.5 py-0.5 text-[10px]">Ctrl K</span>
+          </button>
+          <button
+            type="button"
+            className="focus-ring flex h-16 w-16 items-center justify-center border-l border-border/20 lg:hidden"
             aria-label={isOpen ? "Close menu" : "Open menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
             onClick={() => setIsOpen((v) => !v)}
           >
-            {isOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       <div
         id="mobile-nav"
         className={cn(
-          "md:hidden",
+          "border-t border-border/20 lg:hidden",
           isOpen ? "block" : "hidden",
-          "border-t border-[rgb(var(--border)/0.10)]",
         )}
       >
-        <div className="mx-auto w-full max-w-6xl px-6 py-4">
-          <nav className="grid gap-1" aria-label="Sections">
-            {sections.map((section) => {
-              const isActive = activeId === section.id;
-              return (
-                <a
-                  key={section.id}
-                  href={`#${section.id}`}
-                  onClick={() => setIsOpen(false)}
-                  aria-current={isActive ? "page" : undefined}
-                  className={cn(
-                    "flex items-center justify-between rounded-xl px-3 py-3 text-sm",
-                    "text-muted hover:bg-[rgb(var(--foreground)/0.06)] hover:text-foreground",
-                    isActive && "bg-[rgb(var(--foreground)/0.06)] text-foreground",
-                  )}
-                >
-                  <span>{section.label}</span>
-                  <span className="text-muted/70">-&gt;</span>
-                </a>
-              );
-            })}
-          </nav>
-        </div>
+        <nav className="grid divide-y divide-border/15" aria-label="Sections">
+          {sections.map((section) => {
+            const isActive = activeId === section.id;
+            return (
+              <a
+                key={section.id}
+                href={`#${section.id}`}
+                onClick={() => setIsOpen(false)}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "focus-ring flex items-center justify-between px-5 py-4 text-xs uppercase",
+                  isActive ? "bg-foreground text-background" : "bg-background",
+                )}
+              >
+                <span>
+                  <span className="mr-3 opacity-60">{section.index}</span>
+                  {section.label}
+                </span>
+                <span aria-hidden="true">-&gt;</span>
+              </a>
+            );
+          })}
+          <button
+            type="button"
+            onClick={() => {
+              setIsOpen(false);
+              onOpenCommand();
+            }}
+            className="focus-ring flex items-center justify-between px-5 py-4 text-left text-xs uppercase"
+          >
+            Command palette
+            <span aria-hidden="true">Ctrl K</span>
+          </button>
+        </nav>
       </div>
     </header>
   );

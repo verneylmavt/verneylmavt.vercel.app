@@ -68,9 +68,19 @@ export type WorkExperienceItem = {
   highlights?: string[];
 };
 
+export type ToolCategory =
+  | "AI/ML"
+  | "Data"
+  | "Backend"
+  | "Frontend"
+  | "Cloud/Infra"
+  | "Workflow"
+  | "Hardware";
+
 export type ToolItem = {
   name: string;
   icon: IconName;
+  category: ToolCategory;
 };
 
 export type CertificationItem = {
@@ -201,28 +211,28 @@ export const site: SiteContent = {
     },
   ],
   tools: [
-    { name: "Python", icon: "LineSquiggle" },
-    { name: "FastAPI", icon: "Zap" },
-    { name: "NumPy", icon: "Sigma" },
-    { name: "Pandas", icon: "Table" },
-    { name: "Scikit-Learn", icon: "Brain" },
-    { name: "XGBoost", icon: "TrendingUp" },
-    { name: "PyTorch", icon: "Flame" },
-    { name: "Transformers", icon: "Smile" },
-    { name: "LangChain", icon: "Link" },
-    { name: "n8n", icon: "ChartNetwork" },
-    { name: "OpenAI SDK", icon: "Bot" },
-    { name: "Claude Code", icon: "Bot" },
-    { name: "Apache Spark", icon: "Star" },
-    { name: "HTML / CSS / JS / TS", icon: "CodeXml" },
-    { name: "React", icon: "Atom" },
-    { name: "Node.js", icon: "Package" },
-    { name: "SQL", icon: "Database" },
-    { name: "NoSQL", icon: "DatabaseZap" },
-    { name: "Docker", icon: "Container" },
-    { name: "Kubernetes", icon: "Network" },
-    { name: "NVIDIA", icon: "Gpu" },
-    { name: "AWS", icon: "Cloud" },
+    { name: "Python", icon: "LineSquiggle", category: "Backend" },
+    { name: "FastAPI", icon: "Zap", category: "Backend" },
+    { name: "NumPy", icon: "Sigma", category: "Data" },
+    { name: "Pandas", icon: "Table", category: "Data" },
+    { name: "Scikit-Learn", icon: "Brain", category: "AI/ML" },
+    { name: "XGBoost", icon: "TrendingUp", category: "AI/ML" },
+    { name: "PyTorch", icon: "Flame", category: "AI/ML" },
+    { name: "Transformers", icon: "Smile", category: "AI/ML" },
+    { name: "LangChain", icon: "Link", category: "AI/ML" },
+    { name: "n8n", icon: "ChartNetwork", category: "Workflow" },
+    { name: "OpenAI SDK", icon: "Bot", category: "AI/ML" },
+    { name: "Claude Code", icon: "Bot", category: "Workflow" },
+    { name: "Apache Spark", icon: "Star", category: "Data" },
+    { name: "HTML / CSS / JS / TS", icon: "CodeXml", category: "Frontend" },
+    { name: "React", icon: "Atom", category: "Frontend" },
+    { name: "Node.js", icon: "Package", category: "Backend" },
+    { name: "SQL", icon: "Database", category: "Data" },
+    { name: "NoSQL", icon: "DatabaseZap", category: "Data" },
+    { name: "Docker", icon: "Container", category: "Cloud/Infra" },
+    { name: "Kubernetes", icon: "Network", category: "Cloud/Infra" },
+    { name: "NVIDIA", icon: "Gpu", category: "Hardware" },
+    { name: "AWS", icon: "Cloud", category: "Cloud/Infra" },
   ],
   certifications: [
     {
