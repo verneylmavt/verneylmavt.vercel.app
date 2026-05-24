@@ -15,12 +15,11 @@ import { Footer } from "./Footer";
 import { StatusBar, type SiteMode } from "./StatusBar";
 import { ViewportBrackets } from "@/components/visual/ViewportBrackets";
 import { BootSequence } from "@/components/visual/BootSequence";
-import { CursorCrosshair } from "@/components/visual/CursorCrosshair";
+import { CursorProbe } from "@/components/visual/CursorProbe";
 import {
   DiagnosticOverlay,
   readDiagnosticInitial,
 } from "@/components/visual/DiagnosticOverlay";
-import { MouseSpotlight } from "@/components/visual/MouseSpotlight";
 import { Scanline } from "@/components/visual/Scanline";
 import { MatrixRain } from "@/components/visual/MatrixRain";
 import { HyperspeedWarp } from "@/components/visual/HyperspeedWarp";
@@ -62,6 +61,10 @@ export function SitePage({ content }: { content: SiteContent }) {
   const [bsodOn, setBsodOn] = React.useState<boolean>(false);
   const [glitchOn, setGlitchOn] = React.useState<boolean>(false);
   const [crtOn, setCrtOn] = React.useState<boolean>(false);
+  // Probe-system opt-out: hides the telemetry caption and dims the field mesh.
+  // Mutually exclusive with diagnostic / glitch / crt — flips off when any
+  // overlay turns on.
+  const [minimalOn, setMinimalOn] = React.useState<boolean>(false);
   const [ctxMenu, setCtxMenu] = React.useState<{
     open: boolean;
     x: number;
@@ -70,12 +73,15 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const { theme, resolvedTheme, cycleTheme } = useTheme();
 
-  // Atomically set persistent mode state. "all" activates every layer at once.
+  // Atomically set persistent mode state. "all" activates every overlay; the
+  // "minimal" mode is the probe-system escape hatch and is mutually exclusive
+  // with the overlays.
   // Using useCallback with empty deps is safe because the setters are stable.
   const setMode = React.useCallback((next: SiteMode) => {
     setDiagnosticOn(next === "diagnostic" || next === "all");
     setGlitchOn(next === "glitch storm" || next === "all");
     setCrtOn(next === "crt" || next === "all");
+    setMinimalOn(next === "minimal");
   }, []);
 
   React.useEffect(() => {
@@ -211,11 +217,14 @@ export function SitePage({ content }: { content: SiteContent }) {
     theme === "system" ? `system (${resolvedTheme})` : theme;
 
   // Cycle order for the StatusBar [mode: …] chip.
+  // minimal sits between default and diagnostic so users find the probe-system
+  // opt-out before stepping into the heavier overlays.
   const currentMode: SiteMode =
     (diagnosticOn && glitchOn && crtOn) ? "all"
     : diagnosticOn ? "diagnostic"
     : glitchOn     ? "glitch storm"
     : crtOn        ? "crt"
+    : minimalOn    ? "minimal"
     : "default";
 
   // Keep ref in sync so typed-sequence callbacks always see the latest mode.
@@ -223,7 +232,8 @@ export function SitePage({ content }: { content: SiteContent }) {
 
   const cycleMode = React.useCallback(() => {
     const next: SiteMode =
-      currentMode === "default"      ? "diagnostic"  :
+      currentMode === "default"      ? "minimal"      :
+      currentMode === "minimal"      ? "diagnostic"   :
       currentMode === "diagnostic"   ? "glitch storm" :
       currentMode === "glitch storm" ? "crt"          :
       currentMode === "crt"          ? "all"          :
@@ -294,11 +304,12 @@ export function SitePage({ content }: { content: SiteContent }) {
       <BootSequence />
 
       {/* Ambient layers */}
-      <MouseSpotlight />
       <Scanline />
 
-      {/* Cursor crosshair — desktop, non-reduced-motion only */}
-      <CursorCrosshair />
+      {/* Magnetic-telemetry cursor system: field mesh + schematic probe +
+          Manhattan trace + corner brackets + telemetry HUD.
+          Desktop only; opt out via the [mode: minimal] status-bar chip. */}
+      <CursorProbe minimal={currentMode === "minimal"} />
 
       {/* Diagnostic mode — Konami toggle */}
       <DiagnosticOverlay
