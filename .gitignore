@@ -43,3 +43,17 @@ AGENTS.md
 CLAUDE.md
 **/*.log
 **/structure.txt
+
+# claude code
+.claude/
+
+# playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# windows
+Thumbs.db
+ehthumbs.db
+desktop.ini
