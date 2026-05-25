@@ -6,7 +6,7 @@ import { SectionHeading } from "./SectionHeading";
 import { EducationRow } from "./EducationRow";
 
 export function Education({ site }: { site: SiteContent }) {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
 
   return (
     <section

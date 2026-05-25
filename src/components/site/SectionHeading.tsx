@@ -83,7 +83,7 @@ function CompileInTitle({ title }: { title: string }) {
     <h2
       ref={ref}
       className={cn(
-        "text-[clamp(2.625rem,5vw,3.5rem)] leading-[1.0] font-medium tracking-[-0.01em]",
+        "text-[clamp(2.5rem,5vw,3.5rem)] leading-[1.0] font-medium tracking-[-0.01em]",
         "text-foreground uppercase",
       )}
     >

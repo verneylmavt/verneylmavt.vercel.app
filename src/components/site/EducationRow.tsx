@@ -64,7 +64,7 @@ export function EducationRow({
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
-                "inline-flex items-baseline gap-1 text-foreground",
+                "inline-flex items-baseline gap-1 min-w-0 text-foreground",
                 "transition-colors duration-[var(--dur-base)]",
                 "hover:text-[rgb(var(--accent))]",
               )}
