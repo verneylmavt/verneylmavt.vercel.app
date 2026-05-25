@@ -13,7 +13,7 @@ function EducationKeyValue({
   valueClassName,
 }: {
   k: string;
-  v: string;
+  v: React.ReactNode;
   valueClassName?: string;
 }) {
   return (
@@ -122,7 +122,23 @@ export function EducationRow({
               institution
             </p>
             <h3 className="text-[0.9375rem] leading-[1.45] text-foreground">
-              {item.institution}
+              {item.institutionUrl ? (
+                <a
+                  href={item.institutionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "inline-flex items-baseline gap-1",
+                    "transition-colors duration-[var(--dur-base)]",
+                    "hover:text-[rgb(var(--accent))]",
+                  )}
+                >
+                  <span>{item.institution}</span>
+                  <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
+                </a>
+              ) : (
+                item.institution
+              )}
             </h3>
           </div>
           <div>
@@ -152,7 +168,25 @@ export function EducationRow({
         <div className="flex min-w-0 flex-col gap-2">
           <EducationKeyValue
             k="institution"
-            v={item.institution}
+            v={
+              item.institutionUrl ? (
+                <a
+                  href={item.institutionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    "inline-flex items-baseline gap-1",
+                    "transition-colors duration-[var(--dur-base)]",
+                    "hover:text-[rgb(var(--accent))]",
+                  )}
+                >
+                  <span className="md:truncate">{item.institution}</span>
+                  <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
+                </a>
+              ) : (
+                item.institution
+              )
+            }
             valueClassName="md:whitespace-nowrap md:overflow-hidden md:text-ellipsis"
           />
           <EducationKeyValue k="degree" v={item.title} />

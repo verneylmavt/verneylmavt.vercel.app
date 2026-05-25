@@ -26,6 +26,7 @@ export type ContactLink = {
 
 export type EducationItem = {
   institution: string;
+  institutionUrl?: string;
   title: string;
   start: string;
   end: string;
@@ -188,6 +189,7 @@ export const site: SiteContent = {
   education: [
     {
       institution: "Singapore University of Technology and Design (SUTD)",
+      institutionUrl: "https://www.sutd.edu.sg/",
       title: "BEng in Computer Science and Design",
       start: "2021",
       end: "2025",
@@ -196,11 +198,21 @@ export const site: SiteContent = {
     },
     {
       institution: "Chalmers University of Technology",
+      institutionUrl: "https://www.chalmers.se/en/",
       title: "BSc in Computer Science and Engineering",
       start: "2024",
       end: "2024",
       description:
         "Taking computer science on a trip to Sweden and bringing back a bit of Swedish culture.",
+    },
+    {
+      institution: "SMA Katolik St. Louis 1",
+      institutionUrl: "https://smakstlouis1sby.sch.id/",
+      title: "High School Diploma in Natural Sciences",
+      start: "2018",
+      end: "2021",
+      description:
+        "Building strong foundations in math and physics that shaped my path into computer science.",
     },
   ],
   workExperience: [

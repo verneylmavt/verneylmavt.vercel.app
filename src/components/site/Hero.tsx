@@ -188,7 +188,7 @@ export function Hero({
                 {ASCII_ART}
               </pre>
             ) : (
-              <span className="text-[clamp(2.25rem,12vw,8rem)] block leading-[0.85]">
+              <span className="text-[clamp(2.75rem,16vw,8rem)] block leading-[0.85]">
                 {nameTokens.map((t, i) => (
                   <span key={i} className="block">
                     <ScrambleText text={t} duration={620} autoGlitch />
