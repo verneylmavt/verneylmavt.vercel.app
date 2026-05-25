@@ -59,21 +59,44 @@ export function EducationRow({
           className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.85rem] md:text-[0.9rem] min-w-0"
         >
           {item.institutionUrl ? (
-            <a
-              href={item.institutionUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "inline-flex items-baseline gap-1 min-w-0 text-foreground",
-                "transition-colors duration-[var(--dur-base)]",
-                "hover:text-[rgb(var(--accent))]",
-              )}
-            >
-              <span className="truncate">{item.institution}</span>
-              <span aria-hidden="true" className="text-[0.6875rem] shrink-0">
-                ↗
-              </span>
-            </a>
+            item.institutionLine2 ? (
+              // Two-line on mobile, single truncated on md+
+              <a
+                href={item.institutionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "text-foreground transition-colors duration-[var(--dur-base)]",
+                  "hover:text-[rgb(var(--accent))]",
+                )}
+              >
+                <span className="flex flex-col md:hidden leading-snug">
+                  <span>{item.institution.replace(item.institutionLine2, "").trim()}</span>
+                  <span className="inline-flex items-baseline gap-1">
+                    <span>{item.institutionLine2}</span>
+                    <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
+                  </span>
+                </span>
+                <span className="hidden md:inline-flex items-baseline gap-1 min-w-0">
+                  <span className="truncate">{item.institution}</span>
+                  <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
+                </span>
+              </a>
+            ) : (
+              <a
+                href={item.institutionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "inline-flex items-baseline gap-1 min-w-0 text-foreground",
+                  "transition-colors duration-[var(--dur-base)]",
+                  "hover:text-[rgb(var(--accent))]",
+                )}
+              >
+                <span className="truncate">{item.institution}</span>
+                <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
+              </a>
+            )
           ) : (
             <span className="text-foreground truncate">{item.institution}</span>
           )}

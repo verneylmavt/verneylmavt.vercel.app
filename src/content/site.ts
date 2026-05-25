@@ -26,6 +26,8 @@ export type ContactLink = {
 
 export type EducationItem = {
   institution: string;
+  /** Mobile-only line break: text from this string onward wraps to a second line. */
+  institutionLine2?: string;
   institutionUrl?: string;
   location?: string;
   title: string;
@@ -190,6 +192,7 @@ export const site: SiteContent = {
   education: [
     {
       institution: "Singapore University of Technology and Design (SUTD)",
+      institutionLine2: "of Technology and Design (SUTD)",
       institutionUrl: "https://www.sutd.edu.sg/",
       location: "Singapore",
       title: "BEng in Computer Science and Design",
@@ -200,6 +203,7 @@ export const site: SiteContent = {
     },
     {
       institution: "Chalmers University of Technology",
+      institutionLine2: "of Technology",
       institutionUrl: "https://www.chalmers.se/en/",
       location: "Gothenburg, Sweden",
       title: "BSc in Computer Science and Engineering",
