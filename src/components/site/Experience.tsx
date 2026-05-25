@@ -15,7 +15,7 @@ export function Experience({ site }: { site: SiteContent }) {
           number={3}
           slug="work"
           title="Work Experience"
-          filename="src/sections/work.tsx"
+          filename="src/components/site/experience.tsx"
         />
 
         {site.workExperience.length === 0 ? (

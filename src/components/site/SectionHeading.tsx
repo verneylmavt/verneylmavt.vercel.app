@@ -28,7 +28,7 @@ export function SectionHeading({
   className?: string;
 }) {
   const padded = String(number).padStart(2, "0");
-  const file = filename ?? `src/sections/${slug}.tsx`;
+  const file = filename ?? `src/components/site/${slug}.tsx`;
 
   return (
     <header className={cn("mb-8", className)}>

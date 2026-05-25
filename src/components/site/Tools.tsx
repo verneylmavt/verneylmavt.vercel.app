@@ -68,7 +68,7 @@ export function Tools({ site }: { site: SiteContent }) {
           number={4}
           slug="tools"
           title="Tools"
-          filename="src/sections/tools.lock"
+          filename="src/components/site/tools.tsx"
         />
         <p className="text-[0.75rem] uppercase tracking-[0.06em] text-muted-soft mb-6">
           {/* {`// ${tools.length} tools`} */}
