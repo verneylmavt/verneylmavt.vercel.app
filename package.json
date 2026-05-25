@@ -1,6 +1,6 @@
 {
-  "name": "verneylmavt-v3",
-  "version": "0.1.0",
+  "name": "verneylmavt",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",

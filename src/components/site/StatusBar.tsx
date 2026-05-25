@@ -42,11 +42,10 @@ export function StatusBar({
 } = {}) {
   // Silence the unused-variable lint while the help chip is disabled
   void onOpenHelp;
-  const { theme, resolvedTheme, cycleTheme } = useTheme();
+  const { theme, cycleTheme } = useTheme();
   const reduced = useReducedMotion();
 
-  const themeLabel =
-    theme === "system" ? `system (${resolvedTheme})` : theme;
+  const themeLabel = theme;
 
   // Periodic "compiling…" → "ok" flash that briefly replaces the version label.
   // Pauses under reduced-motion and when the page is hidden.

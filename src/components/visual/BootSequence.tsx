@@ -16,11 +16,11 @@ type Line = {
 
 function buildLines(themeLabel: string): Line[] {
   return [
-    { text: "> mounting site/v3.0.0...", hold: 80 },
-    { text: "> resolving sections [8/8]", suffix: " ok", hold: 80 },
-    { text: `> theme = ${themeLabel}`, hold: 80 },
-    { text: "> shortcuts ⌘k · / · ? loaded", hold: 80 },
-    { text: "> ready", suffix: ".", hold: 220 },
+    { text: "> verneylmavt/v3.0.0", suffix: " ok", hold: 50 },
+    { text: "> sections [8/8]...", suffix: " ok", hold: 50 },
+    { text: `> theme = ${themeLabel}`, suffix: " ok", hold: 50 },
+    { text: "> shortcuts (⌘k / ?)...", suffix: " ok", hold: 50 },
+    { text: "> ready", suffix: ".", hold: 100 },
   ];
 }
 

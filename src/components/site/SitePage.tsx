@@ -67,7 +67,7 @@ export function SitePage({ content }: { content: SiteContent }) {
     y: number;
   }>({ open: false, x: 0, y: 0 });
 
-  const { theme, resolvedTheme, cycleTheme } = useTheme();
+  const { theme, cycleTheme } = useTheme();
 
   // Atomically set persistent mode state. "all" activates every overlay.
   // Using useCallback with empty deps is safe because the setters are stable.
@@ -206,8 +206,7 @@ export function SitePage({ content }: { content: SiteContent }) {
     return items;
   }, [content]);
 
-  const themeLabel =
-    theme === "system" ? `system (${resolvedTheme})` : theme;
+  const themeLabel = theme;
 
   // Derive current mode from the active overlay flags.
   const currentMode: SiteMode =
