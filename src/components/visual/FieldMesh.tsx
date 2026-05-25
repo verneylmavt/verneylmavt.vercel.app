@@ -25,14 +25,8 @@ const CLOSE_R = 40;             // px — inside this, cell becomes a `+`
 const TICK_LEN = 7;             // half-length of the oriented tick mark
 const TRAIL_FRAMES = 6;         // cursor history length for the velocity wake
 
-export function FieldMesh({ minimal = false }: { minimal?: boolean } = {}) {
+export function FieldMesh() {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
-  // Use a ref for `minimal` so the rAF loop reads the latest value without
-  // needing to be re-created on every prop change.
-  const minimalRef = React.useRef(minimal);
-  React.useEffect(() => {
-    minimalRef.current = minimal;
-  }, [minimal]);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -129,8 +123,6 @@ export function FieldMesh({ minimal = false }: { minimal?: boolean } = {}) {
         const r0 = Math.max(0, Math.floor(minY / GRID_PITCH));
         const r1 = Math.min(rows, Math.ceil(maxY / GRID_PITCH));
 
-        const minimalScale = minimalRef.current ? 0.45 : 1;
-
         ctx.lineWidth = 1;
         ctx.lineCap = "round";
 
@@ -172,7 +164,7 @@ export function FieldMesh({ minimal = false }: { minimal?: boolean } = {}) {
 
             if (dLive < CLOSE_R) {
               const k = 1 - dLive / CLOSE_R;
-              const alpha = (0.45 + k * 0.55) * minimalScale;
+              const alpha = 0.45 + k * 0.55;
               const len = 3 + k * 4;
               ctx.strokeStyle = `rgba(${accentRgb[0]}, ${accentRgb[1]}, ${accentRgb[2]}, ${alpha})`;
               ctx.beginPath();
@@ -184,7 +176,7 @@ export function FieldMesh({ minimal = false }: { minimal?: boolean } = {}) {
             } else {
               const angle = Math.atan2(pullY - gy, pullX - gx);
               const half = TICK_LEN * (0.45 + strength * 0.55);
-              const alpha = (0.14 + strength * 0.55) * minimalScale;
+              const alpha = 0.14 + strength * 0.55;
 
               const tr = mutedRgb[0] + (accentRgb[0] - mutedRgb[0]) * strength;
               const tg = mutedRgb[1] + (accentRgb[1] - mutedRgb[1]) * strength;

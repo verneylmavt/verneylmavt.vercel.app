@@ -17,9 +17,6 @@ import { FieldMesh } from "./FieldMesh";
  * subscription, mirroring the existing v3 imperative-DOM convention (no React
  * re-renders during pointer motion). Hidden on touch / under reduced-motion.
  *
- * `minimal` opt-out: hides the telemetry caption (brackets still draw) and
- * scales down the field mesh intensity. Driven by the `[mode: minimal]` chip
- * in StatusBar.
  */
 
 /** Radius within which the trace / brackets / telemetry activate. */
@@ -28,7 +25,7 @@ const SNAP_R = 140;
 /** Bracket leg length in px. */
 const BRACKET_LEN = 10;
 
-export function CursorProbe({ minimal = false }: { minimal?: boolean } = {}) {
+export function CursorProbe() {
   // Refs for imperative writes. No React re-renders happen for any of these
   // — every value is set via DOM mutation inside the rAF subscription.
   const tipRef = React.useRef<HTMLDivElement | null>(null);
@@ -39,11 +36,6 @@ export function CursorProbe({ minimal = false }: { minimal?: boolean } = {}) {
   const telemTagRef = React.useRef<HTMLSpanElement | null>(null);
   const telemDistRef = React.useRef<HTMLSpanElement | null>(null);
   const telemIdRef = React.useRef<HTMLSpanElement | null>(null);
-
-  const minimalRef = React.useRef(minimal);
-  React.useEffect(() => {
-    minimalRef.current = minimal;
-  }, [minimal]);
 
   React.useEffect(() => {
     if (typeof window === "undefined") return;
@@ -226,8 +218,8 @@ export function CursorProbe({ minimal = false }: { minimal?: boolean } = {}) {
       }
 
       // ── Telemetry caption ─────────────────────────────────────────
-      // Hidden in minimal mode and when no element is in range.
-      const wantTelem = !minimalRef.current && wantInteractCues && !!p.nearestEl;
+      // Hidden when no element is in range.
+      const wantTelem = wantInteractCues && !!p.nearestEl;
       const telemTarget = wantTelem ? 1 : 0;
       telemAlpha += (telemTarget - telemAlpha) * 0.25;
 
@@ -280,7 +272,7 @@ export function CursorProbe({ minimal = false }: { minimal?: boolean } = {}) {
 
   return (
     <>
-      <FieldMesh minimal={minimal} />
+      <FieldMesh />
 
       {/* Trace + brackets share one full-viewport SVG so they live in the
           same coordinate space and stay perfectly aligned. */}
