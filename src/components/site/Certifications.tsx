@@ -45,7 +45,7 @@ export function Certifications({ site }: { site: SiteContent }) {
                   />
                 </a>
                 <div className="flex flex-col gap-1.5">
-                  <p className="text-[0.9375rem] text-foreground tracking-tight">
+                  <p className="text-[0.85rem] text-foreground tracking-tight md:text-[0.9rem]">
                     {c.title}
                   </p>
                   <KeyValue variant="comment" k="issuer" v={c.issuer} />

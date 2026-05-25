@@ -158,10 +158,10 @@ export function ProjectCard({
 
       {/* Body */}
       <div className="flex flex-col gap-3 p-6 pt-8">
-        <h3 className="text-[1.0625rem] tracking-tight uppercase text-foreground">
+        <h3 className="text-[0.9rem] tracking-tight uppercase text-foreground md:text-[1rem]">
           {project.title}
         </h3>
-        <p className="text-[0.875rem] leading-[1.55] text-muted">
+        <p className="text-[0.8rem] leading-[1.55] text-muted md:text-[0.875rem]">
           {project.description}
         </p>
 
@@ -170,7 +170,7 @@ export function ProjectCard({
             {project.tags.map((t) => (
               <span
                 key={t}
-                className="text-[0.6875rem] tracking-[0.03em] uppercase text-muted-soft border border-[rgb(var(--rule)/0.12)] px-1.5 py-0.5"
+                className="text-[0.625rem] tracking-[0.03em] uppercase text-muted-soft border border-[rgb(var(--rule)/0.12)] px-1.5 py-0.5 md:text-[0.6875rem]"
               >
                 {t}
               </span>

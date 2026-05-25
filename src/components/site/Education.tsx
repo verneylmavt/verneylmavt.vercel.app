@@ -4,10 +4,9 @@ import * as React from "react";
 import type { SiteContent } from "@/content/site";
 import { SectionHeading } from "./SectionHeading";
 import { EducationRow } from "./EducationRow";
-import { Hairline } from "@/components/ui/Hairline";
 
 export function Education({ site }: { site: SiteContent }) {
-  const [openIndex, setOpenIndex] = React.useState<number | null>(null);
+  const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
   return (
     <section
@@ -23,19 +22,15 @@ export function Education({ site }: { site: SiteContent }) {
             {"// no entries"}
           </div>
         ) : (
-          <ol className="flex flex-col gap-10">
+          <ol className="border-t border-[rgb(var(--rule)/0.10)]">
             {site.education.map((edu, i) => (
-              <React.Fragment key={`${edu.institution}-${edu.start}`}>
-                <EducationRow
-                  item={edu}
-                  index={i}
-                  open={openIndex === i}
-                  onToggle={() =>
-                    setOpenIndex((v) => (v === i ? null : i))
-                  }
-                />
-                {i < site.education.length - 1 ? <Hairline /> : null}
-              </React.Fragment>
+              <EducationRow
+                key={`${edu.institution}-${edu.start}`}
+                item={edu}
+                index={i}
+                open={openIndex === i}
+                onToggle={() => setOpenIndex((v) => (v === i ? null : i))}
+              />
             ))}
           </ol>
         )}

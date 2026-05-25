@@ -87,7 +87,7 @@ export function Tools({ site }: { site: SiteContent }) {
                 className={cn(
                   "group tools-row relative",
                   "grid grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-2.5",
-                  "text-[0.875rem] py-1.5 border-b border-[rgb(var(--rule)/0.06)]",
+                  "text-[0.8rem] py-1.5 border-b border-[rgb(var(--rule)/0.06)] md:text-[0.85rem]",
                 )}
               >
                 <Icon

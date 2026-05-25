@@ -10,7 +10,7 @@ export function About({ site }: { site: SiteContent }) {
 
         <div className="flex flex-col gap-10 max-w-3xl">
           {/* Paragraph */}
-          <p className="text-[0.9375rem] leading-[1.65] text-foreground md:text-[1.0625rem] md:leading-[1.55]">
+          <p className="text-[0.85rem] leading-[1.65] text-foreground md:leading-[1.55] md:text-[1rem]">
             {site.about.paragraph}
           </p>
 

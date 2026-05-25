@@ -56,7 +56,7 @@ export function ExperienceRow({
         {/* Company link + ↗ + • bullet (bullet only on md+) */}
         <span
           style={{ gridArea: "company" }}
-          className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.9375rem] md:text-[1rem] min-w-0"
+          className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.85rem] md:text-[0.9rem] min-w-0"
         >
           {item.companyUrl ? (
             <a
@@ -90,8 +90,8 @@ export function ExperienceRow({
           style={{ gridArea: "title" }}
           className="flex items-baseline gap-3 min-w-0"
         >
-          <span className="text-[0.8125rem] text-muted truncate">
-            {item.title.toLowerCase()}
+          <span className="text-[0.8125rem] text-muted truncate md:text-[0.85rem]">
+            {item.title}
           </span>
           <DotLeader className="hidden md:block" />
         </span>
@@ -126,7 +126,7 @@ export function ExperienceRow({
       {item.location ? (
         <div className={cn("grid pt-2", BODY_COLS)}>
           <div aria-hidden="true" />
-          <p className="text-[0.75rem] uppercase tracking-[0.04em] text-muted-soft">
+          <p className="text-[0.7rem] uppercase tracking-[0.04em] text-muted-soft md:text-[0.75rem]">
             {item.location}
           </p>
         </div>
@@ -151,7 +151,7 @@ export function ExperienceRow({
             <div className={cn("grid pt-3 pb-6", BODY_COLS)}>
               <div aria-hidden="true" />
               <div className="flex flex-col gap-3 max-w-3xl">
-                <p className="text-[0.875rem] leading-[1.6] text-muted">
+                <p className="text-[0.75rem] leading-[1.6] text-muted md:text-[0.8rem]">
                   {item.summary}
                 </p>
                 {item.highlights?.length ? (

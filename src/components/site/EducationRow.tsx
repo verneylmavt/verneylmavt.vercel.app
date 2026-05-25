@@ -7,65 +7,23 @@ import { DotLeader } from "@/components/ui/DotLeader";
 import { padIndex } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
-function EducationKeyValue({
-  k,
-  v,
-  valueClassName,
-}: {
-  k: string;
-  v: React.ReactNode;
-  valueClassName?: string;
-}) {
-  return (
-    <div className="grid grid-cols-[7rem_minmax(2rem,1fr)_minmax(0,1fr)] items-baseline gap-3 text-sm lg:grid-cols-[7.5rem_minmax(3rem,1fr)_minmax(26rem,34rem)] xl:grid-cols-[7.5rem_minmax(4rem,1fr)_36rem]">
-      <span className="shrink-0 text-[0.75rem] uppercase tracking-[0.05em] text-muted">
-        {k}
-      </span>
-      <DotLeader />
-      <span
-        className={cn("min-w-0 break-words text-left text-foreground", valueClassName)}
-      >
-        {v}
-      </span>
-    </div>
-  );
-}
-
-function DescriptionPanel({
-  id,
-  item,
-  reduced,
-}: {
-  id: string;
-  item: EducationItem;
-  reduced: boolean | null;
-}) {
-  return (
-    <motion.div
-      id={id}
-      key={id}
-      initial={reduced ? false : { height: 0, opacity: 0 }}
-      animate={{ height: "auto", opacity: 1 }}
-      exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
-      transition={
-        reduced
-          ? { duration: 0 }
-          : { duration: 0.22, ease: [0.2, 0, 0.13, 1] }
-      }
-      className="overflow-hidden"
-    >
-      <p className="mt-3 max-w-3xl text-[0.8125rem] leading-[1.6] text-muted-soft md:text-[0.9375rem]">
-        <span className="text-muted-soft/70" aria-hidden="true">
-          {"/* "}
-        </span>
-        {item.description}
-        <span className="text-muted-soft/70" aria-hidden="true">
-          {" */"}
-        </span>
-      </p>
-    </motion.div>
-  );
-}
+/**
+ * Header grid layout mirrors ExperienceRow:
+ *  - mobile (default): 3 cols
+ *      [idx institution chev]
+ *      [.   title       title]
+ *      [.   year        year]
+ *  - md+: single row, 5 cols
+ *      [idx institution title year chev]
+ */
+const HEADER_GRID = cn(
+  "grid items-baseline gap-y-1 gap-x-3 pt-4",
+  "grid-cols-[2.5rem_1fr_1.25rem]",
+  "[grid-template-areas:'idx_institution_chev'_'._title_title'_'._year_year']",
+  "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]",
+  "md:[grid-template-areas:'idx_institution_title_year_chev']",
+);
+const BODY_COLS = "grid-cols-[2.5rem_1fr] gap-x-3";
 
 export function EducationRow({
   item,
@@ -80,144 +38,132 @@ export function EducationRow({
 }) {
   const reduced = useReducedMotion();
   const id = `edu-${index}`;
-  const mobilePanelId = `${id}-mobile-panel`;
-  const desktopPanelId = `${id}-panel`;
-  const hasDescription = !!item.description?.trim();
-  const period = `${item.start} - ${item.end}`;
 
   return (
-    <li>
-      <div className="md:hidden">
-        <div className="flex items-center justify-between gap-3">
-          <span className="text-[0.75rem] tabular-nums whitespace-nowrap">
-            <span className="text-[rgb(var(--accent))]">[</span>
-            <span className="text-muted-soft">{padIndex(index + 1)}</span>
-            <span className="text-[rgb(var(--accent))]">]</span>
-          </span>
-          <div className="flex items-center gap-3">
-            <span className="text-[0.75rem] tabular-nums text-muted-soft">
-              {period}
-            </span>
-            {hasDescription ? (
-              <button
-                type="button"
-                onClick={onToggle}
-                aria-expanded={open}
-                aria-controls={mobilePanelId}
-                aria-label={open ? "Hide description" : "Show description"}
-                className={cn(
-                  "text-[0.75rem] text-muted transition-transform duration-[var(--dur-base)] hover:text-foreground",
-                  open ? "rotate-90" : "",
-                )}
-              >
-                ▶
-              </button>
-            ) : null}
-          </div>
-        </div>
-
-        <div className="mt-4 grid gap-4">
-          <div>
-            <p className="mb-1 text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft">
-              institution
-            </p>
-            <h3 className="text-[0.9375rem] leading-[1.45] text-foreground">
-              {item.institutionUrl ? (
-                <a
-                  href={item.institutionUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "inline-flex items-baseline gap-1",
-                    "transition-colors duration-[var(--dur-base)]",
-                    "hover:text-[rgb(var(--accent))]",
-                  )}
-                >
-                  <span>{item.institution}</span>
-                  <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
-                </a>
-              ) : (
-                item.institution
-              )}
-            </h3>
-          </div>
-          <div>
-            <p className="mb-1 text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft">
-              degree
-            </p>
-            <p className="text-[0.875rem] leading-[1.5] text-foreground">
-              {item.title}
-            </p>
-          </div>
-        </div>
-
-        <AnimatePresence initial={false}>
-          {open && hasDescription ? (
-            <DescriptionPanel id={mobilePanelId} item={item} reduced={reduced} />
-          ) : null}
-        </AnimatePresence>
-      </div>
-
-      <div className="hidden items-start gap-y-3 md:grid md:grid-cols-[2.5rem_1fr_1.25rem] md:gap-x-3">
-        <span className="text-[0.75rem] tabular-nums whitespace-nowrap pt-0.5">
+    <li className="border-b border-[rgb(var(--rule)/0.10)]">
+      {/* ── Header row — responsive grid via grid-template-areas ── */}
+      <div className={HEADER_GRID}>
+        {/* Index */}
+        <span
+          style={{ gridArea: "idx" }}
+          className="text-[0.75rem] tabular-nums whitespace-nowrap"
+        >
           <span className="text-[rgb(var(--accent))]">[</span>
           <span className="text-muted-soft">{padIndex(index + 1)}</span>
           <span className="text-[rgb(var(--accent))]">]</span>
         </span>
 
-        <div className="flex min-w-0 flex-col gap-2">
-          <EducationKeyValue
-            k="institution"
-            v={
-              item.institutionUrl ? (
-                <a
-                  href={item.institutionUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={cn(
-                    "inline-flex items-baseline gap-1",
-                    "transition-colors duration-[var(--dur-base)]",
-                    "hover:text-[rgb(var(--accent))]",
-                  )}
-                >
-                  <span className="md:truncate">{item.institution}</span>
-                  <span aria-hidden="true" className="text-[0.6875rem] shrink-0">↗</span>
-                </a>
-              ) : (
-                item.institution
-              )
-            }
-            valueClassName="md:whitespace-nowrap md:overflow-hidden md:text-ellipsis"
-          />
-          <EducationKeyValue k="degree" v={item.title} />
-          <EducationKeyValue k="period" v={period} />
-
-          <AnimatePresence initial={false}>
-            {open && hasDescription ? (
-              <DescriptionPanel id={desktopPanelId} item={item} reduced={reduced} />
-            ) : null}
-          </AnimatePresence>
-        </div>
-
-        {hasDescription ? (
-          <button
-            type="button"
-            onClick={onToggle}
-            aria-expanded={open}
-            aria-controls={desktopPanelId}
-            aria-label={open ? "Hide description" : "Show description"}
-            className={cn(
-              "justify-self-end text-[0.75rem] text-muted hover:text-foreground",
-              "transition-transform duration-[var(--dur-base)] pt-1",
-              open ? "rotate-90" : "",
-            )}
+        {/* Institution link + ↗ + • bullet (bullet only on md+) */}
+        <span
+          style={{ gridArea: "institution" }}
+          className="inline-flex items-baseline gap-1.5 uppercase tracking-[0.03em] text-[0.85rem] md:text-[0.9rem] min-w-0"
+        >
+          {item.institutionUrl ? (
+            <a
+              href={item.institutionUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={cn(
+                "inline-flex items-baseline gap-1 text-foreground",
+                "transition-colors duration-[var(--dur-base)]",
+                "hover:text-[rgb(var(--accent))]",
+              )}
+            >
+              <span className="truncate">{item.institution}</span>
+              <span aria-hidden="true" className="text-[0.6875rem] shrink-0">
+                ↗
+              </span>
+            </a>
+          ) : (
+            <span className="text-foreground truncate">{item.institution}</span>
+          )}
+          <span
+            aria-hidden="true"
+            className="hidden md:inline text-muted-soft mx-1"
           >
-            ▶
-          </button>
-        ) : (
-          <span aria-hidden="true" />
-        )}
+            •
+          </span>
+        </span>
+
+        {/* Title + dotted fill */}
+        <span
+          style={{ gridArea: "title" }}
+          className="flex items-baseline gap-3 min-w-0"
+        >
+          <span className="text-[0.8125rem] text-muted truncate md:text-[0.85rem]">
+            {item.title}
+          </span>
+          <DotLeader className="hidden md:block" />
+        </span>
+
+        {/* Year range */}
+        <span
+          style={{ gridArea: "year" }}
+          className="text-[0.75rem] text-muted-soft tabular-nums whitespace-nowrap md:text-right"
+        >
+          {item.start} — {item.end}
+        </span>
+
+        {/* Chevron */}
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-expanded={open}
+          aria-controls={`${id}-panel`}
+          aria-label={open ? "Hide details" : "Show details"}
+          style={{ gridArea: "chev" }}
+          className={cn(
+            "justify-self-end text-[0.75rem] text-muted hover:text-foreground",
+            "transition-transform duration-[var(--dur-base)]",
+            open ? "rotate-90" : "",
+          )}
+        >
+          ▸
+        </button>
       </div>
+
+      {/* Location — always visible beneath header */}
+      {item.location ? (
+        <div className={cn("grid pt-2", BODY_COLS)}>
+          <div aria-hidden="true" />
+          <p className="text-[0.7rem] uppercase tracking-[0.04em] text-muted-soft md:text-[0.75rem]">
+            {item.location}
+          </p>
+        </div>
+      ) : null}
+
+      {/* Expandable: description */}
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            id={`${id}-panel`}
+            key="panel"
+            initial={reduced ? false : { height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
+            transition={
+              reduced
+                ? { duration: 0 }
+                : { duration: 0.22, ease: [0.2, 0, 0.13, 1] }
+            }
+            className="overflow-hidden"
+          >
+            <div className={cn("grid pt-3 pb-6", BODY_COLS)}>
+              <div aria-hidden="true" />
+              <div className="flex flex-col gap-3 max-w-3xl">
+                {item.description ? (
+                  <p className="text-[0.75rem] leading-[1.6] text-muted md:text-[0.8rem]">
+                    {item.description}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+
+      {/* Bottom padding when collapsed */}
+      {!open ? <div className="pb-4" /> : null}
     </li>
   );
 }

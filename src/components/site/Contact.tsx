@@ -76,12 +76,12 @@ export function Contact({ site }: { site: SiteContent }) {
 
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-6">
           <div className="min-w-0 md:col-span-5">
-            <h3 className="text-[clamp(2.25rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
+            <h3 className="text-[clamp(2.625rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
               Let&apos;s
-              <br />
+              <br /> 
               talk<span className="text-[rgb(var(--accent))]">.</span>
             </h3>
-            <p className="mt-6 max-w-md break-words text-[0.9375rem] leading-[1.6] text-muted">
+            <p className="mt-6 max-w-md break-words text-[0.85rem] leading-[1.6] text-muted md:text-[1rem]">
               Let&apos;s collaborate and build something meaningful. I&apos;m always
               open to exchanging ideas!
             </p>
