@@ -191,8 +191,8 @@ export const site: SiteContent = {
   },
   education: [
     {
-      institution: "Singapore University of Technology and Design (SUTD)",
-      institutionLine2: "of Technology and Design (SUTD)",
+      institution: "Singapore University of Technology and Design",
+      institutionLine2: "of Technology and Design",
       institutionUrl: "https://www.sutd.edu.sg/",
       location: "Singapore",
       title: "BEng in Computer Science and Design",
