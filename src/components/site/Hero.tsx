@@ -183,7 +183,7 @@ export function Hero({
             {asciiOpen ? (
               <pre
                 aria-hidden="true"
-                className="block max-w-full overflow-x-auto overflow-y-hidden whitespace-pre py-1 text-[clamp(0.625rem,1.05vw,1.25rem)] font-normal leading-[1.25] tracking-normal text-[rgb(var(--accent))] normal-case [font-family:Consolas,'Courier_New',monospace] [font-feature-settings:'tnum'_1] [font-kerning:none] [font-synthesis:none] [font-variant-ligatures:none]"
+                className="block max-w-full overflow-x-auto overflow-y-hidden whitespace-pre py-1 text-[clamp(0.5rem,1.05vw,1rem)] font-normal leading-[1.25] tracking-normal text-[rgb(var(--accent))] normal-case [font-family:Consolas,'Courier_New',monospace] [font-feature-settings:'tnum'_1] [font-kerning:none] [font-synthesis:none] [font-variant-ligatures:none]"
               >
                 {ASCII_ART}
               </pre>
