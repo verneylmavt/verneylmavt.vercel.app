@@ -6,7 +6,7 @@ export function Footer() {
       <Hairline className="mb-6" />
       <div className="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-2 text-[0.6875rem] tracking-[0.04em] text-muted-soft">
         <p>
-          ©verneylmavt — built w/ next.js 15 • react 19 • tailwind css 4
+          ©verneylmavt — built w/ next.js 15
         </p>
         <p aria-hidden="true">{"// inspired by swiss design"}</p>
       </div>

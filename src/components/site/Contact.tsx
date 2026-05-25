@@ -81,7 +81,7 @@ export function Contact({ site }: { site: SiteContent }) {
               <br /> 
               talk<span className="text-[rgb(var(--accent))]">.</span>
             </h3>
-            <p className="mt-6 max-w-md break-words text-[0.8rem] leading-[1.6] text-muted md:text-[0.95rem]">
+            <p className="mt-6 max-w-md break-words text-[0.825rem] leading-[1.6] text-muted md:text-[0.95rem]">
               Let&apos;s collaborate and build something meaningful. I&apos;m always
               open to exchanging ideas!
             </p>
