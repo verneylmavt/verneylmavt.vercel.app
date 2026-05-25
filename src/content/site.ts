@@ -107,6 +107,26 @@ export type ProjectItem = {
   featured?: boolean;          // first featured renders as wider lead card
 };
 
+export type NowStatus =
+  | "building"
+  | "learning"
+  | "reading"
+  | "exploring"
+  | "experimenting";
+
+export type NowItem = {
+  status: NowStatus;
+  label: string;
+  /** Optional outbound URL — renders a ↗ link icon on the row. */
+  url?: string;
+};
+
+export type NowSection = {
+  /** Display string shown in the "[ updated: … ]" header, e.g. "2026-05-25". */
+  updatedAt: string;
+  items: NowItem[];
+};
+
 export type SiteContent = {
   name: string;
   handle: string;
@@ -122,10 +142,7 @@ export type SiteContent = {
     paragraph: string;
     focus: Array<{ label: string }>;
   };
-  now?: {
-    paragraph: string;
-    updatedAt: string;
-  };
+  now?: NowSection;
   education: EducationItem[];
   workExperience: WorkExperienceItem[];
   tools: ToolItem[];
@@ -157,6 +174,15 @@ export const site: SiteContent = {
       { label: "Product Design" },
       { label: "Backend Engineering" },
       { label: "AI System" },
+    ],
+  },
+  now: {
+    updatedAt: "2026-05-25",
+    items: [
+      // { status: "building",    label: "" },
+      // { status: "learning",    label: "Context Management by Hugging Face" },
+      // { status: "reading",     label: "Designing Data-Intensive Applications by Martin Kleppmann", url: "https://dataintensive.net/" },
+      // { status: "exploring",   label: "" },
     ],
   },
   education: [

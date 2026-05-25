@@ -9,6 +9,7 @@ import { DotLeader } from "@/components/ui/DotLeader";
 import { Hairline } from "@/components/ui/Hairline";
 import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
 import { MiniTerminal } from "./MiniTerminal";
+import { NowPanel } from "./NowPanel";
 import type { SiteMode } from "@/components/site/StatusBar";
 import { cn } from "@/lib/cn";
 
@@ -241,6 +242,11 @@ export function Hero({
               </span>
             </div>
           )}
+
+          {/* Currently — what I'm building / learning / reading right now */}
+          {site.now && site.now.items.length > 0 ? (
+            <NowPanel now={site.now} />
+          ) : null}
 
           {/* Tagline */}
           {site.tagline ? (

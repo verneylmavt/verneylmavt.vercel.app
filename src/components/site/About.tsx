@@ -14,18 +14,6 @@ export function About({ site }: { site: SiteContent }) {
             {site.about.paragraph}
           </p>
 
-          {/* Currently (optional) */}
-          {site.now ? (
-            <div>
-              <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-2">
-                {`// currently — updated ${site.now.updatedAt}`}
-              </p>
-              <p className="text-[0.875rem] leading-[1.6] text-muted md:text-[0.9375rem] md:leading-[1.55]">
-                {site.now.paragraph}
-              </p>
-            </div>
-          ) : null}
-
           {/* Focus — beneath paragraph */}
           <div>
             <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-3">

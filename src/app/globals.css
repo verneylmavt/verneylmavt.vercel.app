@@ -472,3 +472,15 @@ html[data-crt="on"] .field-mesh {
     display: none !important;
   }
 }
+
+/* ─── NowPanel progress strip ───────────────────────────────────────────── */
+/* Animates scaleX from 1 → 0 over --cycle-ms, then disappears. The element
+   is keyed on activeIdx in React so it re-mounts (resets) each cycle. */
+@keyframes now-panel-shrink {
+  from { transform: scaleX(1); }
+  to   { transform: scaleX(0); }
+}
+.now-panel-progress {
+  transform-origin: left;
+  animation: now-panel-shrink var(--cycle-ms, 4000ms) linear forwards;
+}
