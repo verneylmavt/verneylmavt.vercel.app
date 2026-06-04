@@ -158,7 +158,7 @@ export function ProjectCard({
 
       {/* Body */}
       <div className="flex flex-col gap-3 p-6 pt-8">
-        <h3 className="text-[0.9rem] tracking-tight uppercase text-foreground md:text-[1rem]">
+        <h3 data-probe className="text-[0.9rem] tracking-tight uppercase text-foreground md:text-[1rem]">
           {project.title}
         </h3>
         <p className="text-[0.8rem] leading-[1.55] text-muted md:text-[0.875rem]">

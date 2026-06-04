@@ -82,6 +82,7 @@ function CompileInTitle({ title }: { title: string }) {
   return (
     <h2
       ref={ref}
+      data-probe
       className={cn(
         "text-[clamp(2.375rem,5vw,3.5rem)] leading-[1.0] font-medium tracking-[-0.01em]",
         "text-foreground uppercase",

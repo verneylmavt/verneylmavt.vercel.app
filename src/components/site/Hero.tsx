@@ -153,6 +153,20 @@ export function Hero({
   // Split name into stacked tokens for the logotype
   const nameTokens = site.name.toUpperCase().split(" ");
 
+  // Per-character base colors for the logotype:
+  //   "El"          → foreground (white)
+  //   "vern Neylmav T" → accent  (red)
+  //   "anny"        → foreground (white)
+  // While a char is scrambling its color flips to the opposite.
+  const NAME_CHAR_COLORS: ReadonlyArray<ReadonlyArray<"accent" | "foreground">> = [
+    // E  L  V        E        R        N
+    ["foreground", "foreground", "accent", "accent", "accent", "foreground"],
+    // N        E        Y        L        M        A        V
+    ["accent", "accent", "accent", "accent", "accent", "accent", "accent"],
+    // T        A            N            N            Y
+    ["accent", "foreground", "foreground", "foreground", "foreground"],
+  ];
+
   return (
     <section
       id="top"
@@ -191,7 +205,12 @@ export function Hero({
               <span className="text-[clamp(2.75rem,16vw,8rem)] block leading-[0.85]">
                 {nameTokens.map((t, i) => (
                   <span key={i} className="block">
-                    <ScrambleText text={t} duration={620} autoGlitch />
+                    <ScrambleText
+                      text={t}
+                      duration={620}
+                      autoGlitch
+                      charColors={NAME_CHAR_COLORS[i]}
+                    />
                   </span>
                 ))}
               </span>

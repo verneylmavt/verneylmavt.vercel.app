@@ -15,7 +15,7 @@
  */
 
 const INTERACTIVE_SELECTOR =
-  'a, button, input, textarea, select, label, [role="button"], [role="link"], [contenteditable="true"]';
+  'a, button, input, textarea, select, label, [role="button"], [role="link"], [contenteditable="true"], [data-probe]';
 
 const EDITABLE_SELECTOR = 'input, textarea, [contenteditable="true"]';
 

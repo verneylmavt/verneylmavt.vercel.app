@@ -36,6 +36,13 @@ type Props = {
   autoGlitchJitter?: number;
   /** Chars to scramble in auto-glitch mode. Default 3. */
   autoGlitchPartial?: number;
+  /**
+   * Per-character base color. "accent" chars are shown in accent color at rest
+   * and flip to foreground while scrambling. "foreground" (default) chars are
+   * shown in the inherited foreground color at rest and flip to accent while
+   * scrambling.
+   */
+  charColors?: ReadonlyArray<"accent" | "foreground">;
   className?: string;
 };
 
@@ -55,6 +62,7 @@ export function ScrambleText({
   autoGlitchInterval = 7000,
   autoGlitchJitter = 2000,
   autoGlitchPartial = 3,
+  charColors,
   className,
 }: Props) {
   const reducedMotion = useReducedMotion();
@@ -215,15 +223,21 @@ export function ScrambleText({
       onFocus={bindOwnHover ? () => run() : undefined}
       aria-label={text}
     >
-      {displayed.split("").map((c, i) => (
-        <span
-          key={i}
-          aria-hidden="true"
-          className={cn(scrambling[i] ? "text-[rgb(var(--accent))]" : "")}
-        >
-          {c}
-        </span>
-      ))}
+      {displayed.split("").map((c, i) => {
+          // Base color: "accent" chars rest in red; "foreground" chars rest in white.
+          // While scrambling the color flips to the opposite (XOR).
+          const isAccentBase = (charColors?.[i] ?? "foreground") === "accent";
+          const showAccent = isAccentBase !== scrambling[i];
+          return (
+            <span
+              key={i}
+              aria-hidden="true"
+              className={cn(showAccent ? "text-[rgb(var(--accent))]" : "")}
+            >
+              {c}
+            </span>
+          );
+        })}
       <ScrambleRunBridge run={run} />
     </span>
   );

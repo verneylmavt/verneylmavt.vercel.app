@@ -76,7 +76,7 @@ export function Contact({ site }: { site: SiteContent }) {
 
         <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-6">
           <div className="min-w-0 md:col-span-5">
-            <h3 className="text-[clamp(2.375rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
+            <h3 data-probe className="text-[clamp(2.375rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
               Let&apos;s
               <br /> 
               talk<span className="text-[rgb(var(--accent))]">.</span>
