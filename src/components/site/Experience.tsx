@@ -13,9 +13,9 @@ export function Experience({ site }: { site: SiteContent }) {
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading
           number={3}
-          slug="work"
-          title="Work Experience"
-          filename="src/components/site/experience.tsx"
+          slug="work_experience"
+          title="Work Experiences"
+          filename="src/components/site/work_experience.tsx"
         />
 
         {site.workExperience.length === 0 ? (

@@ -41,9 +41,9 @@ const SECTIONS: NavSection[] = [
   { id: "about", label: "about" },
   { id: "education", label: "edu" },
   { id: "experience", label: "work" },
-  { id: "tools", label: "tools" },
-  { id: "certifications", label: "certs" },
-  { id: "projects", label: "projects" },
+  { id: "tools", label: "tool" },
+  { id: "certifications", label: "cert" },
+  { id: "projects", label: "proj" },
   { id: "contact", label: "contact" },
 ];
 

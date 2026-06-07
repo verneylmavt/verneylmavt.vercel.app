@@ -72,7 +72,7 @@ export function Projects({ site }: { site: SiteContent }) {
       className="scroll-mt-24 py-24 md:py-32"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
-        <SectionHeading number={6} slug="projects" title="Projects" />
+        <SectionHeading number={6} slug="project" title="Projects" />
 
         {/* Filter / search bar */}
         <div className="mb-8 grid min-w-0 gap-3 md:grid-cols-12">

@@ -177,7 +177,7 @@ export function Hero({
         {/* Logotype — col-span-8 */}
         <div className="md:col-span-8 min-w-0 flex flex-col justify-center">
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-4">
-            {"// 00_intro"}
+            {"// 00_home"}
           </p>
           <h1
             onMouseEnter={fireScramble}

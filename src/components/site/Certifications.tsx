@@ -9,7 +9,7 @@ export function Certifications({ site }: { site: SiteContent }) {
   return (
     <section id="certifications" aria-labelledby="certifications-title" className="scroll-mt-24 py-24 md:py-32">
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
-        <SectionHeading number={5} slug="certifications" title="Certifications" />
+        <SectionHeading number={5} slug="certification" title="Certifications" />
 
         <div className="grid gap-6 sm:grid-cols-2">
           {site.certifications.map((c) => (

@@ -66,9 +66,9 @@ export function Tools({ site }: { site: SiteContent }) {
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading
           number={4}
-          slug="tools"
+          slug="tool"
           title="Tools"
-          filename="src/components/site/tools.tsx"
+          filename="src/components/site/tool.tsx"
         />
         <p className="text-[0.75rem] uppercase tracking-[0.06em] text-muted-soft mb-6">
           {/* {`// ${tools.length} tools`} */}
