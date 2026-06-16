@@ -26,7 +26,7 @@ export const SearchInput = React.forwardRef<HTMLInputElement, SearchInputProps>(
     return (
       <div
         className={cn(
-          "flex items-center gap-2 px-3 py-2",
+          "flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-2",
           "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
           "bg-[rgb(var(--surface)/0.4)]",
           "transition-colors duration-[var(--dur-base)] ease-[var(--ease-precise)]",

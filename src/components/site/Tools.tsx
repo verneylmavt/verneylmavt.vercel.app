@@ -61,7 +61,7 @@ export function Tools({ site }: { site: SiteContent }) {
     <section
       id="tools"
       aria-labelledby="tools-title"
-      className="scroll-mt-24 py-24 md:py-32"
+      className="scroll-mt-24 py-20 md:py-32"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading
@@ -70,11 +70,11 @@ export function Tools({ site }: { site: SiteContent }) {
           title="Tools"
           filename="src/components/site/tool.tsx"
         />
-        <p className="text-[0.75rem] uppercase tracking-[0.06em] text-muted-soft mb-6">
+        <p className="text-[0.75rem] uppercase tracking-[0.06em] text-muted-soft mb-4 md:mb-6">
           {/* {`// ${tools.length} tools`} */}
         </p>
 
-        <ul className="grid gap-x-8 gap-y-1.5 sm:grid-cols-2 md:grid-cols-3">
+        <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2 md:grid-cols-3 md:gap-y-1.5">
           {tools.map((tool) => {
             const Icon = TOOL_ICON_MAP[tool.icon];
             const slug = tool.name
@@ -86,8 +86,8 @@ export function Tools({ site }: { site: SiteContent }) {
                 key={tool.name}
                 className={cn(
                   "group tools-row relative",
-                  "grid grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-2.5",
-                  "text-[0.8rem] py-1.5 border-b border-[rgb(var(--rule)/0.06)] md:text-[0.85rem]",
+                  "grid grid-cols-[1rem_minmax(0,1fr)_auto] items-center gap-x-2",
+                  "text-[0.8rem] py-1 border-b border-[rgb(var(--rule)/0.06)] md:gap-x-2.5 md:py-1.5 md:text-[0.85rem]",
                 )}
               >
                 <Icon

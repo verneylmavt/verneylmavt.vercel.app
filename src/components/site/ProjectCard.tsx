@@ -157,7 +157,7 @@ export function ProjectCard({
       </div>
 
       {/* Body */}
-      <div className="flex flex-col gap-3 p-6 pt-8">
+      <div className="flex flex-col gap-2.5 p-5 pt-6 md:gap-3 md:p-6 md:pt-8">
         <h3 data-probe className="text-[0.9rem] tracking-tight uppercase text-foreground md:text-[1rem]">
           {project.title}
         </h3>
@@ -166,7 +166,7 @@ export function ProjectCard({
         </p>
 
         {project.tags?.length ? (
-          <div className="flex flex-wrap gap-1.5 mt-1">
+          <div className="flex flex-wrap gap-1.5 mt-0.5 md:mt-1">
             {project.tags.map((t) => (
               <span
                 key={t}
@@ -179,12 +179,12 @@ export function ProjectCard({
         ) : null}
 
         {/* Year — single meta line replacing the 4-cell metric strip */}
-        <div className="mt-2 pt-3 border-t border-[rgb(var(--rule)/0.10)]">
+        <div className="mt-1.5 pt-2 border-t border-[rgb(var(--rule)/0.10)] md:mt-2 md:pt-3">
           <KeyValue k="year" v={year || "—"} />
         </div>
 
         {/* Links + arrow */}
-        <div className="flex items-center justify-between gap-3 pt-2">
+        <div className="flex items-center justify-between gap-3 pt-1.5 md:pt-2">
           <div className="flex items-center gap-4 text-[0.75rem] tracking-[0.04em] uppercase">
             {project.demoUrl ? (
               <a

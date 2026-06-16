@@ -29,7 +29,7 @@ function ContactRow({
   const display = displayHref(href);
 
   return (
-    <li className="contact-row group grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-1 text-[0.8125rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline sm:text-[0.875rem]">
+    <li className="contact-row group grid grid-cols-[1rem_minmax(0,1fr)_auto] items-start gap-x-3 gap-y-0.5 text-[0.8125rem] sm:grid-cols-[1rem_6rem_auto_minmax(0,1fr)_auto_auto] sm:items-baseline sm:text-[0.875rem]">
       <Glyph
         name={icon}
         size={14}
@@ -69,29 +69,29 @@ export function Contact({ site }: { site: SiteContent }) {
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="scroll-mt-24 py-24 md:py-32"
+      className="scroll-mt-24 py-20 md:py-32"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={7} slug="contact" title="Contact" />
 
-        <div className="grid gap-y-10 md:grid-cols-12 md:gap-x-6">
+        <div className="grid gap-y-8 md:grid-cols-12 md:gap-x-6">
           <div className="min-w-0 md:col-span-5">
             <h3 data-probe className="text-[clamp(2.375rem,5vw,3.5rem)] leading-[0.95] tracking-[-0.01em] uppercase text-foreground">
               Let&apos;s
               <br /> 
               talk<span className="text-[rgb(var(--accent))]">.</span>
             </h3>
-            <p className="mt-6 max-w-md break-words text-[0.825rem] leading-[1.6] text-muted md:text-[0.95rem]">
+            <p className="mt-4 max-w-md break-words text-[0.825rem] leading-[1.6] text-muted md:mt-6 md:text-[0.95rem]">
               Let&apos;s collaborate and build something meaningful. I&apos;m always
               open to exchanging ideas!
             </p>
           </div>
 
           <div className="min-w-0 md:col-span-7">
-            <p className="mb-3 text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft">
+            <p className="mb-2 text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft">
               {"// contacts.spec"}
             </p>
-            <ul className="flex min-w-0 flex-col gap-3 rounded-[2px] border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] p-5">
+            <ul className="flex min-w-0 flex-col gap-2 rounded-[2px] border border-[rgb(var(--rule)/0.14)] bg-[rgb(var(--surface)/0.4)] p-4 md:p-5">
               {site.contacts.map((c) => (
                 <ContactRow
                   key={c.label}
@@ -101,7 +101,7 @@ export function Contact({ site }: { site: SiteContent }) {
                 />
               ))}
               {site.links?.resume ? (
-                <li className="pt-2 border-t border-[rgb(var(--rule)/0.10)]">
+                <li className="pt-1.5 border-t border-[rgb(var(--rule)/0.10)]">
                   <ContactRow
                     icon="FileText"
                     label="resume"

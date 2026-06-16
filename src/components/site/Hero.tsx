@@ -51,7 +51,7 @@ const ASCII_ART =
 
 function HeroMetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 text-[0.8125rem] sm:grid-cols-[auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
+    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-2.5 gap-y-0.5 text-[0.8125rem] sm:grid-cols-[auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
       <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-muted sm:text-[0.75rem]">
         {label}
       </span>
@@ -171,12 +171,12 @@ export function Hero({
     <section
       id="top"
       aria-label="Intro"
-      className="relative min-h-[100svh] py-16 md:py-24"
+      className="relative min-h-[100svh] py-12 md:py-24"
     >
-      <div className="mx-auto max-w-[88rem] px-6 md:px-12 grid gap-y-10 md:grid-cols-12 md:gap-x-6">
+      <div className="mx-auto max-w-[88rem] px-6 md:px-12 grid gap-y-8 md:grid-cols-12 md:gap-x-6">
         {/* Logotype — col-span-8 */}
         <div className="md:col-span-8 min-w-0 flex flex-col justify-center">
-          <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-4">
+          <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
             {"// 00_home"}
           </p>
           <h1
@@ -219,7 +219,7 @@ export function Hero({
 
           {/* Terminal status line — click the `$` prompt to open the mini terminal */}
           {terminalOpen ? (
-            <div className="mt-8 w-full max-w-2xl">
+            <div className="mt-6 w-full max-w-2xl">
               <MiniTerminal
                 open={terminalOpen}
                 onClose={() => setTerminalOpen(false)}
@@ -236,7 +236,7 @@ export function Hero({
           ) : (
             <div
               tabIndex={0}
-              className="draw-accent mt-8 min-w-0 flex max-w-full flex-col items-start gap-1 text-[0.875rem] outline-none cursor-default sm:flex-row sm:items-baseline sm:gap-2 md:text-[1rem]"
+              className="draw-accent mt-6 min-w-0 flex max-w-full flex-col items-start gap-0.5 text-[0.875rem] outline-none cursor-default sm:flex-row sm:items-baseline sm:gap-2 md:text-[1rem]"
             >
               <span className="text-muted-soft shrink-0">
                 ~/verneylmavt
@@ -324,7 +324,7 @@ export function Hero({
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
             {"// metadata"}
           </p>
-          <div className="flex max-w-md flex-col gap-3">
+          <div className="flex max-w-md flex-col gap-2">
             <HeroMetaRow label="role" value={site.roleTitle} />
             {site.location ? (
               <HeroMetaRow label="location" value={site.location} />
@@ -332,7 +332,7 @@ export function Hero({
           </div>
 
           {/* Photography cross-promo */}
-          <Hairline className="my-6" />
+          <Hairline className="my-4 md:my-6" />
           <a
             href="https://verneytography.vercel.app/"
             target="_blank"
@@ -340,7 +340,7 @@ export function Hero({
             className={cn(
               "group block max-w-sm",
               "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
-              "p-4 bg-[rgb(var(--surface)/0.4)]",
+              "p-3 sm:p-4 bg-[rgb(var(--surface)/0.4)]",
               "transition-colors duration-[var(--dur-base)]",
               "hover:border-[rgb(var(--accent)/0.45)]",
             )}
@@ -369,7 +369,7 @@ export function Hero({
           {/* Scroll affordance — pinned to right column under the photography card */}
           <a
             href="#about"
-            className="mt-6 inline-flex items-center gap-3 text-[0.6875rem] tracking-[0.06em] uppercase text-muted hover:text-foreground"
+            className="mt-4 inline-flex items-center gap-3 text-[0.6875rem] tracking-[0.06em] uppercase text-muted hover:text-foreground"
           >
             <span
               aria-hidden="true"

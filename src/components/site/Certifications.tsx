@@ -7,23 +7,23 @@ import { cn } from "@/lib/cn";
 
 export function Certifications({ site }: { site: SiteContent }) {
   return (
-    <section id="certifications" aria-labelledby="certifications-title" className="scroll-mt-24 py-24 md:py-32">
+    <section id="certifications" aria-labelledby="certifications-title" className="scroll-mt-24 py-20 md:py-32">
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={5} slug="certification" title="Certifications" />
 
-        <div className="grid gap-6 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
           {site.certifications.map((c) => (
             <article
               key={`${c.title}-${c.date}`}
               className={cn(
                 "relative group plus-corners",
                 "border border-[rgb(var(--rule)/0.14)] rounded-[2px]",
-                "bg-[rgb(var(--surface)/0.4)] p-5",
+                "bg-[rgb(var(--surface)/0.4)] p-4 md:p-5",
                 "transition-colors duration-[var(--dur-base)]",
                 "hover:border-[rgb(var(--rule)/0.28)]",
               )}
             >
-              <div className="grid grid-cols-[auto_1fr] gap-5 items-center">
+              <div className="grid grid-cols-[auto_1fr] gap-4 items-center">
                 <a
                   href={c.proofUrl ?? c.badgeImagePath}
                   target="_blank"
@@ -44,7 +44,7 @@ export function Certifications({ site }: { site: SiteContent }) {
                     )}
                   />
                 </a>
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1">
                   <p className="text-[0.85rem] text-foreground tracking-tight md:text-[0.9rem]">
                     {c.title}
                   </p>

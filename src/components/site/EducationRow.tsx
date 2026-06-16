@@ -17,7 +17,7 @@ import { cn } from "@/lib/cn";
  *      [idx institution title year chev]
  */
 const HEADER_GRID = cn(
-  "grid items-baseline gap-y-1 gap-x-3 pt-4",
+  "grid items-baseline gap-y-1 gap-x-3 pt-3 md:pt-4",
   "grid-cols-[2.5rem_1fr_1.25rem]",
   "[grid-template-areas:'idx_institution_chev'_'._title_title'_'._year_year']",
   "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]",
@@ -147,7 +147,7 @@ export function EducationRow({
 
       {/* Location — always visible beneath header */}
       {item.location ? (
-        <div className={cn("grid pt-2", BODY_COLS)}>
+        <div className={cn("grid pt-1.5 md:pt-2", BODY_COLS)}>
           <div aria-hidden="true" />
           <p className="text-[0.7rem] uppercase tracking-[0.04em] text-muted-soft md:text-[0.75rem]">
             {item.location}
@@ -171,9 +171,9 @@ export function EducationRow({
             }
             className="overflow-hidden"
           >
-            <div className={cn("grid pt-3 pb-6", BODY_COLS)}>
+            <div className={cn("grid pt-2.5 pb-4 md:pt-3 md:pb-6", BODY_COLS)}>
               <div aria-hidden="true" />
-              <div className="flex flex-col gap-3 max-w-3xl">
+              <div className="flex flex-col gap-2.5 max-w-3xl">
                 {item.description ? (
                   <p className="text-[0.75rem] leading-[1.6] text-muted md:text-[0.8rem]">
                     {item.description}
@@ -186,7 +186,7 @@ export function EducationRow({
       </AnimatePresence>
 
       {/* Bottom padding when collapsed */}
-      {!open ? <div className="pb-4" /> : null}
+      {!open ? <div className="pb-3 md:pb-4" /> : null}
     </li>
   );
 }

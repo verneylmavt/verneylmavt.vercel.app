@@ -18,8 +18,6 @@ export function BSOD({
 
   React.useEffect(() => {
     if (!active) return;
-    setCountdown(5);
-
     let remaining = 5;
     const interval = window.setInterval(() => {
       remaining -= 1;

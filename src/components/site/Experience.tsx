@@ -9,7 +9,7 @@ export function Experience({ site }: { site: SiteContent }) {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
 
   return (
-    <section id="experience" aria-labelledby="experience-title" className="scroll-mt-24 py-24 md:py-32">
+    <section id="experience" aria-labelledby="experience-title" className="scroll-mt-24 py-20 md:py-32">
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading
           number={3}

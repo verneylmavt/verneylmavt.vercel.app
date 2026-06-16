@@ -31,8 +31,8 @@ export function SectionHeading({
   const file = filename ?? `src/components/site/${slug}.tsx`;
 
   return (
-    <header className={cn("mb-8", className)}>
-      <div className="flex items-baseline justify-between gap-4 mb-2">
+    <header className={cn("mb-6 md:mb-8", className)}>
+      <div className="flex items-baseline justify-between gap-4 mb-1.5 md:mb-2">
         <span className="text-[0.75rem] uppercase tracking-[0.06em] text-muted">
           <span aria-hidden="true">{"// "}</span>
           <span className="text-[rgb(var(--accent))]">{padded}</span>
@@ -44,7 +44,7 @@ export function SectionHeading({
         </span>
       </div>
       <CompileInTitle title={title} />
-      <Hairline className="mt-4" />
+      <Hairline className="mt-3 md:mt-4" />
     </header>
   );
 }

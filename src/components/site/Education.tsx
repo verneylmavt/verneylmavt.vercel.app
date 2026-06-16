@@ -12,7 +12,7 @@ export function Education({ site }: { site: SiteContent }) {
     <section
       id="education"
       aria-labelledby="education-title"
-      className="scroll-mt-24 py-24 md:py-32"
+      className="scroll-mt-24 py-20 md:py-32"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={2} slug="education" title="Educations" />

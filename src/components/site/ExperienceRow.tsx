@@ -17,7 +17,7 @@ import { cn } from "@/lib/cn";
  *      [idx company title year chev]
  */
 const HEADER_GRID = cn(
-  "grid items-baseline gap-y-1 gap-x-3 pt-4",
+  "grid items-baseline gap-y-1 gap-x-3 pt-3 md:pt-4",
   "grid-cols-[2.5rem_1fr_1.25rem]",
   "[grid-template-areas:'idx_company_chev'_'._title_title'_'._year_year']",
   "md:grid-cols-[2.5rem_auto_minmax(0,1fr)_7rem_1.25rem]",
@@ -124,7 +124,7 @@ export function ExperienceRow({
 
       {/* Location — always visible beneath header */}
       {item.location ? (
-        <div className={cn("grid pt-2", BODY_COLS)}>
+        <div className={cn("grid pt-1.5 md:pt-2", BODY_COLS)}>
           <div aria-hidden="true" />
           <p className="text-[0.7rem] uppercase tracking-[0.04em] text-muted-soft md:text-[0.75rem]">
             {item.location}
@@ -148,14 +148,14 @@ export function ExperienceRow({
             }
             className="overflow-hidden"
           >
-            <div className={cn("grid pt-3 pb-6", BODY_COLS)}>
+            <div className={cn("grid pt-2.5 pb-4 md:pt-3 md:pb-6", BODY_COLS)}>
               <div aria-hidden="true" />
-              <div className="flex flex-col gap-3 max-w-3xl">
+              <div className="flex flex-col gap-2.5 max-w-3xl">
                 <p className="text-[0.75rem] leading-[1.6] text-muted md:text-[0.8rem]">
                   {item.summary}
                 </p>
                 {item.highlights?.length ? (
-                  <ul className="grid gap-1.5 list-none">
+                  <ul className="grid gap-1 list-none">
                     {item.highlights.map((h, j) => (
                       <li key={j} className="text-[0.875rem] text-muted">
                         <span
@@ -176,7 +176,7 @@ export function ExperienceRow({
       </AnimatePresence>
 
       {/* Bottom padding when collapsed (no expand) */}
-      {!open ? <div className="pb-4" /> : null}
+      {!open ? <div className="pb-3 md:pb-4" /> : null}
     </li>
   );
 }

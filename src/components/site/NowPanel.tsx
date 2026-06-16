@@ -53,9 +53,9 @@ export function NowPanel({ now }: { now: NowSection }) {
   };
 
   return (
-    <div className="mt-8 max-w-2xl" aria-label="Currently">
+    <div className="mt-6 max-w-2xl" aria-label="Currently">
       {/* Header row */}
-      <div className="mb-2">
+      <div className="mb-1.5">
         <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted-soft">
           {"// currently"}
         </span>
@@ -82,7 +82,7 @@ export function NowPanel({ now }: { now: NowSection }) {
                 }
               }}
               className={cn(
-                "group flex items-baseline gap-3 py-1.5 cursor-pointer outline-none select-none",
+                "group flex items-baseline gap-2.5 py-1 cursor-pointer outline-none select-none",
                 "transition-colors duration-[var(--dur-base)]",
                 "focus-visible:ring-1 focus-visible:ring-[rgb(var(--accent)/0.5)] focus-visible:rounded-[2px]",
               )}

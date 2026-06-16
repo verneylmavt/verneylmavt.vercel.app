@@ -78,18 +78,22 @@ export function SitePage({ content }: { content: SiteContent }) {
   }, []);
 
   React.useEffect(() => {
-    if (readDiagnosticInitial()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDiagnosticOn(true);
-    }
-    if (readGlitchInitial()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setGlitchOn(true);
-    }
-    if (readCRTInitial()) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCrtOn(true);
-    }
+    let cancelled = false;
+    void Promise.resolve().then(() => {
+      if (cancelled) return;
+      if (readDiagnosticInitial()) {
+        setDiagnosticOn(true);
+      }
+      if (readGlitchInitial()) {
+        setGlitchOn(true);
+      }
+      if (readCRTInitial()) {
+        setCrtOn(true);
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   // Ref so typed-sequence callbacks can read currentMode without being in deps.
@@ -319,6 +323,7 @@ export function SitePage({ content }: { content: SiteContent }) {
 
       {/* BSOD — typed "crash" easter egg */}
       <BSOD
+        key={bsodOn ? "bsod-active" : "bsod-inactive"}
         active={bsodOn}
         onClose={() => setBsodOn(false)}
       />
@@ -346,7 +351,7 @@ export function SitePage({ content }: { content: SiteContent }) {
           onOpenPalette={() => setPaletteOpen(true)}
         />
 
-        <main id="main" className="flex-1 pb-12">
+        <main id="main" className="flex-1 pb-8 md:pb-12">
           <Hero
             site={content}
             currentMode={currentMode}

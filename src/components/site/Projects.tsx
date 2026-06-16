@@ -69,13 +69,13 @@ export function Projects({ site }: { site: SiteContent }) {
     <section
       id="projects"
       aria-labelledby="projects-title"
-      className="scroll-mt-24 py-24 md:py-32"
+      className="scroll-mt-24 py-20 md:py-32"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={6} slug="project" title="Projects" />
 
         {/* Filter / search bar */}
-        <div className="mb-8 grid min-w-0 gap-3 md:grid-cols-12">
+        <div className="mb-6 grid min-w-0 gap-2 md:grid-cols-12 md:gap-3">
           <div className="min-w-0 md:col-span-5">
             <SearchInput
               id={PROJECT_SEARCH_ID}
@@ -100,7 +100,7 @@ export function Projects({ site }: { site: SiteContent }) {
           </div>
         </div>
 
-        <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-4">
+        <p className="text-[0.6875rem] uppercase tracking-[0.06em] text-muted-soft mb-3 md:mb-4">
           {`// showing ${visibleProjects.length} of ${ordered.length} project${
             ordered.length === 1 ? "" : "s"
           }`}
@@ -112,7 +112,7 @@ export function Projects({ site }: { site: SiteContent }) {
           </div>
         ) : (
           <>
-            <div className={cn("grid gap-6 md:grid-cols-3")}>
+            <div className={cn("grid gap-4 md:grid-cols-3 md:gap-6")}>
               {visibleProjects.map((p, i) => (
                 <ProjectCard
                   key={p.slug}
@@ -128,7 +128,7 @@ export function Projects({ site }: { site: SiteContent }) {
             </div>
 
             {hasMore ? (
-              <div className="mt-10 flex justify-center">
+              <div className="mt-8 flex justify-center">
                 <button
                   type="button"
                   onClick={() =>

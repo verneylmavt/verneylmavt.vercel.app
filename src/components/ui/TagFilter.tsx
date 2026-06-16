@@ -27,7 +27,7 @@ export function TagFilter({
       aria-label="Filter projects"
       onMouseLeave={() => onHover?.(null)}
       className={cn(
-        "flex flex-wrap items-start gap-1",
+        "flex flex-wrap items-start gap-0.5 sm:gap-1",
         className,
       )}
     >
