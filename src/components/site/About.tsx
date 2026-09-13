@@ -13,7 +13,7 @@ export function About({ site }: { site: SiteContent }) {
     <section
       id="about"
       aria-labelledby="about-title"
-      className="scroll-mt-24 py-20 md:py-32"
+      className="scroll-mt-24 py-10 md:py-30"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={1} slug="about" title="About" />

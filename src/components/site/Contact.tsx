@@ -69,7 +69,7 @@ export function Contact({ site }: { site: SiteContent }) {
     <section
       id="contact"
       aria-labelledby="contact-title"
-      className="scroll-mt-24 py-20 md:py-32"
+      className="scroll-mt-24 py-5 md:py-15"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={7} slug="contact" title="Contact" />
@@ -81,7 +81,7 @@ export function Contact({ site }: { site: SiteContent }) {
               <br /> 
               talk<span className="text-[rgb(var(--accent))]">.</span>
             </h3>
-            <p className="mt-4 max-w-md break-words text-[0.825rem] leading-[1.6] text-muted md:mt-6 md:text-[0.95rem]">
+            <p className="mt-4 max-w-md break-words text-[0.7rem] leading-[1.6] text-muted md:mt-6 md:text-[0.95rem]">
               Let&apos;s collaborate and build something meaningful. I&apos;m always
               open to exchanging ideas!
             </p>

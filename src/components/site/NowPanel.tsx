@@ -53,7 +53,7 @@ export function NowPanel({ now }: { now: NowSection }) {
   };
 
   return (
-    <div className="mt-6 max-w-2xl" aria-label="Currently">
+    <div className="mt-3 max-w-2xl md:mt-6" aria-label="Currently">
       {/* Header row */}
       <div className="mb-1.5">
         <span className="text-[0.6875rem] uppercase tracking-[0.08em] text-muted-soft">

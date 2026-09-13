@@ -61,7 +61,7 @@ export function Tools({ site }: { site: SiteContent }) {
     <section
       id="tools"
       aria-labelledby="tools-title"
-      className="scroll-mt-24 py-20 md:py-32"
+      className="scroll-mt-24 py-10 md:py-30"
     >
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading

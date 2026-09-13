@@ -218,49 +218,51 @@ export function Hero({
           </h1>
 
           {/* Terminal status line — click the `$` prompt to open the mini terminal */}
-          {terminalOpen ? (
-            <div className="mt-6 w-full max-w-2xl">
-              <MiniTerminal
-                open={terminalOpen}
-                onClose={() => setTerminalOpen(false)}
-                site={site}
-                currentMode={currentMode}
-                onToggleDiag={onToggleDiag}
-                onShowMatrix={onShowMatrix}
-                onWarp={onWarp}
-                onCrash={onCrash}
-                onGlitch={onGlitch}
-                onToggleCRT={onToggleCRT}
-              />
-            </div>
-          ) : (
-            <div
-              tabIndex={0}
-              className="draw-accent mt-6 min-w-0 flex max-w-full flex-col items-start gap-0.5 text-[0.875rem] outline-none cursor-default sm:flex-row sm:items-baseline sm:gap-2 md:text-[1rem]"
-            >
-              <span className="text-muted-soft shrink-0">
-                ~/verneylmavt
-              </span>
-              <span className="flex min-h-[2.8em] min-w-0 items-baseline gap-2 text-[0.75rem] leading-[1.35] sm:min-h-0 sm:flex-1 sm:text-[0.875rem] md:text-[1rem]">
-                <button
-                  type="button"
-                  onClick={() => setTerminalOpen(true)}
-                  aria-label="Open mini terminal"
-                  className={cn(
-                    "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
-                    "px-1 rounded-[2px] cursor-pointer shrink-0",
-                    "transition-colors duration-[var(--dur-base)]",
-                  )}
-                >
-                  $
-                </button>
-                <span className="min-w-0 break-words text-foreground">
-                  {visible}
-                  <BlinkingCaret className="align-[-0.18em]" />
+          <div className="hidden md:block">
+            {terminalOpen ? (
+              <div className="mt-6 w-full max-w-2xl">
+                <MiniTerminal
+                  open={terminalOpen}
+                  onClose={() => setTerminalOpen(false)}
+                  site={site}
+                  currentMode={currentMode}
+                  onToggleDiag={onToggleDiag}
+                  onShowMatrix={onShowMatrix}
+                  onWarp={onWarp}
+                  onCrash={onCrash}
+                  onGlitch={onGlitch}
+                  onToggleCRT={onToggleCRT}
+                />
+              </div>
+            ) : (
+              <div
+                tabIndex={0}
+                className="draw-accent mt-6 min-w-0 flex max-w-full flex-col items-start gap-0.5 text-[0.875rem] outline-none cursor-default sm:flex-row sm:items-baseline sm:gap-2 md:text-[1rem]"
+              >
+                <span className="text-muted-soft shrink-0">
+                  ~/verneylmavt
                 </span>
-              </span>
-            </div>
-          )}
+                <span className="flex min-h-[2.8em] min-w-0 items-baseline gap-2 text-[0.75rem] leading-[1.35] sm:min-h-0 sm:flex-1 sm:text-[0.875rem] md:text-[1rem]">
+                  <button
+                    type="button"
+                    onClick={() => setTerminalOpen(true)}
+                    aria-label="Open mini terminal"
+                    className={cn(
+                      "text-[rgb(var(--accent))] hover:bg-[rgb(var(--accent)/0.10)]",
+                      "px-1 rounded-[2px] cursor-pointer shrink-0",
+                      "transition-colors duration-[var(--dur-base)]",
+                    )}
+                  >
+                    $
+                  </button>
+                  <span className="min-w-0 break-words text-foreground">
+                    {visible}
+                    <BlinkingCaret className="align-[-0.18em]" />
+                  </span>
+                </span>
+              </div>
+            )}
+          </div>
 
           {/* Currently — what I'm building / learning / reading right now */}
           {site.now && site.now.items.length > 0 ? (
@@ -269,13 +271,13 @@ export function Hero({
 
           {/* Tagline */}
           {site.tagline ? (
-            <p className="mt-6 max-w-xl text-[1rem] leading-[1.55] text-muted">
+            <p className="mt-3 max-w-xl text-[1rem] leading-[1.55] text-muted md:mt-6">
               {site.tagline}
             </p>
           ) : null}
 
           {/* Contact chips */}
-          <div className="mt-10 grid grid-cols-2 items-stretch gap-2 sm:flex sm:flex-wrap sm:items-center">
+          <div className="mt-6 grid grid-cols-2 items-stretch gap-2 sm:mt-10 sm:flex sm:flex-wrap sm:items-center">
             {site.contacts.map((c) => {
               const external = c.href.startsWith("http");
               return (

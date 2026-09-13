@@ -7,7 +7,7 @@ import { cn } from "@/lib/cn";
 
 export function Certifications({ site }: { site: SiteContent }) {
   return (
-    <section id="certifications" aria-labelledby="certifications-title" className="scroll-mt-24 py-20 md:py-32">
+    <section id="certifications" aria-labelledby="certifications-title" className="scroll-mt-24 py-10 md:py-30">
       <div className="mx-auto max-w-[88rem] px-6 md:px-12">
         <SectionHeading number={5} slug="certification" title="Certifications" />
 
