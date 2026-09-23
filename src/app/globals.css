@@ -306,6 +306,79 @@ body {
   transition: background-color var(--dur-slow) ease, color var(--dur-slow) ease;
 }
 
+/* Freeze ordinary token transitions so each captured side has a complete palette. */
+html[data-theme-transition="diff"],
+html[data-theme-transition="diff"] *,
+html[data-theme-transition="diff"] *::before,
+html[data-theme-transition="diff"] *::after,
+html[data-theme-transition="instant"],
+html[data-theme-transition="instant"] *,
+html[data-theme-transition="instant"] *::before,
+html[data-theme-transition="instant"] *::after {
+  transition: none !important;
+}
+
+/* Native viewport snapshots: old below, new clipped open from the top. */
+html[data-theme-transition="diff"]::view-transition-old(root) {
+  animation: none;
+  opacity: 1;
+  mix-blend-mode: normal;
+}
+
+html[data-theme-transition="diff"]::view-transition-new(root) {
+  animation: theme-diff-reveal 650ms linear both;
+  opacity: 1;
+  mix-blend-mode: normal;
+}
+
+@keyframes theme-diff-reveal {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.theme-diff-line {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  background: rgb(var(--accent));
+  pointer-events: none;
+  view-transition-name: theme-diff-line;
+}
+
+.theme-diff-label {
+  position: absolute;
+  top: 7px;
+  right: clamp(1rem, 4vw, 3rem);
+  display: flex;
+  gap: 0.7rem;
+  padding: 0.25rem 0.45rem;
+  border: 1px solid rgb(var(--accent) / 0.6);
+  background: rgb(var(--background));
+  color: rgb(var(--foreground));
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: none;
+}
+
+.theme-diff-label span:last-child { color: rgb(var(--accent)); }
+
+html[data-theme-transition="diff"]::view-transition-group(theme-diff-line) {
+  z-index: 1;
+  animation: theme-diff-line-travel 650ms linear both;
+}
+
+html[data-theme-transition="diff"]::view-transition-new(theme-diff-line) {
+  animation: none;
+  opacity: 1;
+}
+
+@keyframes theme-diff-line-travel {
+  from { transform: translateY(0); }
+  to { transform: translateY(100dvh); }
+}
+
 /* A non-blocking compile trace for explicit theme changes. The page's own
    colors stay visible while the 32px band passes over the viewport. */
 .theme-compile-pass {
@@ -349,13 +422,8 @@ body {
  * Applied to <html data-diag="on"> by the DiagnosticOverlay component.
  * ─────────────────────────────────────────────────────────── */
 
-html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
+html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *):not(.theme-compile-pass):not(.theme-compile-pass *):not(.theme-diff-line):not(.theme-diff-line *) {
   outline: 1px solid rgb(var(--accent) / 0.22) !important;
-}
-
-html[data-diag="on"] .theme-compile-pass,
-html[data-diag="on"] .theme-compile-pass-label {
-  outline: none !important;
 }
 
 /* Hero system frame: interface telemetry rails, rather than camera-style brackets. */
@@ -577,7 +645,11 @@ html[data-crt="on"] :is(h1, h2, h3, h4, p, span, li, a, button, pre, code, label
 
 /* Keep the compile trace crisp even when the page typography is distorted. */
 html[data-glitch="on"] .theme-compile-pass-label,
-html[data-crt="on"] .theme-compile-pass-label {
+html[data-crt="on"] .theme-compile-pass-label,
+html[data-glitch="on"] .theme-diff-label,
+html[data-glitch="on"] .theme-diff-label *,
+html[data-crt="on"] .theme-diff-label,
+html[data-crt="on"] .theme-diff-label * {
   text-shadow: none;
 }
 

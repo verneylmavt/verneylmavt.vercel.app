@@ -18,6 +18,7 @@ export function BSOD({
 
   React.useEffect(() => {
     if (!active) return;
+    window.dispatchEvent(new Event("v3:bsod-open"));
     let remaining = 5;
     const interval = window.setInterval(() => {
       remaining -= 1;
@@ -49,6 +50,7 @@ export function BSOD({
   return (
     <div
       aria-hidden="true"
+      data-bsod-active="true"
       className="fixed inset-0 z-[70] bg-[rgb(var(--accent))] flex flex-col justify-center overflow-hidden select-none"
     >
       <div className="mx-auto w-full max-w-[72rem] px-10 md:px-20 py-16 font-mono text-white">
