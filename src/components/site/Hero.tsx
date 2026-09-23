@@ -172,7 +172,7 @@ export function Hero({
     <section
       id="top"
       aria-label="Intro"
-      className="relative min-h-[calc(100svh-3.5rem)] py-20 md:min-h-[calc(100svh-4rem)] md:py-24"
+      className="relative min-h-[calc(100svh-3.5rem)] pt-14 pb-24 md:min-h-[calc(100svh-4rem)] md:py-24"
     >
       <HeroTelemetryFrame mode={currentMode} />
       <div className="relative z-[3] mx-auto max-w-[88rem] px-6 md:px-12 lg:px-15 grid gap-y-8 md:grid-cols-12 md:gap-x-6">
