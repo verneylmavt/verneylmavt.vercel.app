@@ -52,7 +52,7 @@ export function HeroTelemetryFrame({ mode }: { mode: SiteMode }) {
 
       <div className="hero-telemetry-bottom">
         <span>ROUTE / HOME</span>
-        <span className="hero-telemetry-divider" />
+        <span className="hero-telemetry-divider hidden sm:block" />
         <span className="hidden sm:inline">BUILD / V3</span>
         <span className="hero-telemetry-spacer" />
         <span className="hidden sm:inline">NEXT.JS / REACT</span>
