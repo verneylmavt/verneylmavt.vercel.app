@@ -314,6 +314,169 @@ html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
   outline: 1px solid rgb(var(--accent) / 0.22) !important;
 }
 
+/* Hero system frame: interface telemetry rails, rather than camera-style brackets. */
+.hero-telemetry {
+  --telemetry-line: rgb(var(--rule) / 0.22);
+  position: absolute;
+  z-index: 2;
+  inset: 0.5rem 0.5rem 2.75rem;
+  pointer-events: none;
+  color: rgb(var(--muted));
+  font-size: 0.5625rem;
+  letter-spacing: 0.07em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.hero-telemetry-top,
+.hero-telemetry-bottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0 0.5rem;
+}
+
+.hero-telemetry-top {
+  top: 0;
+  border-bottom: 1px solid var(--telemetry-line);
+}
+
+.hero-telemetry-bottom {
+  bottom: 0;
+  border-top: 1px solid var(--telemetry-line);
+}
+
+.hero-telemetry-top::before,
+.hero-telemetry-top::after,
+.hero-telemetry-bottom::before,
+.hero-telemetry-bottom::after {
+  content: "";
+  position: absolute;
+  width: 0.7rem;
+  height: 1px;
+  background: rgb(var(--accent));
+}
+
+.hero-telemetry-top::before,
+.hero-telemetry-bottom::before { left: 0; }
+.hero-telemetry-top::after,
+.hero-telemetry-bottom::after { right: 0; }
+.hero-telemetry-top::before,
+.hero-telemetry-top::after { bottom: -1px; }
+.hero-telemetry-bottom::before,
+.hero-telemetry-bottom::after { top: -1px; }
+
+.hero-telemetry-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.hero-telemetry-signal {
+  display: inline-block;
+  width: 0.3125rem;
+  height: 0.3125rem;
+  flex: none;
+  background: rgb(var(--accent));
+}
+
+.hero-telemetry-signal--online {
+  border-radius: 50%;
+  background: #4e9870;
+}
+
+.hero-telemetry-divider {
+  width: 1px;
+  height: 0.75rem;
+  flex: none;
+  background: var(--telemetry-line);
+}
+
+.hero-telemetry-spacer { flex: 1; }
+
+.hero-telemetry-mode { color: rgb(var(--foreground)); }
+
+.hero-telemetry-bars {
+  align-items: flex-end;
+  gap: 0.1875rem;
+  height: 0.75rem;
+}
+
+.hero-telemetry-bars span {
+  width: 1px;
+  background: rgb(var(--accent) / 0.85);
+}
+
+.hero-telemetry-bars span:nth-child(n + 5) {
+  background: var(--telemetry-line);
+}
+
+.hero-telemetry-side {
+  position: absolute;
+  top: 2rem;
+  bottom: 2rem;
+  width: 0.5rem;
+  border-color: var(--telemetry-line);
+  border-style: solid;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.hero-telemetry-side--left {
+  left: 0;
+  border-width: 0 0 0 1px;
+}
+
+.hero-telemetry-side--right {
+  right: 0;
+  border-width: 0 1px 0 0;
+}
+
+.hero-telemetry-channel { display: none; }
+
+html[data-diag="on"] .hero-telemetry {
+  --telemetry-line: rgb(var(--accent) / 0.48);
+}
+
+html[data-glitch="on"] .hero-telemetry {
+  --telemetry-line: rgb(var(--accent) / 0.4);
+}
+
+html[data-crt="on"] .hero-telemetry {
+  --telemetry-line: rgb(var(--rule) / 0.32);
+}
+
+@media (min-width: 768px) {
+  .hero-telemetry {
+    inset: 1rem 1.25rem 2.75rem;
+    font-size: 0.625rem;
+  }
+
+  .hero-telemetry-top,
+  .hero-telemetry-bottom {
+    gap: 1rem;
+    padding: 0 0.75rem;
+  }
+
+  .hero-telemetry-side { width: 1.5rem; }
+
+  .hero-telemetry-channel {
+    display: block;
+    font-size: 0.5rem;
+    writing-mode: vertical-rl;
+  }
+
+  .hero-telemetry-side--left .hero-telemetry-channel {
+    transform: rotate(180deg);
+  }
+}
+
 /* ──────────────────────────────────────────────────────────────
  * CRT scanline drift
  * ─────────────────────────────────────────────────────────── */

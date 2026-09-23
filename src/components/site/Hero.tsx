@@ -10,6 +10,7 @@ import { Hairline } from "@/components/ui/Hairline";
 import { ScrambleText, fireScramble } from "@/components/ui/ScrambleText";
 import { MiniTerminal } from "./MiniTerminal";
 import { NowPanel } from "./NowPanel";
+import { HeroTelemetryFrame } from "./HeroTelemetryFrame";
 import type { SiteMode } from "@/components/site/StatusBar";
 import { cn } from "@/lib/cn";
 
@@ -171,9 +172,10 @@ export function Hero({
     <section
       id="top"
       aria-label="Intro"
-      className="relative min-h-[100svh] py-12 md:py-24"
+      className="relative min-h-[calc(100svh-3.5rem)] py-20 md:min-h-[calc(100svh-4rem)] md:py-24"
     >
-      <div className="mx-auto max-w-[88rem] px-6 md:px-12 grid gap-y-8 md:grid-cols-12 md:gap-x-6">
+      <HeroTelemetryFrame mode={currentMode} />
+      <div className="relative z-[3] mx-auto max-w-[88rem] px-6 md:px-12 lg:px-15 grid gap-y-8 md:grid-cols-12 md:gap-x-6">
         {/* Logotype — col-span-8 */}
         <div className="md:col-span-8 min-w-0 flex flex-col justify-center">
           <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
