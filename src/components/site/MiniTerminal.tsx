@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { SiteContent } from "@/content/site";
-import { useTheme, type ThemePreference } from "@/components/ThemeProvider";
+import { useTheme } from "@/components/ThemeProvider";
 import type { SiteMode } from "@/components/site/StatusBar";
 import { cn } from "@/lib/cn";
 
@@ -143,7 +143,7 @@ export function MiniTerminal({
               </li>
               <li>
                 <span className="text-[rgb(var(--accent))]">
-                  theme &lt;light|dark|system&gt;
+                  theme &lt;light|dark&gt;
                 </span>{" "}
                 — switch theme
               </li>
@@ -232,14 +232,14 @@ export function MiniTerminal({
         }
         case "theme": {
           const next = (args[0] ?? "").toLowerCase();
-          if (next === "light" || next === "dark" || next === "system") {
-            setTheme(next as ThemePreference);
+          if (next === "light" || next === "dark") {
+            setTheme(next);
             append(cmd, `theme set to ${next}`);
           } else {
             append(
               cmd,
               <span className="text-muted-soft">
-                theme: expected one of light, dark, system
+                theme: expected one of light, dark
               </span>,
             );
           }
@@ -348,7 +348,7 @@ export function MiniTerminal({
       }
       setCurrent("");
     },
-    [append, onClose, setTheme, site, onToggleDiag, onShowMatrix, onWarp, onCrash, onGlitch, onToggleCRT],
+    [append, currentMode, onClose, setTheme, site, onToggleDiag, onShowMatrix, onWarp, onCrash, onGlitch, onToggleCRT],
   );
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {

@@ -7,7 +7,9 @@ import { cn } from "@/lib/cn";
 export type PaletteItem = {
   id: string;
   label: string;
-  group: "sections" | "projects" | "links";
+  group: "sections" | "projects" | "links" | "commands";
+  /** Run an in-page action instead of navigating. */
+  onSelect?: () => void;
   /** When set, clicking this item navigates to the URL. */
   href?: string;
   /** When set, clicking this item smooth-scrolls to the section id. */
@@ -30,7 +32,9 @@ export function CmdPalette({
       onOpenChange(false);
       // Wait one frame so the overlay unmounts before navigation
       requestAnimationFrame(() => {
-        if (item.sectionId) {
+        if (item.onSelect) {
+          item.onSelect();
+        } else if (item.sectionId) {
           const el = document.getElementById(item.sectionId);
           if (el) {
             el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -55,6 +59,7 @@ export function CmdPalette({
       sections: [],
       projects: [],
       links: [],
+      commands: [],
     };
     for (const it of items) out[it.group].push(it);
     return out;
@@ -90,7 +95,7 @@ export function CmdPalette({
           </span>
           <Command.Input
             autoFocus
-            placeholder="type a section, project, or link..."
+            placeholder="type a section, project, link, or command..."
             className="w-full bg-transparent text-[0.875rem] text-foreground placeholder:text-muted-soft outline-none"
           />
           <span className="text-[0.6875rem] tracking-wider uppercase text-muted">[esc]</span>
@@ -101,7 +106,7 @@ export function CmdPalette({
             {"// no matches"}
           </Command.Empty>
 
-          {(["sections", "projects", "links"] as const).map((group) =>
+          {(["sections", "projects", "links", "commands"] as const).map((group) =>
             grouped[group].length ? (
               <Command.Group
                 key={group}
@@ -122,7 +127,7 @@ export function CmdPalette({
                   >
                     <span>{item.label}</span>
                     <span className="text-muted text-[0.75rem]" aria-hidden="true">
-                      {item.hint ?? (item.sectionId ? "→" : "↗")}
+                      {item.hint ?? (item.onSelect || item.sectionId ? "→" : "↗")}
                     </span>
                   </Command.Item>
                 ))}

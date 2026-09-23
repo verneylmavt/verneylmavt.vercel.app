@@ -95,8 +95,8 @@ export function StatusBar({
         "border-t border-[rgb(var(--rule)/0.12)] bg-[rgb(var(--background)/0.92)] backdrop-blur",
       )}
     >
-      <div className="mx-auto max-w-[88rem] px-4 lg:px-8 h-8 flex items-center justify-between gap-3 text-[0.6875rem] tracking-[0.04em] text-muted">
-        <div className="flex items-center gap-3 min-w-0">
+      <div className="mx-auto max-w-[88rem] px-4 lg:px-8 h-8 flex items-center justify-between gap-1 sm:gap-3 text-[0.6875rem] tracking-[0.04em] text-muted">
+        <div className="flex items-center gap-1 sm:gap-3 min-w-0">
           <span className="inline tabular-nums sm:hidden">JKT</span>
           <LocalClock
             timeZone="Asia/Jakarta"
@@ -106,7 +106,7 @@ export function StatusBar({
           <span aria-hidden="true" className="hidden sm:inline">·</span>
           <ScrollPercent />
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-3">
           {/* Compile flash — only visible while flashing */}
           {flash === "compiling" ? (
             <span
@@ -152,8 +152,8 @@ export function StatusBar({
               onClick={onCycleMode}
               aria-label={`Mode: ${mode ?? "default"}. Click to cycle.`}
               className={cn(
-                "inline-flex max-w-[52vw] items-center px-1.5 py-0.5",
-                "text-[0.6875rem] tracking-[0.04em]",
+                "inline-flex max-w-[52vw] shrink-0 items-center whitespace-nowrap px-1 sm:px-1.5 py-0.5",
+                "text-[0.625rem] sm:text-[0.6875rem] tracking-[0.04em]",
                 "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
                 "bg-[rgb(var(--surface)/0.4)] text-muted",
                 "transition-colors duration-[var(--dur-base)]",
@@ -169,8 +169,8 @@ export function StatusBar({
             onClick={cycleTheme}
             aria-label={`Theme: ${themeLabel}. Click to cycle.`}
             className={cn(
-              "inline-flex max-w-[52vw] items-center px-1.5 py-0.5",
-              "text-[0.6875rem] tracking-[0.04em]",
+              "inline-flex max-w-[52vw] shrink-0 items-center whitespace-nowrap px-1 sm:px-1.5 py-0.5",
+              "text-[0.625rem] sm:text-[0.6875rem] tracking-[0.04em]",
               "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
               "bg-[rgb(var(--surface)/0.4)] text-muted",
               "transition-colors duration-[var(--dur-base)]",

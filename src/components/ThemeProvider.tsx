@@ -1,123 +1,102 @@
 "use client";
 
 import * as React from "react";
+import { nextTheme, normalizeTheme, type ThemePreference } from "@/lib/theme-policy";
 
-export type ThemePreference = "light" | "dark" | "system";
-export type ResolvedTheme = "light" | "dark";
+export type { ThemePreference } from "@/lib/theme-policy";
+export type ResolvedTheme = ThemePreference;
 
 type ThemeContextValue = {
-  /** What the user picked (or fell back to "system" on first visit). */
   theme: ThemePreference;
-  /** What is actually applied to <html> right now. */
+  /** Kept for existing consumers; the selected and applied themes are identical. */
   resolvedTheme: ResolvedTheme;
-  /** Persist a new preference. Pass "system" to follow OS preference. */
   setTheme: (next: ThemePreference) => void;
-  /** Convenience: light → dark → system → light. */
   cycleTheme: () => void;
 };
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
-
 const STORAGE_KEY = "v3-theme";
-const PREFERS_DARK = "(prefers-color-scheme: dark)";
-
-function readStoredTheme(): ThemePreference {
-  if (typeof window === "undefined") return "system";
-  try {
-    const v = window.localStorage.getItem(STORAGE_KEY);
-    if (v === "light" || v === "dark" || v === "system") return v;
-  } catch {
-    // ignore
-  }
-  return "system";
-}
-
-function applyTheme(t: ResolvedTheme) {
-  if (typeof document === "undefined") return;
-  document.documentElement.setAttribute("data-theme", t);
-}
+const SWEEP_DURATION_MS = 520;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  // Initial state must match server output ("system") so hydration succeeds.
-  // After mount, we read the persisted preference and update if different.
-  const [theme, setThemeState] = React.useState<ThemePreference>("system");
+  // Match server markup. The boot script applies a saved light preference before paint.
+  const [theme, setThemeState] = React.useState<ThemePreference>("dark");
+  const currentTheme = React.useRef<ThemePreference>("dark");
+  const [sweep, setSweep] = React.useState<{ id: number; target: ThemePreference } | null>(null);
+  const sweepId = React.useRef(0);
+  const sweepTimer = React.useRef<number | null>(null);
 
   React.useEffect(() => {
-    const stored = readStoredTheme();
-    if (stored !== "system") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setThemeState(stored);
+    let stored: string | null = null;
+    try {
+      stored = window.localStorage.getItem(STORAGE_KEY);
+      if (stored !== null && stored !== "light" && stored !== "dark") {
+        window.localStorage.setItem(STORAGE_KEY, "dark");
+      }
+    } catch {
+      // Storage may be unavailable; the boot script already falls back to dark.
     }
+    const restored = normalizeTheme(stored);
+    currentTheme.current = restored;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setThemeState(restored);
+    document.documentElement.setAttribute("data-theme", restored);
+    return () => {
+      if (sweepTimer.current !== null) window.clearTimeout(sweepTimer.current);
+    };
   }, []);
-
-  // Subscribe to OS preference changes when in "system" mode.
-  const subscribeOS = React.useCallback((cb: () => void) => {
-    if (typeof window === "undefined") return () => {};
-    const mq = window.matchMedia(PREFERS_DARK);
-    const handler = () => cb();
-    mq.addEventListener("change", handler);
-    return () => mq.removeEventListener("change", handler);
-  }, []);
-
-  const getOSSnapshot = React.useCallback<() => ResolvedTheme>(() => {
-    if (typeof window === "undefined") return "light";
-    return window.matchMedia(PREFERS_DARK).matches ? "dark" : "light";
-  }, []);
-
-  const osResolved = React.useSyncExternalStore(
-    subscribeOS,
-    getOSSnapshot,
-    () => "light" as ResolvedTheme,
-  );
-
-  const resolvedTheme: ResolvedTheme =
-    theme === "system" ? osResolved : theme;
-
-  // Apply on every change.
-  React.useEffect(() => {
-    applyTheme(resolvedTheme);
-  }, [resolvedTheme]);
 
   const setTheme = React.useCallback((next: ThemePreference) => {
+    if (next === currentTheme.current) return;
+    currentTheme.current = next;
+    document.documentElement.setAttribute("data-theme", next);
     setThemeState(next);
     try {
       window.localStorage.setItem(STORAGE_KEY, next);
     } catch {
-      // ignore (private mode, etc.)
+      // Keep the in-memory choice when storage is unavailable.
     }
+
+    if (sweepTimer.current !== null) window.clearTimeout(sweepTimer.current);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setSweep(null);
+      return;
+    }
+    sweepId.current += 1;
+    setSweep({ id: sweepId.current, target: next });
+    sweepTimer.current = window.setTimeout(() => {
+      setSweep(null);
+      sweepTimer.current = null;
+    }, SWEEP_DURATION_MS);
   }, []);
 
   const cycleTheme = React.useCallback(() => {
-    setThemeState((curr) => {
-      const next: ThemePreference =
-        curr === "light" ? "dark" : curr === "dark" ? "system" : "light";
-      try {
-        window.localStorage.setItem(STORAGE_KEY, next);
-      } catch {
-        // ignore
-      }
-      return next;
-    });
-  }, []);
+    setTheme(nextTheme(currentTheme.current));
+  }, [setTheme]);
 
   const value = React.useMemo<ThemeContextValue>(
-    () => ({ theme, resolvedTheme, setTheme, cycleTheme }),
-    [theme, resolvedTheme, setTheme, cycleTheme],
+    () => ({ theme, resolvedTheme: theme, setTheme, cycleTheme }),
+    [theme, setTheme, cycleTheme],
   );
 
-  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+  return (
+    <ThemeContext.Provider value={value}>
+      {children}
+      {sweep && (
+        <div key={sweep.id} className="theme-compile-pass" aria-hidden="true">
+          <span className="theme-compile-pass-label">&gt; theme --set {sweep.target}</span>
+        </div>
+      )}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme(): ThemeContextValue {
   const ctx = React.useContext(ThemeContext);
-  if (!ctx) {
-    // Safe fallback — lets components render before provider mounts (rare).
-    return {
-      theme: "system",
-      resolvedTheme: "light",
-      setTheme: () => {},
-      cycleTheme: () => {},
-    };
-  }
-  return ctx;
+  return ctx ?? {
+    theme: "dark",
+    resolvedTheme: "dark",
+    setTheme: () => {},
+    cycleTheme: () => {},
+  };
 }

@@ -207,8 +207,15 @@ export function SitePage({ content }: { content: SiteContent }) {
         href: content.links.resume,
       });
     }
+    items.push({
+      id: "theme-toggle",
+      label: `theme: ${theme}`,
+      group: "commands",
+      hint: `→ ${theme === "dark" ? "light" : "dark"}`,
+      onSelect: cycleTheme,
+    });
     return items;
-  }, [content]);
+  }, [content, theme, cycleTheme]);
 
   const themeLabel = theme;
 

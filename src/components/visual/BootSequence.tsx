@@ -32,7 +32,7 @@ function buildLines(themeLabel: string): Line[] {
  */
 export function BootSequence() {
   const reduced = useReducedMotion();
-  const { resolvedTheme, theme } = useTheme();
+  const { resolvedTheme } = useTheme();
   // Initial state matches server (hidden). After mount, we check conditions
   // and conditionally enable. This avoids a server/client hydration mismatch.
   const [visible, setVisible] = React.useState<boolean>(false);
@@ -55,8 +55,8 @@ export function BootSequence() {
   }, []);
 
   const lines = React.useMemo(
-    () => buildLines(theme === "system" ? `system (${resolvedTheme})` : resolvedTheme),
-    [theme, resolvedTheme],
+    () => buildLines(resolvedTheme),
+    [resolvedTheme],
   );
 
   // Mark booted as soon as sequence is allowed to start (so refresh-mid-boot still gates).

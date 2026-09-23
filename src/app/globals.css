@@ -2,7 +2,7 @@
 
 /* ──────────────────────────────────────────────────────────────
  * v3 design tokens — Swiss / monospace / engineering
- * Light is :root default; dark applied via [data-theme="dark"]
+ * Dark is :root default; saved light applied via [data-theme="light"]
  * by ThemeProvider + FOUC-prevention script (see layout.tsx).
  * ─────────────────────────────────────────────────────────── */
 
@@ -13,6 +13,24 @@
   --safe-bottom: env(safe-area-inset-bottom, 0px);
   --safe-left: env(safe-area-inset-left, 0px);
 
+  /* Dark theme (void) */
+  --background: 14 14 16;       /* near-black */
+  --foreground: 235 235 240;    /* off-white */
+  --muted: 168 168 174;         /* AA on dark bg */
+  --muted-soft: 130 130 138;
+  --rule: 235 235 240;          /* hairlines re-map to bright */
+  --grid-dot: 235 235 240;      /* dotted bg dots become bright */
+  --surface: 22 22 26;          /* card depth on dark */
+  --accent: 239 68 68;          /* brighter red for dark contrast */
+
+  /* Motion */
+  --ease-precise: cubic-bezier(0.2, 0, 0.13, 1);
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 360ms;
+}
+
+[data-theme="light"] {
   /* Light theme (paper) */
   --background: 244 242 236;   /* warm off-white */
   --foreground: 18 18 20;      /* charcoal, not pure black */
@@ -22,23 +40,6 @@
   --accent: 199 53 43;         /* restrained signal red */
   --grid-dot: 18 18 20;        /* dotted background, used at /0.07 */
   --surface: 232 229 222;      /* slightly darker paper for card depth */
-
-  /* Motion */
-  --ease-precise: cubic-bezier(0.2, 0, 0.13, 1);
-  --dur-fast: 120ms;
-  --dur-base: 200ms;
-  --dur-slow: 360ms;
-}
-
-[data-theme="dark"] {
-  --background: 14 14 16;       /* near-black */
-  --foreground: 235 235 240;    /* off-white */
-  --muted: 168 168 174;         /* AA on dark bg */
-  --muted-soft: 130 130 138;
-  --rule: 235 235 240;          /* hairlines re-map to bright */
-  --grid-dot: 235 235 240;      /* dotted bg dots become bright */
-  --surface: 22 22 26;          /* card depth on dark */
-  --accent: 239 68 68;          /* brighter red for dark contrast */
 }
 
 @theme inline {
@@ -305,6 +306,44 @@ body {
   transition: background-color var(--dur-slow) ease, color var(--dur-slow) ease;
 }
 
+/* A non-blocking compile trace for explicit theme changes. The page's own
+   colors stay visible while the 32px band passes over the viewport. */
+.theme-compile-pass {
+  position: fixed;
+  z-index: 65;
+  inset: 0 0 auto;
+  height: 32px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgb(var(--accent) / 0.09));
+  border-bottom: 1px solid rgb(var(--accent) / 0.95);
+  animation: theme-compile-sweep 520ms linear both;
+  will-change: transform;
+}
+
+.theme-compile-pass-label {
+  display: block;
+  width: max-content;
+  max-width: calc(100vw - 2rem);
+  margin-left: auto;
+  padding: 0.35rem 1rem 0;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.625rem;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgb(var(--accent));
+  text-shadow: none;
+}
+
+@keyframes theme-compile-sweep {
+  from { transform: translate3d(0, -32px, 0); }
+  to { transform: translate3d(0, 100vh, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html, body { transition: none; }
+  .theme-compile-pass { display: none; animation: none; }
+}
+
 /* ──────────────────────────────────────────────────────────────
  * Diagnostic mode (Konami code) overlay class
  * Applied to <html data-diag="on"> by the DiagnosticOverlay component.
@@ -312,6 +351,11 @@ body {
 
 html[data-diag="on"] body *:not(.diag-hud):not(.diag-hud *) {
   outline: 1px solid rgb(var(--accent) / 0.22) !important;
+}
+
+html[data-diag="on"] .theme-compile-pass,
+html[data-diag="on"] .theme-compile-pass-label {
+  outline: none !important;
 }
 
 /* Hero system frame: interface telemetry rails, rather than camera-style brackets. */
@@ -531,6 +575,12 @@ html[data-crt="on"] :is(h1, h2, h3, h4, p, span, li, a, button, pre, code, label
   text-shadow: 0 0 7px rgb(var(--accent) / 0.28);
 }
 
+/* Keep the compile trace crisp even when the page typography is distorted. */
+html[data-glitch="on"] .theme-compile-pass-label,
+html[data-crt="on"] .theme-compile-pass-label {
+  text-shadow: none;
+}
+
 /* ──────────────────────────────────────────────────────────────
  * Toast (EOF notification) — fade in/out
  * ─────────────────────────────────────────────────────────── */
@@ -593,10 +643,10 @@ html[data-crt="on"] :is(h1, h2, h3, h4, p, span, li, a, button, pre, code, label
    (dark marks darken paper). Dark theme: screen (light marks brighten void).
    Either way the body text stays readable through the sparse glyph layer. */
 .field-mesh {
-  mix-blend-mode: multiply;
-}
-[data-theme="dark"] .field-mesh {
   mix-blend-mode: screen;
+}
+[data-theme="light"] .field-mesh {
+  mix-blend-mode: multiply;
 }
 
 /* Diagnostic mode amplifies the field mesh so it complements the 12-col grid
