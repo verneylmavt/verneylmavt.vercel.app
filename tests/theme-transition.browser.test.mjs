@@ -1,46 +1,21 @@
 import assert from "node:assert/strict";
-import { spawn } from "node:child_process";
 import { test } from "node:test";
-import { createServer } from "node:net";
-import { setTimeout as delay } from "node:timers/promises";
-import { fileURLToPath } from "node:url";
-import { join } from "node:path";
 import { chromium } from "playwright";
 
-const root = fileURLToPath(new URL("..", import.meta.url));
-
-async function freePort() {
-  const server = createServer();
-  await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
-  const port = server.address().port;
-  await new Promise((resolve) => server.close(resolve));
-  return port;
-}
-
 test("the latest theme request wins even when an older snapshot callback runs late", { timeout: 30000 }, async (t) => {
-  const port = await freePort();
-  const url = `http://127.0.0.1:${port}/`;
-  const server = spawn(process.execPath, [join(root, "node_modules/next/dist/bin/next"), "start", "-p", String(port)], {
-    cwd: root,
-    stdio: "ignore",
-  });
+  const url = process.env.THEME_TEST_URL ?? "http://localhost:3000/";
+  let response;
+  try {
+    response = await fetch(url, { signal: AbortSignal.timeout(4000) });
+  } catch {
+    assert.fail(`Expected an already-running v3 server at ${url}`);
+  }
+  assert.equal(response.status, 200, `Expected an already-running v3 server at ${url}`);
+
   let browser;
   t.after(async () => {
     await browser?.close();
-    server.kill();
   });
-
-  let ready = false;
-  for (let attempt = 0; attempt < 100; attempt += 1) {
-    if (server.exitCode !== null) break;
-    try {
-      ready = (await fetch(url)).ok;
-      if (ready) break;
-    } catch {
-      await delay(100);
-    }
-  }
-  assert.ok(ready, "build the site before running the browser theme test");
 
   browser = await chromium.launch({ headless: true });
   const page = await browser.newPage();
@@ -115,6 +90,7 @@ test("the latest theme request wins even when an older snapshot callback runs la
 
   const reducedPage = await browser.newPage({ reducedMotion: "reduce", colorScheme: "light" });
   await reducedPage.goto(url);
+  await reducedPage.waitForLoadState("networkidle");
   await reducedPage.getByRole("button", { name: "Theme: dark. Click to cycle." }).click();
   await reducedPage.waitForFunction(() => !document.documentElement.hasAttribute("data-theme-transition"));
   assert.deepEqual(await reducedPage.evaluate(() => ({
@@ -130,6 +106,7 @@ test("the latest theme request wins even when an older snapshot callback runs la
     Object.defineProperty(document, "startViewTransition", { configurable: true, value: undefined });
   });
   await noApiPage.goto(url);
+  await noApiPage.waitForLoadState("networkidle");
   await noApiPage.getByRole("button", { name: "Theme: dark. Click to cycle." }).click();
   await noApiPage.waitForFunction(() => !document.documentElement.hasAttribute("data-theme-transition"));
   assert.deepEqual(await noApiPage.evaluate(() => ({
