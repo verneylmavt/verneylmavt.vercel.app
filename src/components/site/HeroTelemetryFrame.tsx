@@ -8,14 +8,6 @@ const MODE_LABEL: Record<SiteMode, string> = {
   all: "ALL EFFECTS",
 };
 
-const MOBILE_MODE_LABEL: Record<SiteMode, string> = {
-  default: "NORM",
-  diagnostic: "DIAG",
-  "glitch storm": "GLITCH",
-  crt: "CRT",
-  all: "ALL",
-};
-
 const LEFT_CHANNELS = ["OBSERVE", "TRACE", "METRICS", "LOGS"];
 const RIGHT_CHANNELS = ["INPUT", "RENDER", "OUTPUT", "CACHE"];
 
@@ -40,10 +32,7 @@ export function HeroTelemetryFrame({ mode }: { mode: SiteMode }) {
             <span key={index} style={{ height }} />
           ))}
         </span>
-        <span className="hero-telemetry-mode">
-          MODE / <span className="sm:hidden">{MOBILE_MODE_LABEL[mode]}</span>
-          <span className="hidden sm:inline">{MODE_LABEL[mode]}</span>
-        </span>
+        <span className="hero-telemetry-mode">MODE / {MODE_LABEL[mode]}</span>
       </div>
 
       <div className="hero-telemetry-side hero-telemetry-side--left">
