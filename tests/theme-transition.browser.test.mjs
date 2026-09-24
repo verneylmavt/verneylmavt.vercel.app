@@ -2,6 +2,21 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { chromium } from "playwright";
 
+test("theme reveal and traveling line finish within 400ms", { timeout: 30000 }, async (t) => {
+  const url = process.env.THEME_TEST_URL ?? "http://localhost:3000/";
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+  const page = await browser.newPage();
+  await page.goto(url);
+  await page.getByRole("button", { name: "Theme: dark. Click to cycle." }).click();
+  const durations = await page.evaluate(() => ({
+    reveal: getComputedStyle(document.documentElement, "::view-transition-new(root)").animationDuration,
+    line: getComputedStyle(document.documentElement, "::view-transition-group(theme-diff-line)").animationDuration,
+  }));
+  assert.ok(parseFloat(durations.reveal) <= 0.4, `Reveal took ${durations.reveal}`);
+  assert.ok(parseFloat(durations.line) <= 0.4, `Line took ${durations.line}`);
+});
+
 test("the latest theme request wins even when an older snapshot callback runs late", { timeout: 30000 }, async (t) => {
   const url = process.env.THEME_TEST_URL ?? "http://localhost:3000/";
   let response;

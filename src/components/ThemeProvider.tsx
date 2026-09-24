@@ -18,7 +18,7 @@ type ThemeContextValue = {
 
 const ThemeContext = React.createContext<ThemeContextValue | null>(null);
 const STORAGE_KEY = "v3-theme";
-const SWEEP_DURATION_MS = 520;
+const SWEEP_DURATION_MS = 300;
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Match server markup. The boot script applies a saved light preference before paint.

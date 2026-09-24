@@ -326,7 +326,7 @@ html[data-theme-transition="diff"]::view-transition-old(root) {
 }
 
 html[data-theme-transition="diff"]::view-transition-new(root) {
-  animation: theme-diff-reveal 650ms linear both;
+  animation: theme-diff-reveal 350ms linear both;
   opacity: 1;
   mix-blend-mode: normal;
 }
@@ -366,7 +366,7 @@ html[data-theme-transition="diff"]::view-transition-new(root) {
 
 html[data-theme-transition="diff"]::view-transition-group(theme-diff-line) {
   z-index: 1;
-  animation: theme-diff-line-travel 650ms linear both;
+  animation: theme-diff-line-travel 350ms linear both;
 }
 
 html[data-theme-transition="diff"]::view-transition-new(theme-diff-line) {
@@ -389,7 +389,7 @@ html[data-theme-transition="diff"]::view-transition-new(theme-diff-line) {
   pointer-events: none;
   background: linear-gradient(to bottom, transparent, rgb(var(--accent) / 0.09));
   border-bottom: 1px solid rgb(var(--accent) / 0.95);
-  animation: theme-compile-sweep 520ms linear both;
+  animation: theme-compile-sweep 300ms linear both;
   will-change: transform;
 }
 
