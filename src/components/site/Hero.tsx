@@ -52,12 +52,13 @@ const ASCII_ART =
 
 function HeroMetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-2.5 gap-y-0.5 text-[0.8125rem] sm:grid-cols-[auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
-      <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-muted sm:text-[0.75rem]">
+    <div className="grid grid-cols-[0.75rem_auto_minmax(0,1fr)_max-content] items-baseline gap-x-2 gap-y-0.5 text-[0.75rem] max-[349px]:grid-cols-[0.75rem_auto_minmax(0,1fr)] sm:grid-cols-[0.75rem_auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
+      <span aria-hidden="true" className="text-[rgb(var(--accent))]">+</span>
+      <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-foreground sm:text-[0.75rem]">
         {label}
       </span>
-      <DotLeader className="hidden sm:block" />
-      <span className="min-w-0 break-words text-foreground sm:whitespace-nowrap sm:break-normal">
+      <DotLeader className="block min-w-0 sm:min-w-6" />
+      <span className="min-w-0 text-foreground whitespace-nowrap max-[349px]:col-span-2 max-[349px]:col-start-2 max-[349px]:whitespace-normal max-[349px]:break-words">
         {value}
       </span>
     </div>
@@ -290,15 +291,15 @@ export function Hero({
                   rel={external ? "noopener noreferrer" : undefined}
                   className={cn(
                     "group inline-flex min-w-0 items-center justify-center gap-2 px-3 py-1.5 sm:justify-start",
-                    "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
+                    "border border-[rgb(var(--rule)/0.18)] border-t-[rgb(var(--accent))] rounded-[2px]",
                     "bg-[rgb(var(--surface)/0.4)] text-[0.75rem] uppercase tracking-[0.04em] text-foreground",
                     "transition-colors duration-[var(--dur-base)]",
-                    "hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]",
+                    "hover:border-[rgb(var(--accent)/0.55)] hover:border-t-[rgb(var(--accent))] hover:text-[rgb(var(--accent))]",
                   )}
                 >
                   <Glyph name={c.icon} className="opacity-80 group-hover:opacity-100" />
                   <span>{c.label}</span>
-                  <span aria-hidden="true" className="text-muted-soft group-hover:text-[rgb(var(--accent))]">
+                  <span aria-hidden="true" className="text-[rgb(var(--accent))]">
                     ↗
                   </span>
                 </a>
@@ -325,10 +326,10 @@ export function Hero({
 
         {/* Metadata column — col-span-4 */}
         <aside className="md:col-span-4 min-w-0 md:pt-3">
-          <p className="text-[0.6875rem] tracking-[0.08em] uppercase text-muted-soft mb-3">
-            {"// metadata"}
-          </p>
-          <div className="flex max-w-md flex-col gap-2">
+          <div className="mb-3 max-w-md text-[0.6875rem] tracking-[0.08em] uppercase">
+            <p className="text-muted-soft">{"// metadata"}</p>
+          </div>
+          <div className="flex max-w-md flex-col gap-2 border border-[rgb(var(--accent)/0.4)] border-t-[rgb(var(--accent)/0.85)] bg-[rgb(var(--accent)/0.035)] px-2.5 py-2.5">
             <HeroMetaRow label="role" value={site.roleTitle} />
             {site.location ? (
               <HeroMetaRow label="location" value={site.location} />
@@ -343,15 +344,15 @@ export function Hero({
             rel="noopener noreferrer"
             className={cn(
               "group block max-w-sm",
-              "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
-              "p-3 sm:p-4 bg-[rgb(var(--surface)/0.4)]",
+              "border border-[rgb(var(--accent)/0.4)] border-t-[rgb(var(--accent)/0.85)] rounded-[2px]",
+              "p-3 sm:p-4 bg-[rgb(var(--accent)/0.035)]",
               "transition-colors duration-[var(--dur-base)]",
-              "hover:border-[rgb(var(--accent)/0.45)]",
+              "hover:border-[rgb(var(--accent)/0.6)] hover:border-t-[rgb(var(--accent)/0.85)]",
             )}
           >
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3 min-w-0">
-                <Glyph name="Aperture" size={16} className="text-muted" />
+                <Glyph name="Aperture" size={16} className="text-foreground" />
                 <div className="min-w-0">
                   <p className="text-[0.875rem] text-foreground truncate">
                     photography portfolio
@@ -363,7 +364,7 @@ export function Hero({
               </div>
               <span
                 aria-hidden="true"
-                className="text-muted-soft group-hover:text-[rgb(var(--accent))]"
+                className="text-[rgb(var(--accent))]"
               >
                 ↗
               </span>
