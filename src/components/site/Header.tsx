@@ -162,8 +162,8 @@ export function Header({
           mobileOpen ? "block" : "hidden",
         )}
       >
-        <nav className="mx-auto max-w-[88rem] px-6 py-3" aria-label="Sections">
-          <ul className="grid gap-1">
+        <nav className="mx-auto max-w-[88rem] px-6 py-2" aria-label="Sections">
+          <ul className="grid gap-0.5">
             {sections.map((s, i) => {
               const isActive = activeId === s.id;
               return (
@@ -173,13 +173,13 @@ export function Header({
                     onClick={() => setMobileOpen(false)}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "flex items-center justify-between px-2 py-2 text-[0.875rem]",
+                      "flex min-h-9 items-center justify-between px-2 py-1.5 text-[0.75rem]",
                       "border-b border-[rgb(var(--rule)/0.06)]",
                       isActive ? "text-foreground" : "text-muted",
                     )}
                   >
                     <span>
-                      <span className="text-muted-soft mr-2 text-[0.6875rem]">
+                      <span className="text-muted-soft mr-2 text-[0.625rem]">
                         {String(i + 1).padStart(2, "0")}
                       </span>
                       {s.label}

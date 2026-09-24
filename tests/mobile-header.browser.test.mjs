@@ -2,6 +2,28 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { chromium } from "playwright";
 
+test("mobile menu links use compact text and shorter rows", { timeout: 30000 }, async (t) => {
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+
+  for (const width of [390, 360]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    await page.goto(process.env.THEME_TEST_URL ?? "http://localhost:3000/");
+    await page.waitForLoadState("networkidle");
+    await page.locator("header").first().getByRole("button", { name: "Open menu" }).click();
+    const menu = page.locator("#mobile-nav");
+    const links = menu.getByRole("link");
+    assert.equal(await links.count(), 8);
+    const first = links.first();
+    assert.ok(parseFloat(await first.evaluate((el) => getComputedStyle(el).fontSize)) <= 12);
+    const row = await first.boundingBox();
+    const box = await menu.boundingBox();
+    assert.ok(row && row.height <= 36, `row too tall at ${width}px`);
+    assert.ok(box && box.height <= 320, `menu too tall at ${width}px`);
+    await page.close();
+  }
+});
+
 test("mobile menu shows indented code lines and a red cursor until opened", { timeout: 30000 }, async (t) => {
   const browser = await chromium.launch({ headless: true });
   t.after(() => browser.close());
