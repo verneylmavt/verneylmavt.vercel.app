@@ -113,7 +113,7 @@ export function Header({
             type="button"
             onClick={onCycleMode}
             aria-label={`Mode: ${mode}. Click to cycle.`}
-            className="md:hidden inline-flex max-w-20 max-[349px]:max-w-[70px] items-center justify-center rounded-[2px] border border-[rgb(var(--rule)/0.18)] bg-[rgb(var(--surface)/0.4)] px-1.5 py-1 text-center text-[0.625rem] max-[349px]:text-[0.5625rem] leading-tight tracking-[0.02em] text-muted hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]"
+            className="md:hidden inline-flex max-w-24 max-[349px]:max-w-[88px] items-center justify-center whitespace-nowrap rounded-[2px] border border-[rgb(var(--rule)/0.18)] bg-[rgb(var(--surface)/0.4)] px-1.5 py-1 text-center text-[0.625rem] max-[349px]:text-[0.5625rem] leading-tight tracking-[0.02em] text-muted hover:border-[rgb(var(--accent)/0.55)] hover:text-[rgb(var(--accent))]"
           >
             {mode}
           </button>

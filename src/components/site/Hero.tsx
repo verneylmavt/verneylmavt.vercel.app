@@ -52,13 +52,13 @@ const ASCII_ART =
 
 function HeroMetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[0.75rem_auto_minmax(0,1fr)_max-content] items-baseline gap-x-2 gap-y-0.5 text-[0.75rem] max-[349px]:grid-cols-[0.75rem_auto_minmax(0,1fr)] sm:grid-cols-[0.75rem_auto_minmax(1.5rem,1fr)_max-content] sm:text-sm">
+    <div className="grid grid-cols-[0.75rem_auto_minmax(0,1fr)_minmax(0,max-content)] items-baseline gap-x-2 gap-y-0.5 text-[0.75rem] sm:text-sm">
       <span aria-hidden="true" className="text-[rgb(var(--accent))]">+</span>
       <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-foreground sm:text-[0.75rem]">
         {label}
       </span>
-      <DotLeader className="block min-w-0 sm:min-w-6" />
-      <span className="min-w-0 text-foreground whitespace-nowrap max-[349px]:col-span-2 max-[349px]:col-start-2 max-[349px]:whitespace-normal max-[349px]:break-words">
+      <DotLeader className="block min-w-0" />
+      <span className="min-w-0 truncate text-foreground">
         {value}
       </span>
     </div>
@@ -291,10 +291,10 @@ export function Hero({
                   rel={external ? "noopener noreferrer" : undefined}
                   className={cn(
                     "group inline-flex min-w-0 items-center justify-center gap-2 px-3 py-1.5 sm:justify-start",
-                    "border border-[rgb(var(--rule)/0.18)] border-t-[rgb(var(--accent))] rounded-[2px]",
+                    "border border-[rgb(var(--rule)/0.18)] rounded-[2px]",
                     "bg-[rgb(var(--surface)/0.4)] text-[0.75rem] uppercase tracking-[0.04em] text-foreground",
                     "transition-colors duration-[var(--dur-base)]",
-                    "hover:border-[rgb(var(--accent)/0.55)] hover:border-t-[rgb(var(--accent))] hover:text-[rgb(var(--accent))]",
+                    "hover:border-[rgb(var(--accent)/0.55)] hover:border-t-[rgb(var(--rule)/0.18)] hover:text-[rgb(var(--accent))]",
                   )}
                 >
                   <Glyph name={c.icon} className="opacity-80 group-hover:opacity-100" />

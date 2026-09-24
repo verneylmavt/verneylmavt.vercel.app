@@ -115,6 +115,33 @@ test("mobile header owns the mode and theme controls without a bottom bar", { ti
   }
 });
 
+test("glitch storm mode stays on one line without colliding with mobile header controls", { timeout: 30000 }, async (t) => {
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+
+  for (const width of [390, 360, 320]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    await page.goto(process.env.THEME_TEST_URL ?? "http://localhost:3000/");
+    await page.waitForLoadState("networkidle");
+    const header = page.locator("header").first();
+    await header.getByRole("button", { name: "Mode: default. Click to cycle." }).click();
+    await header.getByRole("button", { name: "Mode: diagnostic. Click to cycle." }).click();
+
+    const mode = header.getByRole("button", { name: "Mode: glitch storm. Click to cycle." });
+    const theme = header.getByRole("button", { name: /Theme:/ });
+    const menu = header.getByRole("button", { name: "Open menu" });
+    const [modeBounds, themeBounds, menuBounds] = await Promise.all([
+      mode.boundingBox(), theme.boundingBox(), menu.boundingBox(),
+    ]);
+    assert.ok(modeBounds && themeBounds && menuBounds);
+    assert.ok(modeBounds.height <= themeBounds.height + 1, `mode wraps at ${width}px`);
+    assert.ok(menuBounds.x + menuBounds.width < modeBounds.x, `mode overlaps menu at ${width}px`);
+    assert.ok(modeBounds.x + modeBounds.width < themeBounds.x, `mode overlaps theme at ${width}px`);
+    assert.ok(themeBounds.x + themeBounds.width <= width, `theme overflows viewport at ${width}px`);
+    await page.close();
+  }
+});
+
 test("desktop keeps its bottom status bar", { timeout: 30000 }, async (t) => {
   const browser = await chromium.launch({ headless: true });
   t.after(() => browser.close());
