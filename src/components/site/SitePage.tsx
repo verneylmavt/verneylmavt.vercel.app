@@ -356,6 +356,8 @@ export function SitePage({ content }: { content: SiteContent }) {
           sections={SECTIONS}
           activeId={activeId}
           onOpenPalette={() => setPaletteOpen(true)}
+          mode={currentMode}
+          onCycleMode={cycleMode}
         />
 
         <main id="main" className="flex-1 pb-8 md:pb-12">

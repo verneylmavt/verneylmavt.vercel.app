@@ -91,13 +91,12 @@ export function StatusBar({
       role="status"
       aria-live="off"
       className={cn(
-        "fixed bottom-0 inset-x-0 z-30",
+        "fixed bottom-0 inset-x-0 z-30 hidden md:block",
         "border-t border-[rgb(var(--rule)/0.12)] bg-[rgb(var(--background)/0.92)] backdrop-blur",
       )}
     >
       <div className="mx-auto max-w-[88rem] px-4 lg:px-8 h-8 flex items-center justify-between gap-1 sm:gap-3 text-[0.6875rem] tracking-[0.04em] text-muted">
         <div className="flex items-center gap-1 sm:gap-3 min-w-0">
-          <span className="inline tabular-nums sm:hidden">JKT</span>
           <LocalClock
             timeZone="Asia/Jakarta"
             zoneLabel="JKT"
