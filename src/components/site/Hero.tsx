@@ -52,9 +52,9 @@ const ASCII_ART =
 
 function HeroMetaRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid grid-cols-[0.75rem_auto_minmax(0,1fr)_minmax(0,max-content)] items-baseline gap-x-2 gap-y-0.5 text-[0.75rem] sm:text-sm">
+    <div className="grid grid-cols-[0.75rem_auto_minmax(0,1fr)_minmax(0,max-content)] items-baseline gap-x-2 gap-y-0.5 text-[0.6875rem] sm:text-[0.75rem]">
       <span aria-hidden="true" className="text-[rgb(var(--accent))]">+</span>
-      <span className="shrink-0 text-[0.6875rem] uppercase tracking-[0.05em] text-foreground sm:text-[0.75rem]">
+      <span className="shrink-0 text-[0.625rem] uppercase tracking-[0.05em] text-foreground sm:text-[0.6875rem]">
         {label}
       </span>
       <DotLeader className="block min-w-0" />

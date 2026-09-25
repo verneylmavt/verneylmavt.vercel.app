@@ -36,3 +36,24 @@ test("hero metadata values stay inside their bordered panel across viewport widt
     await page.close();
   }
 });
+
+test("hero metadata row text is compact on desktop and mobile", { timeout: 30000 }, async (t) => {
+  const browser = await chromium.launch({ headless: true });
+  t.after(() => browser.close());
+
+  for (const width of [1280, 390, 360]) {
+    const page = await browser.newPage({ viewport: { width, height: 800 } });
+    await page.goto(process.env.THEME_TEST_URL ?? "http://localhost:3000/");
+    const sizes = await page.locator("aside .border").first().evaluate((panel) =>
+      [...panel.children].map((row) => ({
+        label: parseFloat(getComputedStyle(row.children[1]).fontSize),
+        value: parseFloat(getComputedStyle(row.lastElementChild).fontSize),
+      })),
+    );
+    for (const { label, value } of sizes) {
+      assert.ok(label <= (width < 640 ? 10 : 11), `metadata label too large at ${width}px`);
+      assert.ok(value <= (width < 640 ? 11 : 12), `metadata value too large at ${width}px`);
+    }
+    await page.close();
+  }
+});
