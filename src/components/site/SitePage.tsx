@@ -47,6 +47,9 @@ const SECTIONS: NavSection[] = [
   { id: "contact", label: "contact" },
 ];
 
+// Keep the footer component available for later, but disable it at every viewport.
+const FOOTER_ENABLED = false;
+
 export function SitePage({ content }: { content: SiteContent }) {
   const sectionIds = React.useMemo(() => SECTIONS.map((s) => s.id), []);
   const activeId = useActiveSection(sectionIds);
@@ -380,7 +383,7 @@ export function SitePage({ content }: { content: SiteContent }) {
           <Contact site={content} />
         </main>
 
-        <Footer />
+        {FOOTER_ENABLED && <Footer />}
       </div>
 
       <StatusBar

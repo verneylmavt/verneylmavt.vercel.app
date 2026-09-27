@@ -8,8 +8,8 @@ const MODE_LABEL: Record<SiteMode, string> = {
   all: "ALL EFFECTS",
 };
 
-const LEFT_CHANNELS = ["OBSERVE", "TRACE", "METRICS", "LOGS"];
-const RIGHT_CHANNELS = ["INPUT", "RENDER", "OUTPUT", "CACHE"];
+const LEFT_CHANNELS = ["AUTHENTICATION", "MIDDLEWARE", "APIs", "BACKGROUND JOB"];
+const RIGHT_CHANNELS = ["INPUT", "LOSS FUNCTION", "OPTIMIZER", "OUTPUT"];
 
 export function HeroTelemetryFrame({ mode }: { mode: SiteMode }) {
   return (
@@ -25,7 +25,7 @@ export function HeroTelemetryFrame({ mode }: { mode: SiteMode }) {
           <span>ONLINE</span>
         </span>
         <span className="hero-telemetry-divider hidden sm:block" />
-        <span className="hidden sm:inline">V3 / SOFTWARE ENGINEERING</span>
+        <span className="hidden sm:inline">V3</span>
         <span className="hero-telemetry-spacer" />
         <span className="hero-telemetry-bars hidden md:flex">
           {[3, 8, 5, 11, 6, 9, 4, 7].map((height, index) => (
@@ -53,9 +53,17 @@ export function HeroTelemetryFrame({ mode }: { mode: SiteMode }) {
       <div className="hero-telemetry-bottom">
         <span>ROUTE / HOME</span>
         <span className="hero-telemetry-divider hidden sm:block" />
-        <span className="hidden sm:inline">BUILD / V3</span>
+        <span className="hidden">BUILD / V3</span>
+        <span className="hero-telemetry-sparkline hidden sm:inline-flex">
+          <svg viewBox="0 0 44 14" focusable="false" aria-hidden="true">
+            <path className="hero-telemetry-sparkline-axis" d="M1 12.5H43" />
+            <polyline points="1,10 9,8 16,11 24,3 32,6 42,2" />
+            <circle cx="24" cy="3" r="1.5" />
+            <circle cx="42" cy="2" r="1.5" />
+          </svg>
+        </span>
         <span className="hero-telemetry-spacer" />
-        <span className="hidden sm:inline">NEXT.JS / REACT</span>
+        <span className="hidden sm:inline">REACT / NEXT.JS / SWISS DESIGN</span>
         <span className="hero-telemetry-divider hidden sm:block" />
         <span className="hero-telemetry-group">
           <span className="hero-telemetry-signal hero-telemetry-signal--online" />
